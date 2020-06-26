@@ -1,0 +1,175 @@
+﻿@{  int count = 0;}
+
+    <div id="print-area" style="font-family:Calibri">
+
+        <div class="row">
+            <div class="col-12 text-center">
+
+                <h3><b>ABDULLAH FURNITURES </b></h3>
+                <h6><b>WHOLESALE DEALER : STEEL FURNITURE & WOODEN FURNITURE, HOME APPLIANCE</b></h6>
+                <h6><b>17 A Vanjinathan Aiyar Street (New Bus Stand), Salem – 636004 </b></h6>
+                <p> <b>E-Mail: newabdullahfurniture@gmail.com </b></p>
+                @foreach (var sums in Model.salesinvoicesummeries)
+                {
+                    @if (sums.Gst != 0)
+                    {
+                        <p><b>GSTIN NO : 33ANHPR2539P2ZF </b></p>
+                    }
+                }
+            </div>
+
+        </div>
+        @*<div class="auth-layout-wrap" style="background-image: url(/dist-assets/images/photo-wide-5.jpg)">*@
+        @foreach (var sum in Model.salesinvoicesummeries)
+        {
+
+            <table class="table table-bordered" style="width:100%">
+
+                <tr style="width:100%">
+                    <th style="width:30px">STATE:TAMIL NADU</th>
+                    <th style="width:30px">NAME : @sum.Customername</th>
+                </tr>
+                <tr style="width:100%">
+                    <th style="width:30%">STATE CODE :</th>
+                    <th style="width:70%">ADDRESS: @sum.Address</th>
+                </tr>
+                <tr style="width:100%">
+                    <th style="width:30%">INVOICE NO :@sum.Billid</th>
+                    <th style="width:70%"> </th>
+                </tr>
+                <tr style="width:100%">
+                    <th style="width:30%">INVOICE DATE : @sum.Billdate</th>
+                    <th style="width:70%">Party ‘s GSTIN </th>
+                </tr>
+            </table>
+        }
+    <table class="table table-bordered" style="width:100%">
+
+        <tr class="text-center">
+            <th width="20">S.NO</th>
+            <th width="20">PARTICULAR</th>
+            <th width="20">HSN CODE</th>
+            <th width="20">Qty</th>
+            <th width="20">Rate</th>
+            <th width="20">Amount</th>
+        </tr>
+       
+            @foreach (var item in Model.tempseccions)
+            {
+                count++;
+                <tr style="width:auto" class="text-center">
+                    <th>@count</th>
+                    <th>@item.Productname</th>
+                    <th>@item.Hsncode</th>
+                    <th>@item.Quantity</th>
+                    <th>@item.Rate</th>
+                    <th> ₹  @item.Amount</th>
+                </tr>
+            }
+
+       
+            @foreach (var item in Model.salesinvoices)
+            {
+                count++;
+                <tr style="width:auto" class="text-center">
+                    <th>@count</th>
+                    <th>@item.Productname</th>
+                    <th>@item.Hsncode</th>
+                    <th>@item.Quantity</th>
+                    <th>@item.Rate</th>
+                    <th> ₹  @item.Amount</th>
+                </tr>
+            }
+
+        
+
+
+
+    </table>
+        @foreach (var sum in Model.salesinvoicesummeries)
+        {
+            //With GST
+
+            @if (sum.Gst != 0)
+            {
+                <table class="table table-bordered" style="width:100%">
+                    <tr>
+                        <th>VEHICLE NO :</th>
+                        <th><b>TAXABLE VALUE</b> </th>
+                    </tr>
+                    <tr>
+                        <th>BANK DETAILES :</th>
+                        @{ float gstt = @sum.Gst / 2;
+                            var calgstt = sum.Totalamount * sum.Gst / 100;
+                        }
+                        <th>Add:  CGST  @gstt %  <p class="text-right" style="padding-right:60px"> ₹  @sum.Cgst</p>  </th>
+
+                    </tr>
+                    <tr>
+                        <th>BANK NAME :  IDFC</th>
+                        <th>Add:  SGST @gstt %  <p class="text-right" style="padding-right:60px"> ₹   @sum.Sgst</p>  </th>
+                    </tr>
+                    <tr>
+                        <th>ACCOUNT NO   :  1002 6449 464</th>
+                        <th>Add:  IGST  @sum.Igst % <p class="text-right" style="padding-right:60px"> ₹ 0 </p> </th>
+                    </tr>
+                    <tr>
+                        <th>IFSC CODE :  IDFB0080591 </th>
+                        <th>TOTAL    GST:   <p class="text-right" style="padding-right:60px"> ₹ @calgstt </p> </th>
+                    </tr>
+                    <tr>
+                        <th>BRANCH   :   SALEM </th>
+                        <th>GST ON REVERSE CHARGES </th>
+                    </tr>
+                    <tr>
+                        <th>RUPEES:@sum.ntow</th>
+                        <th><b>TOTAL:</b> <p class="text-right" style="padding-right:60px"> ₹   @sum.Totalamount </p></th>
+                    </tr>
+                </table>
+                            }
+                            else
+                            {
+                <table class="table table-bordered" style="width:100%">
+                    <tr>
+                        <th>VEHICLE NO :</th>
+                        <th><b>TAXABLE VALUE</b> </th>
+                    </tr>
+                    <tr>
+                        <th>BANK DETAILES :</th>
+                       
+                        <th> BANK NAME :  IDFC </th>
+
+                    </tr>
+                    <tr>
+                        <th>ACCOUNT NO   :  1002 6449 464</th>
+                        <th>  IFSC CODE :  IDFB0080591 </th>
+                    </tr>
+                   
+                    <tr>
+                        <th>BRANCH   :   SALEM </th>
+                        <th> </th>
+                    </tr>
+                    <tr>
+                        <th>RUPEES: @sum.ntow</th>
+                        <th class="text-right"><b>TOTAL: </b> ₹ @sum.Totalamount </th>
+                    </tr>
+
+
+                </table>
+                            }
+         }
+                   
+        <div class="row">
+            <div class="col-6 text-left">
+                <h6>E & E ALL Disputes Are Subject To Salem Jurisdiction </h6>  <br />
+                <h5>Goods Once Sold Cannot Be Taken Back </h5>
+            </div>
+            <div class="col-6 text-right">
+                For <h3>ABDULLAH FURNITURE</h3><br />
+                <br />
+                <h6>Authorized Signature</h6>
+            </div>
+        </div>
+
+        @*</div>*@
+    </div>

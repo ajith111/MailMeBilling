@@ -1,0 +1,119 @@
+﻿@model MailMeBilling.Models.Allproduct
+
+@{
+    ViewData["Title"] = "Add Product";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+
+<h4>Product</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label asp-for="productname" class="control-label"></label>
+                        <input asp-for="productname" class="form-control" />
+                        <span asp-validation-for="productname" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Category" class="control-label"></label>
+
+                        <select class="form-control" asp-for="Category">
+                            <option value=""> Select Category</option>
+                            @foreach (var item in Model.categories)
+                            {
+                                <option value="@item.Categorys">@item.Categorys</option>
+                            }
+
+
+                        </select>
+                        <span asp-validation-for="Category" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="SubcCategory" class="control-label"></label>
+                        <select class="form-control" asp-for="SubcCategory">
+                            <option value=""> Select SubCategory</option>
+                            @foreach (var item in Model.subCategories)
+                            {
+                                <option value="@item.Subcatagory">@item.Subcatagory</option>
+                            }
+
+
+                        </select>
+                        <span asp-validation-for="SubcCategory" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Color" class="control-label"></label>
+                        <select class="form-control" asp-for="Color">
+                            <option value=""> Select SubCategory</option>
+                            @foreach (var item in Model.colors)
+                            {
+                                <option value="@item.Colors">@item.Colors</option>
+                            }
+
+
+                        </select>
+                        <span asp-validation-for="Color" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Brand" class="control-label"></label>
+                        <select class="form-control" asp-for="Brand">
+                            <option value=""> Select Brand</option>
+                            @foreach (var item in Model.brands)
+                            {
+                                <option value="@item.Brandname">@item.Brandname</option>
+                            }
+
+
+                        </select>
+                        <span asp-validation-for="Brand" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="form-group">
+                        <label asp-for="Hsncode" class="control-label"></label>
+                        <input asp-for="Hsncode" class="form-control" />
+                        <span asp-validation-for="Hsncode" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="Purchaserate" class="control-label"></label>
+                        <input asp-for="Purchaserate" class="form-control" />
+                        <span asp-validation-for="Purchaserate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Salesrate" class="control-label"></label>
+                        <input asp-for="Salesrate" class="form-control" />
+                        <span asp-validation-for="Salesrate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="stock" class="control-label"></label>
+                        <input asp-for="stock" class="form-control" />
+                        <span asp-validation-for="stock" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                    <div>
+                        <a asp-action="Index">Back to List</a>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        </form>
+    </div>
+</div>
+
+
+
+

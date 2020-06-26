@@ -1,0 +1,72 @@
+﻿@model IEnumerable<MailMeBilling.Models.CustomerDetails>
+
+@{
+    ViewData["Title"] = "CustomerList";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}    
+        <div class="card text-left">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-10">
+                        <h4 class="card-title mb-3"><b>Customer List</b></h4>
+                        <p>All Branch Customer detail list here..</p>
+                    </div>
+                    <div class="col-2">
+                        <p class="text-right">
+                            <a asp-action="Create" class="btn btn-primary">Create New</a>
+                        </p>
+                    </div>
+                </div>            
+               
+
+                <div class="table-responsive">
+                    <table class="display table table-striped table-bordered" id="zero_configuration_table" style="width:100%">
+                        <thead>
+                            <tr class="text-center">
+
+                                <th>NAME</th>
+                                <th>MOBILE NUMBAER</th>
+                                <th>EMAIL</th>
+                               
+                                <th>ADDRESS</th>
+                             
+                                <th>ACTION</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr class="text-center">
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Customername)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Mobilenumber)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Emailid)
+                                    </td>
+                                  
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Address)
+                                    </td>
+                                   
+                                    <td>
+                                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+  
+   
+
+   
+    

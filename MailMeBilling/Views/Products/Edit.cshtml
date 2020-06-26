@@ -1,0 +1,135 @@
+﻿@model MailMeBilling.Models.Product
+
+@{
+    ViewData["Title"] = "Update Product";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+
+<h4>Update  Rate & Stock</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Edit" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="productid" />
+            <input type="hidden" asp-for="productname" />
+            <input type="hidden" asp-for="Category" />
+            <input type="hidden" asp-for="SubcCategory" />
+            <input type="hidden" asp-for="Color" />
+            <input type="hidden" asp-for="Brand" />
+
+            <div class="row">
+                <div class="col-6">
+                    <div class="row">
+                        <div class="col-3 ">
+                            <b>@Html.DisplayNameFor(model => model.productname)</b>
+                        </div>
+                        <div class="col-9">
+                            @Html.DisplayFor(model => model.productname)
+                        </div>
+                        <div class="col-3 ">
+                            <b>  @Html.DisplayNameFor(model => model.Category)</b>
+                        </div>
+                        <div class="col-9">
+                            @Html.DisplayFor(model => model.Category)
+                        </div>
+                        <div class="col-3 ">
+                            <b>  @Html.DisplayNameFor(model => model.SubcCategory)</b>
+                        </div>
+                        <div class="col-9">
+                            @Html.DisplayFor(model => model.SubcCategory)
+                        </div>
+                        <div class="col-3 ">
+                            <b>   @Html.DisplayNameFor(model => model.Color)</b>
+                        </div>
+                        <div class="col-9">
+                            @Html.DisplayFor(model => model.Color)
+                        </div>
+
+                        <div class="col-3 ">
+                            <b>   @Html.DisplayNameFor(model => model.Brand)</b>
+                        </div>
+                        <div class="col-9">
+                            @Html.DisplayFor(model => model.Brand)
+                        </div>
+
+
+                        <div class="col-3 ">
+                            <b>   @Html.DisplayNameFor(model => model.Hsncode)</b>
+                        </div>
+                        <div class="col-9">
+                            @Html.DisplayFor(model => model.Hsncode)
+                        </div>
+                        <div class="col-3 ">
+                            <b>  @Html.DisplayNameFor(model => model.Purchaserate)</b>
+                        </div>
+                        <div class="col-9">
+                            @Html.DisplayFor(model => model.Purchaserate)
+                        </div>
+                        <div class="col-3 ">
+                            <b> @Html.DisplayNameFor(model => model.Salesrate)</b>
+                        </div>
+                        <div class="col-9">
+                            @Html.DisplayFor(model => model.Salesrate)
+                        </div>
+                        <div class="col-3 ">
+                            <b>Available Stock</b>
+                        </div>
+                        <div class="col-9">
+                            @Html.DisplayFor(model => model.stock)
+                        </div>
+                        <div class="col-3 ">
+                            <b>Last Stock Update</b>
+                        </div>
+                        <div class="col-9">
+                            @Html.DisplayFor(model => model.Entrydate)
+                        </div>
+                        <div class="col-3 ">
+                            <b>Last  Update By</b>
+                        </div>
+                        <div class="col-9">
+                            @Html.DisplayFor(model => model.Entryby)
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-4">
+
+                    <div class="form-group">
+                        <label asp-for="Purchaserate" class="control-label"></label>
+                        <input asp-for="Purchaserate" class="form-control" />
+                        <span asp-validation-for="Purchaserate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Salesrate" class="control-label"></label>
+                        <input asp-for="Salesrate" class="form-control" />
+                        <span asp-validation-for="Salesrate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="stock" class="control-label"></label>
+                        <input asp-for="stock" value="0" class="form-control" />
+                        <span asp-validation-for="stock" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Update" class="btn btn-primary" />
+                    </div>
+                    <div>
+                        <a asp-action="Index">Back to List</a>
+                    </div>
+                </div>
+                <div class="col-2"></div>
+            </div>
+
+
+
+
+        </form>
+    </div>
+</div>
+
+
+
+

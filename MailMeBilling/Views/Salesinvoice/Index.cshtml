@@ -1,0 +1,616 @@
+﻿@model MailMeBilling.Models.loadtemp
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+   
+    int counts = 0;
+    decimal totalamount = 0;
+    int qty = 0;
+   
+}
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+<!-- ============ Main content start ============= -->
+<div class="main-content" id="main">
+
+
+    <div class="row" id="loadpage">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs justify-content-end mb-4" id="myTab" role="tablist">
+                <li class="nav-item"><a class="nav-link active" id="edit-tab" data-toggle="tab" href="#edit" role="tab" aria-controls="edit" aria-selected="false">Billing</a></li>
+                <li class="nav-item"><a class="nav-link " id="invoice-tab" data-toggle="tab" href="#invoice" role="tab" aria-controls="invoice" aria-selected="true">Preview</a></li>
+
+            </ul>
+            <div class="card">
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade " id="invoice" role="tabpanel" aria-labelledby="invoice-tab">
+                        <div class="d-sm-flex mb-5" data-view="print">
+                            <span class="m-auto"></span>
+                            <button class="btn btn-primary mb-sm-0 mb-3 print-invoice">Print Invoice</button>
+                        </div>
+                        <!-- -===== Print Area =======-->
+                        <div id="print">
+
+
+                            <partial name="printsection" />
+                        </div>
+                        <!-- ==== / Print Area =====-->
+                    </div>
+                    <div class="tab-pane fade show active" id="edit" role="tabpanel" aria-labelledby="edit-tab">
+                        <!-- ==== Edit Area =====-->
+                        <div class="row">
+                            <div class="col-4 text-left">
+                                @{var date = DateTime.Now.GetDateTimeFormats()[2];
+                                    var BillNo = @ViewBag.Billno;
+                                }
+                            </div>
+                            <div class="col-5">
+                                <h3 class="text-center">SALES INVOICE</h3>
+                            </div>
+                            <div class="col-3">
+                                <b>Bill No:  @BillNo </b><br />
+                                <b>  Date:</b> @date <br />
+                                <b> BillBy:</b> @ViewBag.data
+                            </div>
+                        </div>
+                        <div class="mt-3 mb-4 border-top"></div>
+                        <!-- ==== Entry Form Area =====-->
+                        <partial name="productform" />
+                        <!-- ==<== Entry Form Area End =====-->
+                        <!-- ==== Form Area =====-->
+                        <fieldset>
+                            <div class="col-md-12 table-responsive">
+                                <table id="submissionTable" class="table table-bordered table-checkable">
+                                    <thead class="table table-hover mb-3">
+                                        <tr class="bg-gray-300 text-center">
+                                            <td>S.No</td>
+                                            <td>Product Name</td>
+                                            <td>Category </td>
+                                            <td>Subcategory </td>
+                                            <td> Color</td>
+                                            <td> Brand</td>
+                                            <td>HSN Code</td>
+                                            <td>Rate </td>
+                                            <td>Qty </td>
+                                            <td>Amount </td>
+                                            <td>Action</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.tempseccions)
+                                        {
+                                            counts++;
+                                            totalamount += item.Amount;
+                                            qty += item.Quantity;
+                                            <tr class="text-center">
+                                                <td>@counts</td>
+                                                <td>@item.Productname</td>
+                                                <td>@item.Category </td>
+                                                <td>@item.Subcategory </td>
+                                                <td> @item.Color</td>
+                                                <td>@item.Brand </td>
+                                                <td>@item.Hsncode </td>
+                                                <td>@item.Rate </td>
+                                                <td>@item.Quantity </td>
+                                                <td>@item.Amount </td>
+                                                <td class="text-center"> <button type="button" class="btn btn-outline-secondary float-right" onclick=Delete(@item.Id)>Delete</button></td>
+                                            </tr>
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <form id="summery">
+                                <input type="hidden" value="@BillNo" name="Billid" id="Billno1" />
+                                <br />
+                                <h5 class="font-weight-bold">Customer Details</h5><br />
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <input class="form-control" id="Customernumber" type="text" name="Mobilenumber" placeholder="Mobile Number" onchange="checkcustomer()" value="" required /><br />
+                                        <input class="form-control" id="Customername" type="text" name="Customername" placeholder="Customer Name" required value="" /><br />
+                                        <textarea class="form-control" name="Address" id="Address" required placeholder="Customer Address"></textarea>
+                                    </div>
+
+
+                                    <br />
+                                    <div class="col-md-9">
+                                        <div class="invoice-summary invoice-summary-input float-right">
+                                            <p> <b> Sub total: <span>@totalamount</span></b></p>
+                                            <p class="d-flex align-items-center">
+                                                <input type="hidden" value="@totalamount" name="u" id="hitAmount" />
+                                                <input type="hidden" value="@qty" name="Totalqty" id="" />
+                                                GST(%):
+                                                <select name="Gst" id="gst" onchange="getgst(this)" required>
+                                                    <option value="">Select</option>
+                                                    <option value="0">0%</option>
+                                                    <option value="5">5%</option>
+                                                    <option value="12">12%</option>
+                                                    <option value="18">18%</option>
+                                                    <option value="28">28%</option>
+                                                </select><span> <input class="form-control text-right " id="gstamt" readonly value="0" type="text" /></span>
+                                            </p>
+                                            <script>
+                                                function getgst(gst) {
+                                                    var GST = gst;
+                                                    var calgstamount = 0;
+                                                    var total = document.getElementById("hitAmount");
+                                                    var gstamount = document.getElementById("gstamt");
+                                                    var igst = document.getElementById("igst");
+                                                    var sgst = document.getElementById("sgst");
+                                                    var cgst = document.getElementById("cgst");
+                                                    var togst = document.getElementById("gstandamount");
+                                                    $(gstamount).empty();
+                                                    $(sgst).empty();
+                                                    $(cgst).empty();
+                                                    calgstamount = (parseFloat(total.value) * parseFloat(GST.value)) / 100;
+                                                    gstamount.value = calgstamount;
+                                                    igst.value = 0;
+                                                    sgst.value = calgstamount / 2;
+                                                    cgst.value = calgstamount / 2;
+                                                    togst.value = parseFloat(total.value) + calgstamount;
+
+                                                }
+                                                var gst = document.getElementById("gst");
+
+
+
+                                                var a = ['', 'One ', 'Two ', 'Three ', 'Four ', 'Five ', 'Six ', 'Seven ', 'Eight ', 'Nine ', 'Ten ', 'Eleven ', 'Twelve ', 'Thirteen ', 'Fourteen ', 'Fifteen ', 'Sixteen ', 'Seventeen ', 'Eighteen ', 'Nineteen '];
+                                                var b = ['', '', 'Twenty', 'Thirty', 'FTorty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+
+                                                function inWords(num) {
+                                                    if ((num = num.toString()).length > 9) return 'overflow';
+                                                    n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+                                                    if (!n) return; var str = '';
+                                                    str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'Crore ' : '';
+                                                    str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'Lakh ' : '';
+                                                    str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'Thousand ' : '';
+                                                    str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'Hundred ' : '';
+                                                    str += (n[5] != 0) ? ((str != '') ? 'And ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + 'Only ' : '';
+                                                    return str;
+                                                }
+
+                                                function amountres(amt) {
+                                                    var amount = amt;
+                                                    var togst = document.getElementById("gstandamount");
+                                                    var res = document.getElementById("balance");
+                                                    var tmp = parseFloat(togst.value) - parseFloat(amount.value)
+                                                    res.value = tmp;
+                                                    var ntw = inWords(amount.value);
+                                                    console.log(ntw);
+                                                    document.getElementById('words').innerHTML = ntw;
+                                                }
+                                            </script>
+
+                                            <p class="d-flex align-items-center">
+
+                                                IGST(%):<span><input class="form-control small-input" name="Igst" id="igst" type="text" readonly value="0" /></span>
+
+                                                SGST(%): <span><input class="form-control small-input" name="Sgst" id="sgst" type="text" readonly value="0" /></span>
+
+                                                CGST(%): <span><input class="form-control small-input" name="Cgst" id="cgst" type="text" readonly value="0" /></span>
+                                            </p>
+                                            <h5 class="font-weight-bold d-flex align-items-center">
+                                                Grand Total:<span>
+                                                    <input class="form-control text-right" name="Totalamount" id="gstandamount" type="text" readonly value="" placeholder="0" />
+                                                </span>
+                                            </h5>
+                                            <h5 class="font-weight-bold d-flex align-items-center">
+                                                Discount: <span>
+                                                    <input class="form-control text-right" name="discount" id="discount" type="text" autocomplete="off" onchange="discounts(this)" value="" placeholder="0" />
+                                                </span>
+                                            </h5>
+                                            <script>
+                                                var orignal = document.getElementById("gstandamount");
+                                                var copyval = orignal;
+                                                function discounts(dis) {
+                                                    var discount = dis.value;
+                                                    var cal = 0;
+                                                    var togst = document.getElementById("gstandamount");
+                                                    cal = parseInt(togst.value) - parseInt(discount);
+
+                                                    console.log(togst.value);
+                                                    console.log(discount);
+                                                    console.log(cal);
+
+                                                    if (isNaN(cal)) {
+                                                        togst.value = 0;
+                                                        console.log("Copy");
+                                                    }
+                                                    else {
+                                                        togst.value = cal;
+                                                    }
+                                                }
+                                            </script>
+
+                                            <div class="border">
+                                                <h5 class="font-weight-bold d-flex align-items-center">
+                                                    Payment Type:<span>
+                                                        <select name="Paymenttype" required>
+                                                            <option value="">Select</option>
+                                                            <option value="Cash">Cash</option>
+                                                            <option value="Card">Card</option>
+                                                            <option value="Credit">Credit</option>
+                                                            <option value="Nettrancection">Net Transfer</option>
+                                                            <option value="EMI">EMI</option>
+                                                            <option value="UPI">UPI</option>
+
+                                                        </select>
+                                                    </span>
+                                                </h5><br />
+                                                <h5 class="font-weight-bold d-flex align-items-center">
+                                                    Reference No:<input class="form-control" name="Refcode" id="ref" autocomplete="off" type="text" value="" />
+
+                                                </h5>
+                                            </div>
+                                            <h5 class="font-weight-bold d-flex align-items-center">
+                                                Received:<input class="form-control text-right" name="Paid" id="resived" onkeyup="amountres(this)" type="text" value="" />
+
+                                            </h5>
+
+                                            <h5 class="font-weight-bold d-flex align-items-center">
+                                                Balance:<input class="form-control text-right" name="Balance" id="balance" readonly type="text" value="0" />
+
+                                            </h5><br/>
+                                            <span class="label label-success" name="ntow" id="words" style="color:blueviolet;font-size:medium"></span>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="row">
+                                <div class="col-md-6 form-group mb-3 text-right" style="padding-top: 22px;  padding-right: 22px;">
+                                    @*<label class="form-control" name="ntow" id="words" readonly type="text" value="" />*@
+                                   
+                                </div>
+                                <div class="col-md-6 form-group mb-3 text-right" style="padding-top: 22px;  padding-right: 22px;">
+                                    <input type="button" value="Save Bill" onclick=Savesum() class="btn btn-primary" />
+                                </div>
+                            </div>
+
+                        </fieldset>
+
+                    </div>
+
+                        <!-- ==== / Form Area =====-->
+                        <!-- ==== / Edit Area =====-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- end of main-content -->
+<!-- Footer Start -->
+<!-- ============ Main content End ============= -->
+
+<script>
+    $(function () {
+
+        $("#tags").autocomplete({
+
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Salesinvoice/Getproductname",
+                    type: "POST",
+                    dataType: "json",
+                    data: { Prefix: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.productname, value: item.productname };
+                        }))
+
+                    }
+                })
+            },
+            messages: {
+                noResults: "",
+                results: function (count) {
+                    return count + (count > 1 ? ' results' : ' result ') + ' found';
+                }
+            }
+
+        });
+    });
+    function autoname () {
+
+
+        $("#tags").autocomplete({
+
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Salesinvoice/Getproductname",
+                    type: "POST",
+                    dataType: "json",
+                    data: { Prefix: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.productname, value: item.productname };
+                        }))
+
+                    }
+                })
+            },
+            messages: {
+                noResults: "",
+                results: function (count) {
+                    return count + (count > 1 ? ' results' : ' result ') + ' found';
+                }
+            }
+
+        });
+    }
+
+
+    //testing
+    function addamount(qtys)
+    {
+
+        var tamount = 0;
+        var rat = document.getElementById("hitrate");
+        var qty = qtys.value;
+        var Amount = document.getElementById("Amount");
+        var st = document.getElementById("stock");
+
+        $("#addproduct").prop("disabled", false);
+        if (parseInt(qty) > parseInt(st.value)) {
+            $("#addproduct").prop("disabled", true);
+            toastr.error("Unable to add product.", "Pls Check Stock!", {
+                timeOut: 6000
+            });
+            Amount.value =0;
+        } else {
+            tamount = parseInt(rat.value) * parseInt(qty);
+
+            Amount.value = tamount;
+            if (isNaN(tamount)) {
+                Amount.value = 0;
+            }
+        }
+
+
+
+    }
+    function myFun() {
+
+        var pname = $('#tags').val();
+        $.ajax({
+            url: '@Url.Action("fillcol")',
+            type: "GET",
+            dataType: "JSON",
+            data: { name: pname },
+            success: function (data) {
+
+                $("#Save").prop("disabled", false);
+                var Cat = document.getElementById("Category");
+                var sub = document.getElementById("Subcategory");
+                var col = document.getElementById("Color");
+                var bran = document.getElementById("Brand");
+                var rat = document.getElementById("Rate");
+                var hrat = document.getElementById("hitrate");
+                var hsn = document.getElementById("Hsncode");
+                var amt = document.getElementById("Amount");
+                var qty = document.getElementById("Quantity");
+                var st = document.getElementById("stock");
+                $(Cat).empty();
+                $(sub).empty();
+                $(col).empty();
+                $(bran).empty();
+                $(rat).empty();
+                $(hrat).empty();
+                $(hsn).empty();
+                $(amt).empty();
+                $(qty).empty();
+                $(st).empty();
+                Cat.value = data['category'];
+                sub.value = data['subcCategory'];
+                col.value = data['color'];
+                bran.value = data['brand'];
+                rat.value = data['salesrate'];
+                hrat.value = data['salesrate'];
+                hsn.value = data['hsncode'];
+                st.value = data['stock'];
+                $("#Quantity").focus();
+                if (st.value <= 0) {
+                    $("#Save").prop("disabled", true);
+                    toastr.error("Product  not Available .", "No Stock!", {
+                        timeOut: 6000
+                    });
+                }
+
+            }
+        });
+
+    }
+
+    //Check Customer
+     function checkcustomer() {
+
+         var num = $('#Customernumber').val();
+        $.ajax({
+            url: '@Url.Action("fillcusdetails")',
+            type: "GET",
+            dataType: "JSON",
+            data: { mob: num },
+            success: function (data) {
+
+                if (data != null) {
+                    $("#Save").prop("disabled", false);
+                    var Cat = document.getElementById("Customername");
+                    var sub = document.getElementById("Address");
+                    $(Cat).empty();
+                    Cat.value = data['customername'];
+                    sub.value = data['address'];
+
+
+                    toastr.success("This Customer Already Registered", "Our  Customer", {
+                        closeButton: !0
+                    });
+                }
+                else {
+                    toastr.success("This Customer is new", "New  Customer", {
+                        closeButton: !0
+                    });
+
+                }
+               
+
+               
+               
+
+            }
+
+        });
+
+    }
+    // js for add product
+    $("#Save").click(function (event) {
+        alert("Fun run");
+        event.preventDefault();
+        var form = $('#myform').serialize();
+        console.log(form);
+        if ($("#myform").valid()) {
+            alert("Valide");
+            $("#Save").prop("disabled", true);
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: '@Url.Action("addtmp")',
+                data: form,
+                processData: false,
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                cache: false,
+                timeout: 600000,
+                success: function (data) {
+                    toastr.success("Product has been successfully saved", "Product Add successfully ", {
+                        closeButton: !0
+                    });
+                    $("#loadpage").load(" #loadpage");
+                    $("#myform").load(" #myform");
+                    autoname();
+                },
+                error: function (e) {
+
+                     console.log("ERROR : ", e);
+                    $("#Save").prop("disabled", false);
+                    alert("Error");
+
+                }
+            });
+
+        }
+
+
+
+
+    });
+    //Testing part
+    var Save = function () {
+
+         var form = $('#myform').serialize();
+        console.log(form);
+        if ($("#myform").valid()) {
+
+            $("#Save").prop("disabled", true);
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: '@Url.Action("addtmp")',
+                data: form,
+                processData: false,
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                cache: false,
+                timeout: 600000,
+                success: function (data) {
+                    toastr.success("Product has been successfully saved", "Product Add successfully ", {
+                        closeButton: !0
+                    });
+                    //$("#loadpage").load(" #loadpage");
+                    $("#myform").load(" #myform");
+                    $("#print").load(" #print");
+                    $("#submissionTable").load(" #submissionTable");
+                    $("#main").load(" #main");
+                    autoname();
+                },
+                error: function (e) {
+
+                     console.log("ERROR : ", e);
+                    $("#Save").prop("disabled", false);
+                    alert("Error");
+
+                }
+            });
+
+        }
+    }
+
+
+    //Testing part end
+
+    var Savesum = function () {
+
+        var form = $('#summery').serialize();
+        console.log(form);
+        if ($("#summery").valid()) {
+
+            $("#Save").prop("disabled", true);
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: '@Url.Action("addtmpsummery")',
+                data: form,
+                processData: false,
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                cache: false,
+                timeout: 600000,
+                success: function (data) {
+                    toastr.success("You bill save and ready to print", "Bill Save successfully ", {
+                        closeButton: !0
+                    });
+                    $("#myform").load(" #myform");
+                    $("#print").load(" #print");
+                    $("#submissionTable").load(" #submissionTable");
+                    $("#main").load(" #main");
+                    autoname();
+                },
+                error: function (e) {
+
+                     console.log("ERROR : ", e);
+                    $("#Save").prop("disabled", false);
+                    alert("Error");
+
+                }
+            });
+
+        }
+    }
+    // js for Delete product
+    function Delete(id) {
+        var data = id;
+            $.ajax({
+                type: "DELETE",
+                enctype: 'multipart/form-data',
+                url: '@Url.Action("deletetmp")',
+                data: { 'id': data },
+                success: function (data) {
+                    if (data.success) {
+                        toastr.error("Product has been successfully Removed.", "Delete!", {
+                            timeOut: 6000
+                        });
+                        $("#myform").load(" #myform");
+                        $("#print").load(" #print");
+                        $("#submissionTable").load(" #submissionTable");
+                        $("#main").load(" #main");
+                    }
+                    else {
+                        toastr.error(data.message);
+                    }
+                }
+            });
+
+
+
+
+    }
+    //Testing end
+
+</script>
+

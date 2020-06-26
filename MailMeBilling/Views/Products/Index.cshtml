@@ -1,0 +1,108 @@
+﻿@model IEnumerable<MailMeBilling.Models.Product>
+
+@{
+    ViewData["Title"] = " Product List";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+
+
+<div class="card text-left">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-10">
+                <h4 class="card-title mb-3"><b>Product List</b></h4>
+                <p>All  Productdetail list here..</p>
+            </div>
+            <div class="col-2">
+                <p class="text-right">
+                    <a asp-action="Create" class="btn btn-primary">Add Product</a>
+                </p>
+            </div>
+        </div>
+
+
+        <div class="table-responsive">
+            <table class="display table table-striped table-bordered" id="zero_configuration_table" style="width:100%">
+                <thead>
+                    <tr class="text-center">
+                        <th>
+                            @Html.DisplayNameFor(model => model.productname)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Category)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.SubcCategory)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Color)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Brand)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Hsncode)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Purchaserate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Salesrate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.stock)
+                        </th>
+
+
+
+                        <th>ACTION</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                    <tr class="text-center">
+                        <td>
+                            @Html.DisplayFor(modelItem => item.productname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Category)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.SubcCategory)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Color)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Brand)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Hsncode)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Purchaserate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Salesrate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.stock)
+                        </td>
+
+
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.productid">Update</a> |
+                            <a asp-action="Details" asp-route-id="@item.productid">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@item.productid">Delete</a>
+                        </td>
+                    </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>
