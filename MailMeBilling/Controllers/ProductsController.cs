@@ -107,6 +107,15 @@ namespace MailMeBilling.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("productid,productname,Category,SubcCategory,Color,Brand,Hsncode,Purchaserate,Salesrate,stock")] Product product)
         {
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.Now.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
             if (ModelState.IsValid)
             {
                 ViewBag.data = HttpContext.Session.GetString("name");
@@ -172,6 +181,15 @@ namespace MailMeBilling.Controllers
        
         public async Task<IActionResult> Edit(int id,  Product product)
         {
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.Now.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
             var stock = await _context.product.FindAsync(id);
            
             var addstock = stock.stock + product.stock;

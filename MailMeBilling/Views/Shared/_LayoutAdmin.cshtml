@@ -81,16 +81,16 @@
                     <div class="dropdown-menu dropdown-menu-right notification-dropdown rtl-ps-none" aria-labelledby="dropdownNotification" data-perfect-scrollbar="" data-suppress-scroll-x="true">
                         <div class="dropdown-item d-flex">
                             <div class="notification-icon"><i class="i-Speach-Bubble-6 text-primary mr-1"></i></div>
-                            <div class="notification-details flex-grow-1">
+                            <div class="notification-details flex-grow-1"><a asp-controller="MyReports" asp-action="Salesreport">
                                 <p class="m-0 d-flex align-items-center"><span>Payment Panding </span><span class="badge badge-pill badge-primary ml-1 mr-1">@ViewBag.CustomerPending</span><span class="flex-grow-1"></span><span class="text-small text-muted ml-auto"></span></p>
-                                <p class="text-small text-muted m-0">Customer Pyment </p>
+                                <p class="text-small text-muted m-0">Customer Pyment </p></a>
                             </div>
                         </div>
                         <div class="dropdown-item d-flex">
                             <div class="notification-icon"><i class="i-Speach-Bubble-6 text-primary mr-1"></i></div>
-                            <div class="notification-details flex-grow-1">
+                            <div class="notification-details flex-grow-1"><a asp-controller="MyReports" asp-action="Purchasereport">
                                 <p class="m-0 d-flex align-items-center"><span>Payment Panding </span><span class="badge badge-pill badge-success ml-1 mr-1">@ViewBag.VendorPending</span><span class="flex-grow-1"></span><span class="text-small text-muted ml-auto"></span></p>
-                                <p class="text-small text-muted m-0">Vendor Pyment</p>
+                                <p class="text-small text-muted m-0">Vendor Pyment</p></a>
                             </div>
                         </div>
                         
