@@ -16,21 +16,21 @@ namespace MailMeBilling.Models
         [Required(ErrorMessage = "Mobile Number  is required")]
         [Display(Name = "Mobile Number")]
         public string Mobilenumber { get; set; }
-        [Required(ErrorMessage = "Addressr  is required")]
+      
         [Display(Name = "Address")]
         public string Address { get; set; }
 
 
-        [Required(ErrorMessage = "Bank Name  is required")]
+      
         [Display(Name = "Bank Name")]
         public string Bankname { get; set; }
-        [Required(ErrorMessage = "Account Number  is required")]
+      
         [Display(Name = "Account Number")]
         public string Accountnumber { get; set; }
-        [Required(ErrorMessage = "IFSC Code  is required")]
+       
         [Display(Name = "IFSC Code")]
         public string Ifsccode { get; set; }
-        [Required(ErrorMessage = "Branch  is required")]
+       
         [Display(Name = "Branch Number")]
         public string bankbranch { get; set; }
         public string Branch { get; set; }

@@ -185,45 +185,57 @@
                         }
                         @if (ViewBag.roll == "Admin")
                         {
-                            <ul class="menu float-left">
+                    <ul class="menu float-left">
 
-                                <li>
-                                    <div>
-                                        <div>
-                                            <label class="toggle" for="drop-2">Masters</label><a href="#"><i class="nav-icon mr-2 i-Windows-2"></i> Master</a>
-                                            <input id="drop-2" type="checkbox" />
-                                            <ul>
-                                                <li><a asp-controller="Categories" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Category</a></li>
-                                                <li><a asp-controller="SubCategories" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Subcategory</a></li>
-                                                <li><a asp-controller="Brands" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Brand</a></li>
-                                                <li><a asp-controller="Colors" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Color</a></li>
-                                                <li><a asp-controller="Products" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Product </a></li>
-                                                <li><a asp-controller="RolleDetails" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i> Rolls </a></li>
-                                                <li><a asp-controller="CustomerDetails" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Customer</a></li>
-                                                <li><a asp-controller="Vendors" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Vendor </a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </li>
+                        <li>
+                            <div>
+                                <div>
+                                    <label class="toggle" for="drop-2">Masters</label><a href="#"><i class="nav-icon mr-2 i-Windows-2"></i> Master</a>
+                                    <input id="drop-2" type="checkbox" />
+                                    <ul>
+                                        <li><a asp-controller="Categories" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Category</a></li>
+                                        <li><a asp-controller="SubCategories" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Subcategory</a></li>
+                                        <li><a asp-controller="Brands" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Brand</a></li>
+                                        <li><a asp-controller="Colors" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Color</a></li>
+                                        <li><a asp-controller="Products" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Product </a></li>
 
-                                <!-- end ui kits-->
-                                <!-- end extra uikits-->
-                                <li>
-                                    <div>
-                                        <div>
-                                            <label class="toggle" for="drop-2">Invoice</label><a href="#"><i class="nav-icon mr-2 i-Computer-Secure"></i> Invoice</a>
-                                            <input id="drop-2" type="checkbox" />
-                                            <ul>
-                                                <li><a asp-controller="Salesinvoice" asp-action="Index"><i class="nav-icon mr-2 i-Add-File"></i><span class="item-name">Sales Invoice</span></a></li>
-                                                <li><a asp-controller="Purchaseinvoice" asp-action="Index"><i class="nav-icon mr-2 i-Add-File"></i><span class="item-name">Purchase Invoice</span></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </li>
-                                <!-- end apps-->
-                                <!-- end Forms-->
+                                        <li><a asp-controller="CustomerDetails" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Customer</a></li>
+                                        <li><a asp-controller="Vendors" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Vendor </a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
 
-                            </ul>
+                        <!-- end ui kits-->
+                        <!-- end extra uikits-->
+                        <li>
+                            <div>
+                                <div>
+                                    <label class="toggle" for="drop-2">Invoice</label><a href="#"><i class="nav-icon mr-2 i-Computer-Secure"></i> Invoice</a>
+                                    <input id="drop-2" type="checkbox" />
+                                    <ul>
+                                        <li><a asp-controller="Salesinvoice" asp-action="Index"><i class="nav-icon mr-2 i-Add-File"></i><span class="item-name">Sales Invoice</span></a></li>
+                                        <li><a asp-controller="Purchaseinvoice" asp-action="Index"><i class="nav-icon mr-2 i-Add-File"></i><span class="item-name">Purchase Invoice</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        <li>
+                            <div>
+                                <div>
+                                    <label class="toggle" for="drop-2">Reports</label><a href="#"><i class="nav-icon mr-2 i-Computer-Secure"></i> Reports</a>
+                                    <input id="drop-2" type="checkbox" />
+                                    <ul>
+                                        <li><a asp-controller="MyReports" asp-action="Salesreport"><i class="nav-icon mr-2 i-Add-File"></i><span class="item-name">Sales Report</span></a></li>
+                                        <li><a asp-controller="MyReports" asp-action="Purchasereport"><i class="nav-icon mr-2 i-Add-File"></i><span class="item-name">Purchase Report</span></a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </li>
+                        <!-- end apps-->
+                        <!-- end Forms-->
+
+                    </ul>
                         }
                         @if (ViewBag.roll == "Employee")
                         {
@@ -240,7 +252,7 @@
                                                 <li><a asp-controller="Brands" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Brand</a></li>
                                                 <li><a asp-controller="Colors" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Color</a></li>
                                                 <li><a asp-controller="Products" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Product </a></li>
-                                                <li><a asp-controller="RolleDetails" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i> Rolls </a></li>
+                                              
                                                 <li><a asp-controller="CustomerDetails" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Customer</a></li>
                                                 <li><a asp-controller="Vendors" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Vendor </a></li>
                                             </ul>
@@ -310,16 +322,16 @@
         <div class="search-title">
             <span class="text-muted">Search results</span>
         </div>
-        <div class="search-results list-horizontal">
+        @*<div class="search-results list-horizontal">
             <div class="list-item col-md-12 p-0">
                 <div class="card o-hidden flex-row mb-4 d-flex">
                     <div class="list-thumb d-flex">
-                        <!-- TUMBNAIL -->
+                         TUMBNAIL 
                         <img src="../../dist-assets/images/products/headphone-1.jpg" alt="">
                     </div>
                     <div class="flex-grow-1 pl-2 d-flex">
                         <div class="card-body align-self-center d-flex flex-column justify-content-between align-items-lg-center flex-lg-row">
-                            <!-- OTHER DATA -->
+                             OTHER DATA 
                             <a href="#" class="w-40 w-sm-100">
                                 <div class="item-title">Headphone 1</div>
                             </a>
@@ -338,12 +350,12 @@
             <div class="list-item col-md-12 p-0">
                 <div class="card o-hidden flex-row mb-4 d-flex">
                     <div class="list-thumb d-flex">
-                        <!-- TUMBNAIL -->
+                         TUMBNAIL 
                         <img src="../../dist-assets/images/products/headphone-2.jpg" alt="">
                     </div>
                     <div class="flex-grow-1 pl-2 d-flex">
                         <div class="card-body align-self-center d-flex flex-column justify-content-between align-items-lg-center flex-lg-row">
-                            <!-- OTHER DATA -->
+                             OTHER DATA 
                             <a href="#" class="w-40 w-sm-100">
                                 <div class="item-title">Headphone 1</div>
                             </a>
@@ -362,12 +374,12 @@
             <div class="list-item col-md-12 p-0">
                 <div class="card o-hidden flex-row mb-4 d-flex">
                     <div class="list-thumb d-flex">
-                        <!-- TUMBNAIL -->
+                         TUMBNAIL 
                         <img src="../../dist-assets/images/products/headphone-3.jpg" alt="">
                     </div>
                     <div class="flex-grow-1 pl-2 d-flex">
                         <div class="card-body align-self-center d-flex flex-column justify-content-between align-items-lg-center flex-lg-row">
-                            <!-- OTHER DATA -->
+                             OTHER DATA 
                             <a href="#" class="w-40 w-sm-100">
                                 <div class="item-title">Headphone 1</div>
                             </a>
@@ -386,12 +398,12 @@
             <div class="list-item col-md-12 p-0">
                 <div class="card o-hidden flex-row mb-4 d-flex">
                     <div class="list-thumb d-flex">
-                        <!-- TUMBNAIL -->
+                         TUMBNAIL 
                         <img src="../../dist-assets/images/products/headphone-4.jpg" alt="">
                     </div>
                     <div class="flex-grow-1 pl-2 d-flex">
                         <div class="card-body align-self-center d-flex flex-column justify-content-between align-items-lg-center flex-lg-row">
-                            <!-- OTHER DATA -->
+                             OTHER DATA 
                             <a href="#" class="w-40 w-sm-100">
                                 <div class="item-title">Headphone 1</div>
                             </a>
@@ -407,9 +419,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>*@
         <!-- PAGINATION CONTROL -->
-        <div class="col-md-12 mt-5 text-center">
+        @*<div class="col-md-12 mt-5 text-center">
             <nav aria-label="Page navigation example">
                 <ul class="pagination d-inline-flex">
                     <li class="page-item">
@@ -429,7 +441,7 @@
                     </li>
                 </ul>
             </nav>
-        </div>
+        </div>*@
     </div>
     <!-- ============ Search UI End ============= -->
     <script src="~/dist-assets/js/plugins/jquery-3.3.1.min.js"></script>

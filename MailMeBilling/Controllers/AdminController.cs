@@ -92,7 +92,17 @@ namespace MailMeBilling.Controllers
                     ViewBag.data = HttpContext.Session.GetString("name");
                     ViewBag.branch = HttpContext.Session.GetString("branch");
                     ViewBag.roll = HttpContext.Session.GetString("roll");
-                return RedirectToAction("Dashbord","Admin");
+
+                if (login.Roll == "SuperAdmin")
+                {
+                    return RedirectToAction("Dashbord", "Admin");
+                }
+                else
+                {
+                    return RedirectToAction("Index", "Salesinvoice");
+
+                }
+               
                 }
                 else
                 {
