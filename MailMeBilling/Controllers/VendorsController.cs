@@ -94,7 +94,7 @@ namespace MailMeBilling.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("VendorId,Name,Mobilenumber,Bankname,Accountnumber,Ifsccode,bankbranch")] Vendor Vendor)
+        public async Task<IActionResult> Create([Bind("VendorId,Name,Mobilenumber,Address")] Vendor Vendor)
         {
             if (ModelState.IsValid)
             {
@@ -142,7 +142,7 @@ namespace MailMeBilling.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("VendorId,Name,Mobilenumber,Bankname,Accountnumber,Ifsccode,bankbranch")] Vendor Vendor)
+        public async Task<IActionResult> Edit(int id,  Vendor Vendor)
         {
             if (id != Vendor.vendorId)
             {

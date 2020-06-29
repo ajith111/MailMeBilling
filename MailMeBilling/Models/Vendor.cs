@@ -16,7 +16,7 @@ namespace MailMeBilling.Models
         [Required(ErrorMessage = "Mobile Number  is required")]
         [Display(Name = "Mobile Number")]
         public string Mobilenumber { get; set; }
-      
+        [Required(ErrorMessage = "Address  is required")]
         [Display(Name = "Address")]
         public string Address { get; set; }
 
@@ -31,7 +31,7 @@ namespace MailMeBilling.Models
         [Display(Name = "IFSC Code")]
         public string Ifsccode { get; set; }
        
-        [Display(Name = "Branch Number")]
+        [Display(Name = "Branch ")]
         public string bankbranch { get; set; }
         public string Branch { get; set; }
         public DateTime Entrydate { get; set; }

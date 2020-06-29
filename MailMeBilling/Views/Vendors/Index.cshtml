@@ -20,17 +20,9 @@
                 @Html.DisplayNameFor(model => model.Mobilenumber)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Bankname)
+                @Html.DisplayNameFor(model => model.Address)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Accountnumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Ifsccode)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.bankbranch)
-            </th>
+           
             <th></th>
         </tr>
     </thead>
@@ -44,17 +36,9 @@
                 @Html.DisplayFor(modelItem => item.Mobilenumber)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Bankname)
+                @Html.DisplayFor(modelItem => item.Address)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Accountnumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ifsccode)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.bankbranch)
-            </td>
+           
             <td>
                 <a asp-action="Edit" asp-route-id="@item.vendorId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.vendorId">Details</a> |
