@@ -15,7 +15,12 @@ namespace MailMeBilling.Models
         public string Name { get; set; }
         [Required(ErrorMessage = "Mobile Number  is required")]
         [Display(Name = "Mobile Number")]
-        public long Mobilenumber { get; set; }
+        public string Mobilenumber { get; set; }
+        [Required(ErrorMessage = "Addressr  is required")]
+        [Display(Name = "Address")]
+        public string Address { get; set; }
+
+
         [Required(ErrorMessage = "Bank Name  is required")]
         [Display(Name = "Bank Name")]
         public string Bankname { get; set; }
@@ -29,5 +34,7 @@ namespace MailMeBilling.Models
         [Display(Name = "Branch Number")]
         public string bankbranch { get; set; }
         public string Branch { get; set; }
+        public DateTime Entrydate { get; set; }
+        public string Entryby { get; set; }
     }
 }

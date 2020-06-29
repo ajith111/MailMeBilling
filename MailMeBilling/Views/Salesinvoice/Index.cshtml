@@ -1,6 +1,6 @@
 ﻿@model MailMeBilling.Models.loadtemp
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "SalesInvoice";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
    
     int counts = 0;
@@ -24,16 +24,13 @@
             <div class="card">
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade " id="invoice" role="tabpanel" aria-labelledby="invoice-tab">
-                        <div class="d-sm-flex mb-5" data-view="print">
-                            <span class="m-auto"></span>
-                            <button class="btn btn-primary mb-sm-0 mb-3 print-invoice">Print Invoice</button>
-                        </div>
-                        <!-- -===== Print Area =======-->
-                        <div id="print">
+                        
+                            <!-- -===== Print Area =======-->
+
 
 
                             <partial name="printsection" />
-                        </div>
+                      
                         <!-- ==== / Print Area =====-->
                     </div>
                     <div class="tab-pane fade show active" id="edit" role="tabpanel" aria-labelledby="edit-tab">
@@ -100,170 +97,180 @@
                                     </tbody>
                                 </table>
                             </div>
-
-                            <form id="summery">
-                                <input type="hidden" value="@BillNo" name="Billid" id="Billno1" />
-                                <br />
-                                <h5 class="font-weight-bold">Customer Details</h5><br />
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <input class="form-control" id="Customernumber" type="text" name="Mobilenumber" placeholder="Mobile Number" onchange="checkcustomer()" value="" required /><br />
-                                        <input class="form-control" id="Customername" type="text" name="Customername" placeholder="Customer Name" required value="" /><br />
-                                        <textarea class="form-control" name="Address" id="Address" required placeholder="Customer Address"></textarea>
-                                    </div>
-
-
+                            <div id="fsum">
+                                <form id="summery">
+                                    <input type="hidden" value="@BillNo" name="Billid" id="Billno1" />
                                     <br />
-                                    <div class="col-md-9">
-                                        <div class="invoice-summary invoice-summary-input float-right">
-                                            <p> <b> Sub total: <span>@totalamount</span></b></p>
-                                            <p class="d-flex align-items-center">
-                                                <input type="hidden" value="@totalamount" name="u" id="hitAmount" />
-                                                <input type="hidden" value="@qty" name="Totalqty" id="" />
-                                                GST(%):
-                                                <select name="Gst" id="gst" onchange="getgst(this)" required>
-                                                    <option value="">Select</option>
-                                                    <option value="0">0%</option>
-                                                    <option value="5">5%</option>
-                                                    <option value="12">12%</option>
-                                                    <option value="18">18%</option>
-                                                    <option value="28">28%</option>
-                                                </select><span> <input class="form-control text-right " id="gstamt" readonly value="0" type="text" /></span>
-                                            </p>
-                                            <script>
-                                                function getgst(gst) {
-                                                    var GST = gst;
-                                                    var calgstamount = 0;
-                                                    var total = document.getElementById("hitAmount");
-                                                    var gstamount = document.getElementById("gstamt");
-                                                    var igst = document.getElementById("igst");
-                                                    var sgst = document.getElementById("sgst");
-                                                    var cgst = document.getElementById("cgst");
-                                                    var togst = document.getElementById("gstandamount");
-                                                    $(gstamount).empty();
-                                                    $(sgst).empty();
-                                                    $(cgst).empty();
-                                                    calgstamount = (parseFloat(total.value) * parseFloat(GST.value)) / 100;
-                                                    gstamount.value = calgstamount;
-                                                    igst.value = 0;
-                                                    sgst.value = calgstamount / 2;
-                                                    cgst.value = calgstamount / 2;
-                                                    togst.value = parseFloat(total.value) + calgstamount;
-
-                                                }
-                                                var gst = document.getElementById("gst");
+                                    <h5 class="font-weight-bold">Customer Details</h5><br />
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <input class="form-control" id="Customernumber" type="text" name="Mobilenumber" placeholder="Mobile Number" onchange="checkcustomer()" value="" required /><br />
+                                            <input class="form-control" id="Customername" type="text" name="Customername" placeholder="Customer Name" required value="" /><br />
+                                            <textarea class="form-control" name="Address" id="Address" required placeholder="Customer Address"></textarea>
+                                        </div>
 
 
+                                        <br />
+                                        <div class="col-md-9">
+                                            <div class="invoice-summary invoice-summary-input float-right">
+                                                <p> <b> Sub total: <span>@totalamount</span></b></p>
+                                                <p class="d-flex align-items-center">
+                                                    <input type="hidden" value="@totalamount" name="u" id="hitAmount" />
+                                                    <input type="hidden" value="@qty" name="Totalqty" id="" />
+                                                    GST(%):
+                                                    <select name="Gst" id="gst" onchange="getgst(this)" required>
+                                                        <option value="">Select</option>
+                                                        <option value="0">0%</option>
+                                                        <option value="5">5%</option>
+                                                        <option value="12">12%</option>
+                                                        <option value="18">18%</option>
+                                                        <option value="28">28%</option>
+                                                    </select><span> <input class="form-control text-right " id="gstamt" readonly value="0" type="text" /></span>
+                                                </p>
+                                                <script>
+                                                    function getgst(gst) {
+                                                        var GST = gst;
+                                                        var calgstamount = 0;
+                                                        var total = document.getElementById("hitAmount");
+                                                        var gstamount = document.getElementById("gstamt");
+                                                        var igst = document.getElementById("igst");
+                                                        var sgst = document.getElementById("sgst");
+                                                        var cgst = document.getElementById("cgst");
+                                                        var togst = document.getElementById("gstandamount");
+                                                        var net = document.getElementById("nettotal");
+                                                        $(gstamount).empty();
+                                                        $(sgst).empty();
+                                                        $(cgst).empty();
+                                                        calgstamount = (parseFloat(total.value) * parseFloat(GST.value)) / 100;
+                                                        gstamount.value = calgstamount;
+                                                        igst.value = 0;
+                                                        sgst.value = calgstamount / 2;
+                                                        cgst.value = calgstamount / 2;
+                                                        togst.value = parseFloat(total.value) + calgstamount;
+                                                        net.value = parseFloat(total.value) + calgstamount;
+                                                        console.log(calgstamount);
 
-                                                var a = ['', 'One ', 'Two ', 'Three ', 'Four ', 'Five ', 'Six ', 'Seven ', 'Eight ', 'Nine ', 'Ten ', 'Eleven ', 'Twelve ', 'Thirteen ', 'Fourteen ', 'Fifteen ', 'Sixteen ', 'Seventeen ', 'Eighteen ', 'Nineteen '];
-                                                var b = ['', '', 'Twenty', 'Thirty', 'FTorty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
-
-                                                function inWords(num) {
-                                                    if ((num = num.toString()).length > 9) return 'overflow';
-                                                    n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
-                                                    if (!n) return; var str = '';
-                                                    str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'Crore ' : '';
-                                                    str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'Lakh ' : '';
-                                                    str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'Thousand ' : '';
-                                                    str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'Hundred ' : '';
-                                                    str += (n[5] != 0) ? ((str != '') ? 'And ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + 'Only ' : '';
-                                                    return str;
-                                                }
-
-                                                function amountres(amt) {
-                                                    var amount = amt;
-                                                    var togst = document.getElementById("gstandamount");
-                                                    var res = document.getElementById("balance");
-                                                    var tmp = parseFloat(togst.value) - parseFloat(amount.value)
-                                                    res.value = tmp;
-                                                    var ntw = inWords(amount.value);
-                                                    console.log(ntw);
-                                                    document.getElementById('words').innerHTML = ntw;
-                                                }
-                                            </script>
-
-                                            <p class="d-flex align-items-center">
-
-                                                IGST(%):<span><input class="form-control small-input" name="Igst" id="igst" type="text" readonly value="0" /></span>
-
-                                                SGST(%): <span><input class="form-control small-input" name="Sgst" id="sgst" type="text" readonly value="0" /></span>
-
-                                                CGST(%): <span><input class="form-control small-input" name="Cgst" id="cgst" type="text" readonly value="0" /></span>
-                                            </p>
-                                            <h5 class="font-weight-bold d-flex align-items-center">
-                                                Grand Total:<span>
-                                                    <input class="form-control text-right" name="Totalamount" id="gstandamount" type="text" readonly value="" placeholder="0" />
-                                                </span>
-                                            </h5>
-                                            <h5 class="font-weight-bold d-flex align-items-center">
-                                                Discount: <span>
-                                                    <input class="form-control text-right" name="discount" id="discount" type="text" autocomplete="off" onchange="discounts(this)" value="" placeholder="0" />
-                                                </span>
-                                            </h5>
-                                            <script>
-                                                var orignal = document.getElementById("gstandamount");
-                                                var copyval = orignal;
-                                                function discounts(dis) {
-                                                    var discount = dis.value;
-                                                    var cal = 0;
-                                                    var togst = document.getElementById("gstandamount");
-                                                    cal = parseInt(togst.value) - parseInt(discount);
-
-                                                    console.log(togst.value);
-                                                    console.log(discount);
-                                                    console.log(cal);
-
-                                                    if (isNaN(cal)) {
-                                                        togst.value = 0;
-                                                        console.log("Copy");
                                                     }
-                                                    else {
-                                                        togst.value = cal;
-                                                    }
-                                                }
-                                            </script>
+                                                    var gst = document.getElementById("gst");
 
-                                            <div class="border">
+
+
+                                                    var a = ['', 'One ', 'Two ', 'Three ', 'Four ', 'Five ', 'Six ', 'Seven ', 'Eight ', 'Nine ', 'Ten ', 'Eleven ', 'Twelve ', 'Thirteen ', 'Fourteen ', 'Fifteen ', 'Sixteen ', 'Seventeen ', 'Eighteen ', 'Nineteen '];
+                                                    var b = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+
+                                                    function inWords(num) {
+                                                        if ((num = num.toString()).length > 9) return 'overflow';
+                                                        n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+                                                        if (!n) return; var str = '';
+                                                        str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'Crore ' : '';
+                                                        str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'Lakh ' : '';
+                                                        str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'Thousand ' : '';
+                                                        str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'Hundred ' : '';
+                                                        str += (n[5] != 0) ? ((str != '') ? 'And ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + 'Only ' : '';
+                                                        return str;
+                                                    }
+
+                                                    function amountres(amt) {
+                                                        var amount = amt;
+                                                        var togst = document.getElementById("gstandamount");
+                                                        var res = document.getElementById("balance");
+                                                        var tmp = parseFloat(togst.value) - parseFloat(amount.value)
+                                                        console.log(tmp);
+                                                        if (isNaN(tmp)) {
+                                                            res.value = 0;
+                                                        }
+                                                        else {
+                                                            res.value = tmp;
+                                                        }
+
+                                                        var ntw = inWords(amount.value);
+
+                                                        document.getElementById('words').value = ntw;
+                                                    }
+                                                </script>
+
+                                                <p class="d-flex align-items-center">
+
+                                                    IGST(%):<span><input class="form-control small-input" name="Igst" id="igst" type="text" readonly value="0" /></span>
+
+                                                    SGST(%): <span><input class="form-control small-input" name="Sgst" id="sgst" type="text" readonly value="0" /></span>
+
+                                                    CGST(%): <span><input class="form-control small-input" name="Cgst" id="cgst" type="text" readonly value="0" /></span>
+                                                </p>
                                                 <h5 class="font-weight-bold d-flex align-items-center">
-                                                    Payment Type:<span>
-                                                        <select name="Paymenttype" required>
-                                                            <option value="">Select</option>
-                                                            <option value="Cash">Cash</option>
-                                                            <option value="Card">Card</option>
-                                                            <option value="Credit">Credit</option>
-                                                            <option value="Nettrancection">Net Transfer</option>
-                                                            <option value="EMI">EMI</option>
-                                                            <option value="UPI">UPI</option>
-
-                                                        </select>
+                                                    Grand Total:<span>
+                                                        <input class="form-control text-right" name="Totalamount" id="gstandamount" type="text" readonly value="" placeholder="0" />
+                                                        <input type="hidden" name="nettotal" id="nettotal" value="" />
                                                     </span>
-                                                </h5><br />
+                                                </h5>
                                                 <h5 class="font-weight-bold d-flex align-items-center">
-                                                    Reference No:<input class="form-control" name="Refcode" id="ref" autocomplete="off" type="text" value="" />
+                                                    Discount: <span>
+                                                        <input class="form-control text-right" name="discount" id="discount" type="text" autocomplete="off" onchange="discounts(this)" value="" placeholder="0" />
+                                                    </span>
+                                                </h5>
+                                                <script>
+                                                    var orignal = document.getElementById("gstandamount");
+                                                    var copyval = orignal;
+                                                    function discounts(dis) {
+                                                        var discount = dis.value;
+                                                        var cal = 0;
+                                                        var togst = document.getElementById("gstandamount");
+                                                        var net = document.getElementById("nettotal");
+                                                        cal = parseInt(net.value) - parseInt(discount);
+
+                                                        console.log(togst.value);
+                                                        console.log(discount);
+                                                        console.log(cal);
+
+                                                        if (isNaN(cal)) {
+                                                            togst.value = 0;
+
+                                                        }
+                                                        else {
+                                                            togst.value = cal;
+                                                        }
+                                                    }
+                                                </script>
+
+                                                <div class="border">
+                                                    <h5 class="font-weight-bold d-flex align-items-center">
+                                                        Payment Type:<span>
+                                                            <select name="Paymenttype" required>
+                                                                <option value="">Select</option>
+                                                                <option value="Cash">Cash</option>
+                                                                <option value="Card">Card</option>
+                                                                <option value="Credit">Credit</option>
+                                                                <option value="Nettrancection">Net Transfer</option>
+                                                                <option value="EMI">EMI</option>
+                                                                <option value="UPI">UPI</option>
+
+                                                            </select>
+                                                        </span>
+                                                    </h5><br />
+                                                    <h5 class="font-weight-bold d-flex align-items-center">
+                                                        Reference No:<input class="form-control" name="Refcode" id="ref" autocomplete="off" type="text" value="" />
+
+                                                    </h5>
+                                                </div>
+                                                <h5 class="font-weight-bold d-flex align-items-center">
+                                                    Received:<input class="form-control text-right" autocomplete="off" name="Paid" id="resived" onkeyup="amountres(this)" type="text" value="" required />
 
                                                 </h5>
+
+                                                <h5 class="font-weight-bold d-flex align-items-center">
+                                                    Balance:<input class="form-control text-right" name="Balance" id="balance" readonly type="text" value="0" />
+
+                                                </h5><br />
+                                                <input class="form-control" name="ntow" id="words" style="color:blueviolet;font-size:medium" />
+
                                             </div>
-                                            <h5 class="font-weight-bold d-flex align-items-center">
-                                                Received:<input class="form-control text-right" name="Paid" id="resived" onkeyup="amountres(this)" type="text" value="" />
-
-                                            </h5>
-
-                                            <h5 class="font-weight-bold d-flex align-items-center">
-                                                Balance:<input class="form-control text-right" name="Balance" id="balance" readonly type="text" value="0" />
-
-                                            </h5><br/>
-                                            <span class="label label-success" name="ntow" id="words" style="color:blueviolet;font-size:medium"></span>
-
                                         </div>
                                     </div>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                             <div class="row">
-                                <div class="col-md-6 form-group mb-3 text-right" style="padding-top: 22px;  padding-right: 22px;">
-                                    @*<label class="form-control" name="ntow" id="words" readonly type="text" value="" />*@
-                                   
-                                </div>
-                                <div class="col-md-6 form-group mb-3 text-right" style="padding-top: 22px;  padding-right: 22px;">
+                                
+                                <div class="col-md-12 form-group mb-3 text-right" style="padding-top: 22px;  padding-right: 22px;">
                                     <input type="button" value="Save Bill" onclick=Savesum() class="btn btn-primary" />
                                 </div>
                             </div>
@@ -409,11 +416,13 @@
                 hsn.value = data['hsncode'];
                 st.value = data['stock'];
                 $("#Quantity").focus();
+                $("#Save").prop("disabled", false);
                 if (st.value <= 0) {
                     $("#Save").prop("disabled", true);
                     toastr.error("Product  not Available .", "No Stock!", {
                         timeOut: 6000
                     });
+                    $("#Save").prop("disabled", true);
                 }
 
             }
@@ -524,10 +533,10 @@
                         closeButton: !0
                     });
                     //$("#loadpage").load(" #loadpage");
-                    $("#myform").load(" #myform");
-                    $("#print").load(" #print");
+                    $("#myform").load(" #myform");                   
                     $("#submissionTable").load(" #submissionTable");
-                    $("#main").load(" #main");
+                    $("#fsum").load(" #fsum");
+                    $("#print-area").load(" #print-area");
                     autoname();
                 },
                 error: function (e) {
@@ -565,11 +574,11 @@
                     toastr.success("You bill save and ready to print", "Bill Save successfully ", {
                         closeButton: !0
                     });
-                    $("#myform").load(" #myform");
-                    $("#print").load(" #print");
+                    $("#myform").load(" #myform");                   
                     $("#submissionTable").load(" #submissionTable");
-                    $("#main").load(" #main");
-                    autoname();
+                    $("#fsum").load(" #fsum");
+                    $("#print-area").load(" #print-area");
+                   autoname();
                 },
                 error: function (e) {
 

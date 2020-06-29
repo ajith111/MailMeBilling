@@ -5,6 +5,7 @@ using MailMeBilling.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Utilities.IO.Pem;
 
 namespace MailMeBilling.Data
 {
@@ -31,6 +32,9 @@ namespace MailMeBilling.Data
 
         public DbSet<Tmppurchase> tmppurchases { get; set; }
         public DbSet<Purchaseinvoicesummery> purchaseinvoicesummeries { get; set; }
+      
+        public DbSet<Customerpaymenthistry> customerpaymenthistry { get; set; }
+        public DbSet<Vendorpayment> vendorpayments { get; set; }
 
 
     }

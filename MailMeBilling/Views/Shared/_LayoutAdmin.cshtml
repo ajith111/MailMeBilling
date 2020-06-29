@@ -67,42 +67,34 @@
             </div>
             <div style="margin: auto"></div>
             <div class="header-part-right">
-                <!-- Full screen toggle--><i class="i-Full-Screen header-icon d-none d-sm-inline-block" data-fullscreen=""></i>
+                <!-- Full screen toggle-->
+                @*<i class="i-Full-Screen header-icon d-none d-sm-inline-block" data-fullscreen=""></i>*@
                 <!-- Grid menu Dropdown-->
                 <!-- Notificaiton-->
 
                 <div class="dropdown">
-                    <div class="badge-top-container" id="dropdownNotification" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="badge badge-primary">3</span><i class="i-Bell text-muted header-icon"></i></div>
+                        @{ var ccount = @ViewBag.CustomerPending;
+                            var vcount = @ViewBag.VendorPending;
+                            var tcount = ccount + vcount;}
+                    <div class="badge-top-container" id="dropdownNotification" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="badge badge-primary">@tcount</span><i class="i-Bell text-muted header-icon"></i></div>
                     <!-- Notification dropdown-->
                     <div class="dropdown-menu dropdown-menu-right notification-dropdown rtl-ps-none" aria-labelledby="dropdownNotification" data-perfect-scrollbar="" data-suppress-scroll-x="true">
                         <div class="dropdown-item d-flex">
                             <div class="notification-icon"><i class="i-Speach-Bubble-6 text-primary mr-1"></i></div>
                             <div class="notification-details flex-grow-1">
-                                <p class="m-0 d-flex align-items-center"><span>New message</span><span class="badge badge-pill badge-primary ml-1 mr-1">new</span><span class="flex-grow-1"></span><span class="text-small text-muted ml-auto">10 sec ago</span></p>
-                                <p class="text-small text-muted m-0">James: Hey! are you busy?</p>
+                                <p class="m-0 d-flex align-items-center"><span>Payment Panding </span><span class="badge badge-pill badge-primary ml-1 mr-1">@ViewBag.CustomerPending</span><span class="flex-grow-1"></span><span class="text-small text-muted ml-auto"></span></p>
+                                <p class="text-small text-muted m-0">Customer Pyment </p>
                             </div>
                         </div>
                         <div class="dropdown-item d-flex">
-                            <div class="notification-icon"><i class="i-Receipt-3 text-success mr-1"></i></div>
+                            <div class="notification-icon"><i class="i-Speach-Bubble-6 text-primary mr-1"></i></div>
                             <div class="notification-details flex-grow-1">
-                                <p class="m-0 d-flex align-items-center"><span>New order received</span><span class="badge badge-pill badge-success ml-1 mr-1">new</span><span class="flex-grow-1"></span><span class="text-small text-muted ml-auto">2 hours ago</span></p>
-                                <p class="text-small text-muted m-0">1 Headphone, 3 iPhone x</p>
+                                <p class="m-0 d-flex align-items-center"><span>Payment Panding </span><span class="badge badge-pill badge-success ml-1 mr-1">@ViewBag.VendorPending</span><span class="flex-grow-1"></span><span class="text-small text-muted ml-auto"></span></p>
+                                <p class="text-small text-muted m-0">Vendor Pyment</p>
                             </div>
                         </div>
-                        <div class="dropdown-item d-flex">
-                            <div class="notification-icon"><i class="i-Empty-Box text-danger mr-1"></i></div>
-                            <div class="notification-details flex-grow-1">
-                                <p class="m-0 d-flex align-items-center"><span>Product out of stock</span><span class="badge badge-pill badge-danger ml-1 mr-1">3</span><span class="flex-grow-1"></span><span class="text-small text-muted ml-auto">10 hours ago</span></p>
-                                <p class="text-small text-muted m-0">Headphone E67, R98, XL90, Q77</p>
-                            </div>
-                        </div>
-                        <div class="dropdown-item d-flex">
-                            <div class="notification-icon"><i class="i-Data-Power text-success mr-1"></i></div>
-                            <div class="notification-details flex-grow-1">
-                                <p class="m-0 d-flex align-items-center"><span>Server Up!</span><span class="badge badge-pill badge-success ml-1 mr-1">3</span><span class="flex-grow-1"></span><span class="text-small text-muted ml-auto">14 hours ago</span></p>
-                                <p class="text-small text-muted m-0">Server rebooted successfully</p>
-                            </div>
-                        </div>
+                        
+                       
                     </div>
                 </div>
                 <!-- Notificaiton End-->
@@ -129,6 +121,8 @@
             <div class="header-topnav">
                 <div class="container-fluid">
                     <div class="topnav rtl-ps-none" id="" data-perfect-scrollbar="" data-suppress-scroll-x="true">
+                        @if (ViewBag.roll == "SuperAdmin")
+                        {
                         <ul class="menu float-left">
                             <li>
                                 <div>
@@ -172,10 +166,107 @@
                                     </div>
                                 </div>
                             </li>
+                            <li>
+                                <div>
+                                    <div>
+                                        <label class="toggle" for="drop-2">Reports</label><a href="#"><i class="nav-icon mr-2 i-Computer-Secure"></i> Reports</a>
+                                        <input id="drop-2" type="checkbox" />
+                                        <ul>
+                                            <li><a asp-controller="MyReports" asp-action="Salesreport"><i class="nav-icon mr-2 i-Add-File"></i><span class="item-name">Sales Report</span></a></li>
+                                            <li><a asp-controller="MyReports" asp-action="Purchasereport"><i class="nav-icon mr-2 i-Add-File"></i><span class="item-name">Purchase Report</span></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
                             <!-- end apps-->
                             <!-- end Forms-->
-                          
+
                         </ul>
+                        }
+                        @if (ViewBag.roll == "Admin")
+                        {
+                            <ul class="menu float-left">
+
+                                <li>
+                                    <div>
+                                        <div>
+                                            <label class="toggle" for="drop-2">Masters</label><a href="#"><i class="nav-icon mr-2 i-Windows-2"></i> Master</a>
+                                            <input id="drop-2" type="checkbox" />
+                                            <ul>
+                                                <li><a asp-controller="Categories" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Category</a></li>
+                                                <li><a asp-controller="SubCategories" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Subcategory</a></li>
+                                                <li><a asp-controller="Brands" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Brand</a></li>
+                                                <li><a asp-controller="Colors" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Color</a></li>
+                                                <li><a asp-controller="Products" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Product </a></li>
+                                                <li><a asp-controller="RolleDetails" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i> Rolls </a></li>
+                                                <li><a asp-controller="CustomerDetails" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Customer</a></li>
+                                                <li><a asp-controller="Vendors" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Vendor </a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <!-- end ui kits-->
+                                <!-- end extra uikits-->
+                                <li>
+                                    <div>
+                                        <div>
+                                            <label class="toggle" for="drop-2">Invoice</label><a href="#"><i class="nav-icon mr-2 i-Computer-Secure"></i> Invoice</a>
+                                            <input id="drop-2" type="checkbox" />
+                                            <ul>
+                                                <li><a asp-controller="Salesinvoice" asp-action="Index"><i class="nav-icon mr-2 i-Add-File"></i><span class="item-name">Sales Invoice</span></a></li>
+                                                <li><a asp-controller="Purchaseinvoice" asp-action="Index"><i class="nav-icon mr-2 i-Add-File"></i><span class="item-name">Purchase Invoice</span></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                                <!-- end apps-->
+                                <!-- end Forms-->
+
+                            </ul>
+                        }
+                        @if (ViewBag.roll == "Employee")
+                        {
+                            <ul class="menu float-left">
+
+                                <li>
+                                    <div>
+                                        <div>
+                                            <label class="toggle" for="drop-2">Masters</label><a href="#"><i class="nav-icon mr-2 i-Windows-2"></i> Master</a>
+                                            <input id="drop-2" type="checkbox" />
+                                            <ul>
+                                                <li><a asp-controller="Categories" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Category</a></li>
+                                                <li><a asp-controller="SubCategories" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Subcategory</a></li>
+                                                <li><a asp-controller="Brands" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Brand</a></li>
+                                                <li><a asp-controller="Colors" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Color</a></li>
+                                                <li><a asp-controller="Products" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Product </a></li>
+                                                <li><a asp-controller="RolleDetails" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i> Rolls </a></li>
+                                                <li><a asp-controller="CustomerDetails" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Customer</a></li>
+                                                <li><a asp-controller="Vendors" asp-action="Index"><i class="nav-icon mr-2 i-Receipt-4"></i>Vendor </a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+
+                                <!-- end ui kits-->
+                                <!-- end extra uikits-->
+                                <li>
+                                    <div>
+                                        <div>
+                                            <label class="toggle" for="drop-2">Invoice</label><a href="#"><i class="nav-icon mr-2 i-Computer-Secure"></i> Invoice</a>
+                                            <input id="drop-2" type="checkbox" />
+                                            <ul>
+                                                <li><a asp-controller="Salesinvoice" asp-action="Index"><i class="nav-icon mr-2 i-Add-File"></i><span class="item-name">Sales Invoice</span></a></li>
+                                                <li><a asp-controller="Purchaseinvoice" asp-action="Index"><i class="nav-icon mr-2 i-Add-File"></i><span class="item-name">Purchase Invoice</span></a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                                <!-- end apps-->
+                                <!-- end Forms-->
+
+                            </ul>
+                        }
                     </div>
                 </div>
             </div>

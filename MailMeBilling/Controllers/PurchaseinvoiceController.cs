@@ -19,8 +19,18 @@ namespace MailMeBilling.Controllers
         }
         public IActionResult Index()
         {
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.Now.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
             ViewBag.data = HttpContext.Session.GetString("name");
             ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
             string Branch = ViewBag.branch;
             loadtemp load = new loadtemp();
 
@@ -97,6 +107,19 @@ namespace MailMeBilling.Controllers
             ViewBag.branch = HttpContext.Session.GetString("branch");
             var Branch = ViewBag.branch;
             tempseccion.Branch = Branch;
+            var checkcustomer = _context.vendor.Where(i => i.Mobilenumber == tempseccion.Mobilenumber).FirstOrDefault();
+            if (checkcustomer == null)
+            {
+                Vendor cd = new Vendor();
+                cd.Mobilenumber = tempseccion.Mobilenumber;
+                cd.Name = tempseccion.Vendorrname;
+                cd.Address = tempseccion.Address;
+                cd.Branch = Branch;
+                cd.Entrydate = DateTime.UtcNow;
+                cd.Entryby = Name;
+                _context.vendor.Add(cd);
+                _context.SaveChanges();
+            }
             if (tempseccion.Balance != 0)
             {
                 tempseccion.status = "Pending";
@@ -138,16 +161,34 @@ namespace MailMeBilling.Controllers
 
 
             }
-
             _context.purchaseinvoices.AddRange(salesinvoice);
             _context.purchaseinvoicesummeries.Add(tempseccion);
+            _context.SaveChanges();
+
+            var billno = tempseccion.Billid;
+            Vendorpayment cph = new Vendorpayment();
+            cph.Mobile = tempseccion.Mobilenumber;
+            cph.name = tempseccion.Vendorrname;
+            cph.Address = tempseccion.Address;
+            cph.paymenttype = tempseccion.Paymenttype;
+            cph.Payment = tempseccion.paid;
+            cph.Recivedby = Name;
+            cph.Paiddate = DateTime.UtcNow;
+            cph.Balance = tempseccion.Balance;
+            cph.refno = tempseccion.Refcode;
+            cph.Branch = Branch;
+            cph.total = tempseccion.Totalamount;
+            cph.billid = billno;
+            _context.vendorpayments.Add(cph);
+
+          
             var cleartmp = _context.tmppurchases.Where(i => i.Billno == tempseccion.Billid).ToList();
             _context.tmppurchases.RemoveRange(cleartmp);
             _context.SaveChanges();
 
 
-            return Json(new { success = true, message = "Save successful." });
-
+            // return Json(new { success = true, message = "Save successful." });
+            return RedirectToAction("Index");
         }
         public IActionResult deletetmp(int id)
         {
@@ -156,6 +197,15 @@ namespace MailMeBilling.Controllers
             _context.SaveChanges();
 
             return Json(new { success = true, message = "Delete successful." });
+        }
+
+        [HttpGet]
+        public JsonResult fillvendordetails(string mob)
+        {
+
+            var deatils = _context.vendor.Where(c => c.Mobilenumber == mob).SingleOrDefault();
+            return new JsonResult(deatils);
+
         }
     }
 }

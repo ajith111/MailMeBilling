@@ -19,8 +19,18 @@ namespace MailMeBilling.Controllers
         }
         public IActionResult Index()
         {
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.Now.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
             ViewBag.data = HttpContext.Session.GetString("name");
             ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
             string Branch = ViewBag.branch;
             loadtemp load = new loadtemp();
            
@@ -157,12 +167,29 @@ namespace MailMeBilling.Controllers
                 var pquantity = prgb.stock - item.Quantity;
                 prgb.stock = pquantity;
                 _context.product.Update(prgb);
-               
+
 
             }
-
             _context.salesinvoices.AddRange(salesinvoice);
             _context.salesinvoicesummery.Add(tempseccion);
+            _context.SaveChanges();
+            var billno = tempseccion.Billid;
+            Customerpaymenthistry cph = new Customerpaymenthistry();
+            cph.Mobile = tempseccion.Mobilenumber;
+            cph.Customername = tempseccion.Customername;
+            cph.Address = tempseccion.Address;
+            cph.paymenttype = tempseccion.Paymenttype;
+            cph.Payment = tempseccion.Paid;
+            cph.Recivedby = Name;
+            cph.Paiddate = DateTime.UtcNow;
+            cph.Balance = tempseccion.Balance;
+            cph.refno = tempseccion.Refcode;
+            cph.Branch = Branch;
+            cph.total = tempseccion.nettotal;
+            cph.billid = billno;
+            _context.customerpaymenthistry.Add(cph);
+
+         
             var cleartmp = _context.tempseccions.Where(i => i.Billno == tempseccion.Billid).ToList();
                 _context.tempseccions.RemoveRange(cleartmp);
             _context.SaveChanges();

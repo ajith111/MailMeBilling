@@ -23,12 +23,30 @@ namespace MailMeBilling.Controllers
         // GET: CustomerDetails
         public async Task<IActionResult> Index()
         {
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.Now.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
             return View(await _context.customerdetails.ToListAsync());
         }
 
         // GET: CustomerDetails/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.Now.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
             if (id == null)
             {
                 return NotFound();
@@ -47,6 +65,15 @@ namespace MailMeBilling.Controllers
         // GET: CustomerDetails/Create
         public IActionResult Create()
         {
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.Now.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
             return View();
         }
 
@@ -80,6 +107,15 @@ namespace MailMeBilling.Controllers
         // GET: CustomerDetails/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.Now.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
             if (id == null)
             {
                 return NotFound();
@@ -138,6 +174,15 @@ namespace MailMeBilling.Controllers
         // GET: CustomerDetails/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.Now.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
             if (id == null)
             {
                 return NotFound();

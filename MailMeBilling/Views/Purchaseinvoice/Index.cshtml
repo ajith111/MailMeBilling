@@ -1,6 +1,6 @@
 ﻿@model MailMeBilling.Models.loadtemp
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "PurchaseInvoice";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
     int counts = 0;
     decimal totalamount = 0;
@@ -17,18 +17,19 @@
         <div class="col-md-12">
             <ul class="nav nav-tabs justify-content-end mb-4" id="myTab" role="tablist">
                 <li class="nav-item"><a class="nav-link active" id="edit-tab" data-toggle="tab" href="#edit" role="tab" aria-controls="edit" aria-selected="false">Billing</a></li>
-               
+
 
             </ul>
             <div class="card">
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade " id="invoice" role="tabpanel" aria-labelledby="invoice-tab">
-                        <div class="d-sm-flex mb-5" data-view="print">
-                            <span class="m-auto"></span>
-                            <button class="btn btn-primary mb-sm-0 mb-3 print-invoice">Print Invoice</button>
-                        </div>
-                        <!-- -===== Print Area =======-->
                         <div id="print">
+                            <div class="d-sm-flex mb-5" data-view="print">
+                                <span class="m-auto"></span>
+                                <button class="btn btn-primary mb-sm-0 mb-3 print-invoice">Print Invoice</button>
+                            </div>
+                            <!-- -===== Print Area =======-->
+
 
 
                             <partial name="printsection" />
@@ -100,20 +101,20 @@
                                 </table>
                             </div>
 
-                            <form id="summery" method="post" enctype="multipart/form-data">
+                            <form id="summery" asp-action="addtmpsummery" asp-controller="Purchaseinvoice" method="post" enctype="multipart/form-data">
                                 <input type="hidden" value="@BillNo" name="Billid" id="Billno" />
                                 <br />
                                 <h5 class="font-weight-bold">Vendor Details</h5><br />
                                 <div class="row">
                                     <div class="col-md-3">
-                                        <input class="form-control" id="Customernumber" type="text" name="Mobilenumber" placeholder="Mobile Number" value="" required /><br />
+                                        <input class="form-control" id="Customernumber" type="text" name="Mobilenumber" onchange="checkcustomer()" placeholder="Mobile Number" value="" required /><br />
                                         <input class="form-control" id="Customername" type="text" name="Vendorrname" placeholder="Vedor Name" required value="" /><br />
                                         <textarea class="form-control" name="Address" id="Address" placeholder="Vedor Address"></textarea>
                                         <div class="card-body">
                                             <h4 class="card-title">upload</h4>
                                             <div class="dropzone" id="single-file-upload">
                                                 <div class="fallback">
-                                                    <input name="upload" type="file" />
+                                                    <input name="upload" type="file" required />
                                                 </div>
                                             </div>
                                         </div>
@@ -192,7 +193,7 @@
                                                         document.getElementById('words').value = ntw;
 
                                                     }
-                                                    
+
                                                 }
                                             </script>
 
@@ -235,16 +236,17 @@
                                             <span id=""></span>
                                             <input class="form-control" name="ntow" id="words" readonly type="text" value="" />
                                             <br />
-                                           
+
                                         </div>
                                     </div>
                                 </div>
+                                <div class="col-md-12 form-group mb-3 text-right" style="padding-top:22px; padding-right:10px">
+                                    <input type="submit" value="Save Bill" class="btn btn-primary" />
+
+
+                                </div>
                             </form>
-                            <div class="col-md-12 form-group mb-3 text-right" style="padding-top:22px; padding-right:10px">
-                                <input type="submit" value="Save Bill" onclick=Savesum() class="btn btn-primary" />
 
-
-                            </div>
                         </fieldset>
 
                         <!-- ==== / Form Area =====-->
@@ -256,8 +258,51 @@
     </div><!-- end of main-content -->
 </div><!-- Footer Start -->
 <!-- ============ Main content End ============= -->
-
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script>
+   
+    //Check Customer
+     function checkcustomer() {
+
+         var num = $('#Customernumber').val();
+        $.ajax({
+            url: '@Url.Action("fillvendordetails")',
+            type: "GET",
+            dataType: "JSON",
+            data: { mob: num },
+            success: function (data) {
+                console.log(data);
+                if (data != null) {
+                    $("#Save").prop("disabled", false);
+                    var Cat = document.getElementById("Customername");
+                    var sub = document.getElementById("Address");
+                    $(Cat).empty();
+                    Cat.value = data['name'];
+                    sub.value = data['address'];
+
+
+                    toastr.success("This Customer Already Registered", "Our  Customer", {
+                        closeButton: !0
+                    });
+                }
+                else {
+                    toastr.success("This Customer is new", "New  Customer", {
+                        closeButton: !0
+                    });
+
+                }
+
+
+
+
+
+            }
+
+        });
+
+    }
+
     $(function () {
 
         $("#tags").autocomplete({
@@ -326,14 +371,14 @@
         var st = document.getElementById("stock");
 
         $("#addproduct").prop("disabled", false);
-       
+
             tamount = parseInt(rat.value) * parseInt(qty);
 
             Amount.value = tamount;
             if (isNaN(tamount)) {
                 Amount.value = 0;
             }
-        
+
 
 
 
@@ -373,16 +418,18 @@
                 sub.value = data['subcCategory'];
                 col.value = data['color'];
                 bran.value = data['brand'];
-               
+
                 hrat.value = data['salesrate'];
                 hsn.value = data['hsncode'];
                 st.value = data['stock'];
                 $("#Rate").focus();
+                $("#Save").prop("disabled", false);
                 if (st.value <= 0) {
                     $("#Save").prop("disabled", true);
                     toastr.error("Product  not Available .", "No Stock!", {
                         timeOut: 6000
                     });
+                    $("#Save").prop("disabled", true);
                 }
 
             }

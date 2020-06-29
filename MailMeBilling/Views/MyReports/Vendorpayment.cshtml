@@ -1,0 +1,197 @@
+﻿
+
+@model MailMeBilling.Models.Vendor
+
+@{
+    ViewData["Title"] = "Vendor payment";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="col-lg-12 col-xl-12 mt-3">
+    <div class="card">
+        <div class="card-body">
+
+            <div class="user-profile mb-4">
+                <div class="ul-widget-card__user-info"><img class="profile-picture avatar-lg mb-2" src="../../dist-assets/images/faces/1.jpg" alt="" /></div>
+            </div>
+            <div class="ul-widget-card__title-info text-center mb-3">
+                <p class="m-0 text-24"> @Html.DisplayFor(model => model.Name)</p>
+                <p class="text-muted m-0">  @Html.DisplayFor(model => model.Mobilenumber)</p>
+            </div>
+            <div class="ul-widget-card__full-status mb-3">
+                <div class="ul-widget-card__status1"><span>Entry Date</span><span class="text-mute"> @Html.DisplayFor(model => model.Entrydate)</span></div>
+                <div class="ul-widget-card__status1"><span></span><span class="text-mute"> </span></div>
+                <div class="ul-widget-card__status1"><span>Address</span><span class="text-mute">  @Html.DisplayFor(model => model.Address)</span></div>
+            </div>
+            <div class="mt-2">
+                <button class="btn btn-primary btn-block m-1" type="button"></button>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<div id="load">
+    @foreach (var item in @ViewBag.billsummery)
+    {
+        <div class="card">
+            <div class="card-body">
+                <div class="card-title">BillNo: @item.Billid</div>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="ul-widget__head pb-20 v-margin">
+                                    <div class="ul-widget__head-label">
+                                        <h3 class="ul-widget__head-title">Histry ( @item.status ) </h3>
+                                    </div>
+                                </div>
+                                <div class="ul-widget__body">
+                                    <div class="ul-widget1">
+                                        @foreach (var hisitem in @ViewBag.histry)
+                                        {
+                                            @if (@item.Billid == hisitem.billid)
+                                            {
+                                                <div class="ul-widget4__item ul-widget4__users">
+                                                    <div class="ul-widget4__img"><img id="userDropdown" src="../../dist-assets/images/faces/1.jpg" alt="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" /></div>
+
+                                                    <div class="ul-widget2__info ul-widget4__users-info"><a class="ul-widget2__title" href="#"> Balance : @hisitem.Balance (@hisitem.paymenttype) </a><span class="ul-widget2__username" href="#"><b>ReceivedBy-</b> @hisitem.Recivedby <b>Date</b> @hisitem.Paiddate</span></div><span class="ul-widget4__number t-font-boldest text-success"> @hisitem.Payment</span>
+                                                </div>
+
+                                            }
+
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="col-md-12">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <div class="card-title mb-3">Add Amount</div>
+                                    <form id="@item.Billid" method="post">
+                                        <input type="hidden" name="billid" value="@item.Billid" />
+                                        <input type="hidden" name="total" value="@item.Totalamount" />
+                                        <input type="hidden" name="Address" value="@Model.Address" />
+                                        <input type="hidden" name="Customername" value="@Model.Name" />
+                                        <input type="hidden" name="Mobile" value="@Model.Mobilenumber" />
+                                        <div class="row">
+                                            <div class="col-md-6 form-group mb-3">
+                                                <label for="firstName1">Total Amount</label>
+                                                <input class="form-control" id="firstName1" type="text" readonly value="@item.Totalamount" />
+                                            </div>
+                                            <div class="col-md-6 form-group mb-3">
+                                                <label for="lastName1">Customer Balance</label>
+                                                <input class="form-control" id="pbalance" type="text" readonly value="@item.Balance" />
+                                            </div>
+                                            <div class="col-md-6 form-group mb-3">
+                                                <label for="picker1">Payment Type</label>
+                                                <select class="form-control" name="paymenttype" id="paymenttype" required>
+                                                    <option value="">Select</option>
+                                                    <option value="Cash">Cash</option>
+                                                    <option value="Card">Card</option>
+                                                    <option value="Nettrancection">Net Transfer</option>
+                                                    <option value="EMI">EMI</option>
+                                                    <option value="UPI">UPI</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-6 form-group mb-3">
+                                                <label for="credit1">Reference</label>
+                                                <input class="form-control" id="refno" name="refno" />
+                                            </div>
+                                            <div class="col-md-6 form-group mb-3">
+                                                <label for="credit1">Balance</label>
+                                                <input class="form-control" id="Balance" name="Balance" readonly />
+                                            </div>
+                                            <div class="col-md-6 form-group mb-3">
+                                                <label for="phone">paid</label>
+                                                <input class="form-control" id="total" name="Payment" onkeyup="amountres(this,@item.id)" required />
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="col-md-6 form-group mb-3">
+                                        <button class="btn btn-primary" onclick=Updatepyment('@item.Billid')>Pay</button>
+                                    </div>
+                                    <script>
+                                    function amountres(amt, id) {
+                                        console.log(id);
+                                        var amount = amt;
+                                        var myid = id;
+                                        var billid = $(amt).parents("form")[0];
+                                        var togst = $(billid).find("#pbalance")[0];
+                                        var res = $(billid).find("#Balance")[0];
+
+                                        var tmp = parseFloat(togst.value) - parseFloat(amount.value)
+                                        if (isNaN(tmp)) {
+                                            res.value = 0;
+                                        }
+                                        else {
+                                            res.value = tmp;
+                                        }
+
+                                        $("#" + myid).prop("disabled", false);
+
+                                        if (parseInt(amount.value) > parseInt(togst.value)) {
+                                            $("#" + myid).prop("disabled", true);
+
+                                            toastr.error("Unable to add.", "Pls Check Amount!", {
+                                                timeOut: 6000
+                                            });
+                                            res.value = 0;
+                                        }
+                                    }
+                                    </script>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <br />
+    }
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script>
+
+    function Updatepyment(id) {
+
+
+        var form = $("#" + id)[0];
+        var data = new FormData(form);
+        if ($("#" + id).valid()) {
+
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url:"/MyReports/Updatevendorpayments",
+                data: data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 600000,
+                success: function (data) {
+                    if (data.success) {
+                        toastr.success("You pyment save", "Payment Added successfully ", {
+                            closeButton: !0
+                        });
+                        $("#load").load(" #load");
+
+
+                    }
+                    else {
+                        toastr.error(data.message);
+                    }
+                }
+            });
+        }
+
+    }
+
+
+</script>

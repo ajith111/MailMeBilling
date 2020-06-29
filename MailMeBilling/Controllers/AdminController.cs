@@ -27,12 +27,55 @@ namespace MailMeBilling.Controllers
             ViewBag.error= "";
             return View();
         }
+        public IActionResult GetAll()
+        {
+            var sale = _context.salesinvoicesummery.ToList();
+            return Json(sale);
+            
+        }
         public IActionResult Dashbord()
         {
             ViewBag.data = HttpContext.Session.GetString("name");
             ViewBag.branch = HttpContext.Session.GetString("branch");
             ViewBag.roll = HttpContext.Session.GetString("roll");
-            return View();
+            DshbordVM dashbordVM = new DshbordVM();
+            var customer = _context.customerdetails.ToList();
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.Now.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
+
+            foreach (var item in customer)
+            {
+
+                dashbordVM.customerDetails.Add(item);
+            }
+            var vendor = _context.vendor.ToList();
+            foreach (var item in vendor)
+            {
+
+                dashbordVM.vendors.Add(item);
+            }
+            var sale = _context.salesinvoicesummery.ToList();
+            foreach (var item in sale)
+            {
+
+                dashbordVM.salesinvoicesummeries.Add(item);
+            }
+            var purchase = _context.purchaseinvoicesummeries.ToList();
+            foreach (var item in purchase)
+            {
+
+                dashbordVM.purchaseinvoicesummery.Add(item);
+            }
+
+
+            return View(dashbordVM);
         }
         [HttpPost]
         public IActionResult Admin_login(Login ad)
