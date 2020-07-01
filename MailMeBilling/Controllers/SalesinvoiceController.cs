@@ -47,7 +47,7 @@ namespace MailMeBilling.Controllers
             int bill = ViewBag.Billno;
            
             //for print
-            if (billno != null)
+            if (bill != 0)
             {
                 int bi = bill - 1;
                 var tmp = _context.tempseccions.Where(i => i.Branch == Branch).ToList();

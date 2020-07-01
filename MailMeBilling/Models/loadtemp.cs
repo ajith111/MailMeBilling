@@ -22,7 +22,7 @@ namespace MailMeBilling.Models
         public decimal Amount { get; set; }
         public string Branch { get; set; }
         public List<tempseccion> tempseccions { get; set; } = new List<tempseccion>();
-        public List<tempseccion> ptempseccions { get; set; } = new List<tempseccion>();
+      
         public List<Salesinvoicesummery> salesinvoicesummeries { get; set; } = new List<Salesinvoicesummery>();
 
         public List<Tmppurchase> tmppurchases { get; set; } = new List<Tmppurchase>();
