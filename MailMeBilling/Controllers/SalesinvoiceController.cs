@@ -32,7 +32,7 @@ namespace MailMeBilling.Controllers
             ViewBag.branch = HttpContext.Session.GetString("branch");
             ViewBag.roll = HttpContext.Session.GetString("roll");
             string Branch = ViewBag.branch;
-            loadtemp load = new loadtemp();
+            var load = new loadtemp();
            
 
             var billno = _context.salesinvoicesummery.OrderByDescending(i => i.Billid).FirstOrDefault(); //bill No
