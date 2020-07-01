@@ -1,200 +1,201 @@
-﻿@{  int count = 0;}
-    <div id="print">
-        <div class="d-sm-flex mb-5" data-view="print" id="printb">
-            <span class="m-auto"></span>
-            <button class="btn btn-primary mb-sm-0 mb-3 print-invoice">Print Invoice</button>
+﻿@{ int count = 0;}
+
+<div class="d-sm-flex mb-5" data-view="print" id="printb">
+    <span class="m-auto"></span>
+    <button class="btn btn-primary mb-sm-0 mb-3 print-invoice">Print Invoice</button>
+</div>
+
+<div id="print-area" style="font-family:Calibri;font-size:large">
+
+    <div class="row">
+        <div class="col-12 text-center">
+
+            <h1><b>ABDULLAH FURNITURES </b></h1>
+            <h6><b>WHOLESALE DEALER : STEEL FURNITURE & WOODEN FURNITURE, HOME APPLIANCE</b></h6>
+            <h6><b>17 A Vanjinathan Aiyar Street (New Bus Stand), Salem – 636004 </b></h6>
+            <p> <b>E-Mail: newabdullahfurniture@gmail.com </b> <b>Mobile:9894921453,9994233235</b></p>
+
+            @foreach (var sums in Model.salesinvoicesummeries)
+            {
+                @if (sums.Gst != 0)
+                {
+                    <p><b>GSTIN NO : 33ANHPR2539P2ZF </b></p>
+                }
+            }
         </div>
 
-        <div id="print-area" style="font-family:Calibri">
+    </div>
+    @*<div class="auth-layout-wrap" style="background-image: url(/dist-assets/images/photo-wide-5.jpg);padding-top:0px">*@
+    @foreach (var sum in Model.salesinvoicesummeries)
+    {
 
-            <div class="row">
-                <div class="col-12 text-center">
+        <table style=" width: 100%; border: 1px solid black;
+">
 
-                    <h3><b>ABDULLAH FURNITURES </b></h3>
-                    <h6><b>WHOLESALE DEALER : STEEL FURNITURE & WOODEN FURNITURE, HOME APPLIANCE</b></h6>
-                    <h6><b>17 A Vanjinathan Aiyar Street (New Bus Stand), Salem – 636004 </b></h6>
-                    <p> <b>E-Mail: newabdullahfurniture@gmail.com </b> <b>Mobile:9894921453,9994233235</b></p>
+            <tr style="width:100%">
+                <th style="width:30px">STATE:TAMIL NADU</th>
+                <th style="width:30px">NAME: @sum.Customername</th>
+            </tr>
+            <tr style="width:100%">
+                <th style="width:30%">STATE CODE:</th>
+                <th style="width:70%">ADDRESS: @sum.Address</th>
+            </tr>
+            <tr style="width:100%">
+                <th style="width:30%">INVOICE NO :@sum.Billid</th>
+                <th style="width:70%">MOBILE: @sum.Mobilenumber</th>
+            </tr>
+            <tr style="width:100%">
+                <th style="width:30%">INVOICE DATE: @sum.Billdate</th>
 
-                    @foreach (var sums in Model.salesinvoicesummeries)
+                <th style="width:70%">
+                    @if (sum.Gst != 0)
                     {
-                        @if (sums.Gst != 0)
-                        {
-                            <p><b>GSTIN NO : 33ANHPR2539P2ZF </b></p>
-                        }
+                        <P> Party ‘s GSTIN</P>
                     }
-                </div>
 
-            </div>
-            @*<div class="auth-layout-wrap" style="background-image: url(/dist-assets/images/photo-wide-5.jpg);padding-top:0px">*@
-            @foreach (var sum in Model.salesinvoicesummeries)
-            {
+                </th>
 
-                <table class="table table-bordered" style="width:100%">
+            </tr>
 
-                    <tr style="width:100%">
-                        <th style="width:30px">STATE:TAMIL NADU</th>
-                        <th style="width:30px">NAME : @sum.Customername</th>
-                    </tr>
-                    <tr style="width:100%">
-                        <th style="width:30%">STATE CODE :</th>
-                        <th style="width:70%">ADDRESS: @sum.Address</th>
-                    </tr>
-                    <tr style="width:100%">
-                        <th style="width:30%">INVOICE NO :@sum.Billid</th>
-                        <th style="width:70%"> @sum.Mobilenumber</th>
-                    </tr>
-                    <tr style="width:100%">
-                        <th style="width:30%">INVOICE DATE : @sum.Billdate</th>
+        </table>
+    }
+    <table style="width:100%">
 
-                        <th style="width:70%">
-                            @if (sum.Gst != 0)
-                            {
-                                <P> Party ‘s GSTIN</P>
-                            }
+        <tr class="text-center">
+            <th width="20">S.NO</th>
+            <th width="20">PARTICULAR</th>
+            <th width="20">HSN CODE</th>
+            <th width="20">Qty</th>
+            <th width="20">Rate</th>
+            <th width="20">Amount</th>
+        </tr>
 
-                        </th>
+        @foreach (var item in Model.tempseccions)
+        {
+            count++;
+            <tr style="width:auto" class="text-center">
+                <th>@count</th>
+                <th>@item.Productname</th>
+                <th>@item.Hsncode</th>
+                <th>@item.Quantity</th>
+                <th>@item.Rate</th>
+                <th> ₹  @item.Amount</th>
+            </tr>
+        }
 
-                    </tr>
 
-                </table>
-            }
-            <table class="table table-bordered" style="width:100%">
+        @foreach (var item in Model.salesinvoices)
+        {
+            count++;
+            <tr class="text-center">
+                <th>@count</th>
+                <th>@item.Productname</th>
+                <th>@item.Hsncode</th>
+                <th>@item.Quantity</th>
+                <th>@item.Rate</th>
+                <th> ₹  @item.Amount</th>
+            </tr>
+        }
 
-                <tr class="text-center">
-                    <th width="20">S.NO</th>
-                    <th width="20">PARTICULAR</th>
-                    <th width="20">HSN CODE</th>
-                    <th width="20">Qty</th>
-                    <th width="20">Rate</th>
-                    <th width="20">Amount</th>
+
+
+
+
+    </table>
+    @foreach (var sum in Model.salesinvoicesummeries)
+    {
+        //With GST
+
+        @if (sum.Gst != 0)
+        {
+            <table style="width: 100%; border: 1px;">
+                <tr>
+                    <th>VEHICLE NO :</th>
+                    <th class="text-center"><b>TAXABLE VALUE</b> </th>
+                </tr>
+                <tr>
+                    <th style="width:50%">BANK DETAILES </th>
+                    @{ decimal gstt = Convert.ToDecimal(@sum.Gst) / 2;
+                        var calgstt = sum.Cgst + sum.Sgst + sum.Igst;
+                    }
+                    <th style="width:50%" class="text-lg-right">Add:  CGST  @gstt %  &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; <span class="text-right" style="padding-right:60px"> ₹  @sum.Cgst</span>  </th>
+
+                </tr>
+                <tr>
+                    <th>BANK NAME :  IDFC</th>
+                    <th class="text-lg-right">Add:  SGST @gstt % &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; <span class="text-right" style="padding-right:60px"> ₹   @sum.Sgst</span>  </th>
+                </tr>
+                <tr>
+                    <th>ACCOUNT NO   :  1002 6449 464</th>
+                    <th class="text-lg-right">Add:  IGST  @sum.Igst %  &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;<span class="text-right" style="padding-right:60px;margin-bottom:20px;"> ₹ 0 </span> </th>
+                </tr>
+                <tr>
+                    <th>IFSC CODE :  IDFB0080591 </th>
+                    <th class="text-lg-right">TOTAL    GST: &nbsp;&nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;   <span class="text-right" style="padding-right:60px"> ₹ @calgstt </span> </th>
+                </tr>
+                <tr>
+                    <th>BRANCH   :   SALEM </th>
+                    <th>GST ON REVERSE CHARGES </th>
+                </tr>
+                <tr>
+                    <th>RUPEES:@sum.ntow</th>
+                    <th class="text-lg-right">
+
+                        <b>TOTAL:</b> <label class="text-right" style="padding-right:60px"> ₹   @sum.nettotal </label> <br />
+                        <b>DISCOUNT:</b> <label class="text-right" style="padding-right:60px"> ₹   @sum.discount </label> <br />
+                        <b>PAID:</b> <label class="text-right" style="padding-right:60px"> ₹   @sum.Paid </label><br />
+                        <b>BALANCE:</b> <label class="text-right" style="padding-right:60px"> ₹   @sum.Balance </label> <br />
+
+                    </th>
+                </tr>
+            </table>
+        }
+        else
+        {
+            <table style="width:100%; border:0;">
+
+                <tr>
+                    <th>BANK DETAILES </th>
+
+                    <th> BANK NAME :  IDFC </th>
+
+                </tr>
+                <tr>
+                    <th>ACCOUNT NO   :  1002 6449 464</th>
+                    <th>  IFSC CODE :  IDFB0080591 </th>
                 </tr>
 
-                @foreach (var item in Model.tempseccions)
-                {
-                    count++;
-                    <tr style="width:auto" class="text-center">
-                        <th>@count</th>
-                        <th>@item.Productname</th>
-                        <th>@item.Hsncode</th>
-                        <th>@item.Quantity</th>
-                        <th>@item.Rate</th>
-                        <th> ₹  @item.Amount</th>
-                    </tr>
-                }
+                <tr>
+                    <th>BRANCH   :   SALEM </th>
+                    <th>VEHICLE NO : </th>
+                </tr>
+                <tr>
+                    <th>RUPEES:@sum.ntow</th>
+                    <th class="text-lg-right">
 
+                        <b>TOTAL:</b> <label class="text-right " style="padding-right:60px;"> ₹ @sum.nettotal  </label> <br />
+                        <b>PAID:</b> <label class="text-right" style="padding-right:60px;"> ₹   @sum.Paid </label><br />
+                        <b>BALANCE:</b> <label class="text-right" style="padding-right:60px; "> ₹   @sum.Balance </label> <br />
 
-                @foreach (var item in Model.salesinvoices)
-                {
-                    count++;
-                    <tr class="text-center">
-                        <th>@count</th>
-                        <th>@item.Productname</th>
-                        <th>@item.Hsncode</th>
-                        <th>@item.Quantity</th>
-                        <th>@item.Rate</th>
-                        <th> ₹  @item.Amount</th>
-                    </tr>
-                }
-
-
-
+                    </th>
+                </tr>
 
 
             </table>
-            @foreach (var sum in Model.salesinvoicesummeries)
-            {
-                //With GST
-
-                @if (sum.Gst != 0)
-                {
-                    <table class="table table-bordered" style="width:100%">
-                        <tr>
-                            <th>VEHICLE NO :</th>
-                            <th class="text-center"><b>TAXABLE VALUE</b> </th>
-                        </tr>
-                        <tr>
-                            <th style="width:50%">BANK DETAILES </th>
-                            @{ decimal gstt = Convert.ToDecimal(@sum.Gst) / 2;
-                                var calgstt = sum.Cgst + sum.Sgst + sum.Igst;
-                            }
-                            <th style="width:50%" class="text-lg-right">Add:  CGST  @gstt %  &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; <span class="text-right" style="padding-right:60px"> ₹  @sum.Cgst</span>  </th>
-
-                        </tr>
-                        <tr>
-                            <th>BANK NAME :  IDFC</th>
-                            <th class="text-lg-right">Add:  SGST @gstt % &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp; <span class="text-right" style="padding-right:60px"> ₹   @sum.Sgst</span>  </th>
-                        </tr>
-                        <tr>
-                            <th>ACCOUNT NO   :  1002 6449 464</th>
-                            <th class="text-lg-right">Add:  IGST  @sum.Igst %  &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;<span class="text-right" style="padding-right:60px;margin-bottom:20px;"> ₹ 0 </span> </th>
-                        </tr>
-                        <tr>
-                            <th>IFSC CODE :  IDFB0080591 </th>
-                            <th class="text-lg-right">TOTAL    GST:  &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;   <span class="text-right" style="padding-right:60px"> ₹ @calgstt </span> </th>
-                        </tr>
-                        <tr>
-                            <th>BRANCH   :   SALEM </th>
-                            <th>GST ON REVERSE CHARGES </th>
-                        </tr>
-                        <tr>
-                            <th>RUPEES:@sum.ntow</th>
-                            <th class="text-lg-right">
-
-                                <b>TOTAL:</b> <label class="text-right" style="padding-right:60px"> ₹   @sum.nettotal </label> <br />
-                                <b>PAID:</b> <label class="text-right" style="padding-right:60px"> ₹   @sum.Paid </label><br />
-                                <b>BALANCE:</b> <label class="text-right" style="padding-right:60px"> ₹   @sum.Balance </label> <br />
-
-                            </th>
-                        </tr>
-                    </table>
-                }
-                else
-                {
-                    <table class="table table-bordered" style="width:100%">
-
-                        <tr>
-                            <th>BANK DETAILES </th>
-
-                            <th> BANK NAME :  IDFC </th>
-
-                        </tr>
-                        <tr>
-                            <th>ACCOUNT NO   :  1002 6449 464</th>
-                            <th>  IFSC CODE :  IDFB0080591 </th>
-                        </tr>
-
-                        <tr>
-                            <th>BRANCH   :   SALEM </th>
-                            <th>VEHICLE NO : </th>
-                        </tr>
-                        <tr>
-                            <th>RUPEES:@sum.ntow</th>
-                            <th class="text-lg-right">
-
-                                <b>TOTAL:</b> <label class="text-right" style="padding-right:60px"> ₹   @sum.nettotal </label> <br />
-                                <b>PAID:</b> <label class="text-right" style="padding-right:60px"> ₹   @sum.Paid </label><br />
-                                <b>BALANCE:</b> <label class="text-right" style="padding-right:60px"> ₹   @sum.Balance </label> <br />
-
-                            </th>
-                        </tr>
-
-
-                    </table>
-                }
-            }
-            @*</div>*@
-            <div class="row">
-                <div class="col-6 text-left">
-                    <h5><b>E & E ALL Disputes Are Subject To Salem Jurisdiction</b> </h5>  <br />
-                    <h5><b>Goods Once Sold Cannot Be Taken Back</b> </h5>
-                </div>
-                <div class="col-6 text-right">
-                    <h3><b>ABDULLAH FURNITURES</b></h3><br />
-                    <br />
-                    <h5 style="padding-right:20px"><b>Authorized Signature</b></h5>
-                </div>
-            </div>
-
-
+        }
+    }
+    @*</div>*@
+    <div class="row">
+        <div class="col-6 text-left">
+            <h5><b>E & E ALL Disputes Are Subject To Salem Jurisdiction</b> </h5>  <br />
+            <h5><b>Goods Once Sold Cannot Be Taken Back</b> </h5>
+        </div>
+        <div class="col-6 text-right">
+            <h3><b>ABDULLAH FURNITURES</b></h3><br />
+            <br />
+            <h5 style="padding-right:20px"><b>Authorized Signature</b></h5>
         </div>
     </div>
+
+
+</div>

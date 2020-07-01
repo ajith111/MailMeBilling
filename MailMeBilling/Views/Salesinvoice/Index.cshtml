@@ -8,6 +8,15 @@
     int qty = 0;
    
 }
+<style>
+    table {
+        border-collapse: collapse;
+    }
+
+    table, tr, th {
+        border: 1px solid black;
+    }
+</style>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 
 <!-- ============ Main content start ============= -->
@@ -22,17 +31,22 @@
 
             </ul>
             <div class="card">
+
                 <div class="tab-content" id="myTabContent">
+
+                  
                     <div class="tab-pane fade " id="invoice" role="tabpanel" aria-labelledby="invoice-tab">
-                        
+                       
                             <!-- -===== Print Area =======-->
 
 
 
                             <partial name="printsection" />
-                      
-                        <!-- ==== / Print Area =====-->
+
+                            <!-- ==== / Print Area =====-->
+                        
                     </div>
+
                     <div class="tab-pane fade show active" id="edit" role="tabpanel" aria-labelledby="edit-tab">
                         <!-- ==== Edit Area =====-->
                         <div class="row">
@@ -137,10 +151,12 @@
                                                         var sgst = document.getElementById("sgst");
                                                         var cgst = document.getElementById("cgst");
                                                         var togst = document.getElementById("gstandamount");
-                                                        var net = document.getElementById("nettotal");
+                                                       var net = document.getElementById("nettotal");
+                                                       
                                                         $(gstamount).empty();
                                                         $(sgst).empty();
                                                         $(cgst).empty();
+                                                        $(net).empty();
                                                         calgstamount = (parseFloat(total.value) * parseFloat(GST.value)) / 100;
                                                         gstamount.value = calgstamount;
                                                         igst.value = 0;
@@ -149,6 +165,9 @@
                                                         togst.value = parseFloat(total.value) + calgstamount;
                                                         net.value = parseFloat(total.value) + calgstamount;
                                                         console.log(calgstamount);
+                                                        var ntwo = inWords(net.value);
+                                                        console.log(net.value);
+                                                        document.getElementById('words').value = ntwo;
 
                                                     }
                                                     var gst = document.getElementById("gst");
@@ -174,6 +193,7 @@
                                                         var amount = amt;
                                                         var togst = document.getElementById("gstandamount");
                                                         var res = document.getElementById("balance");
+
                                                         var tmp = parseFloat(togst.value) - parseFloat(amount.value)
                                                         console.log(tmp);
                                                         if (isNaN(tmp)) {
@@ -183,9 +203,7 @@
                                                             res.value = tmp;
                                                         }
 
-                                                        var ntw = inWords(amount.value);
-
-                                                        document.getElementById('words').value = ntw;
+                                                       
                                                     }
                                                 </script>
 
@@ -261,7 +279,7 @@
                                                     Balance:<input class="form-control text-right" name="Balance" id="balance" readonly type="text" value="0" />
 
                                                 </h5><br />
-                                                <input class="form-control" name="ntow" id="words" style="color:blueviolet;font-size:medium" />
+                                                <input class="form-control" name="ntow" id="words" style="color:blueviolet;font-size:medium;" />
 
                                             </div>
                                         </div>
@@ -532,11 +550,10 @@
                     toastr.success("Product has been successfully saved", "Product Add successfully ", {
                         closeButton: !0
                     });
-                    //$("#loadpage").load(" #loadpage");
-                    $("#myform").load(" #myform");                   
-                    $("#submissionTable").load(" #submissionTable");
-                    $("#fsum").load(" #fsum");
-                    $("#print-area").load(" #print-area");
+                   
+                    $("#print-area").load(" #print-area");                      
+                    $("#edit").load(" #edit");                   
+                   
                     autoname();
                 },
                 error: function (e) {
@@ -574,10 +591,9 @@
                     toastr.success("You bill save and ready to print", "Bill Save successfully ", {
                         closeButton: !0
                     });
-                    $("#myform").load(" #myform");                   
-                    $("#submissionTable").load(" #submissionTable");
-                    $("#fsum").load(" #fsum");
                     $("#print-area").load(" #print-area");
+                    $("#edit").load(" #edit");  
+                    autoname();
                    autoname();
                 },
                 error: function (e) {
@@ -605,7 +621,7 @@
                             timeOut: 6000
                         });
                         $("#myform").load(" #myform");
-                        $("#print").load(" #print");
+                        //$("#print").load(" #print");
                         $("#submissionTable").load(" #submissionTable");
                         $("#main").load(" #main");
                     }

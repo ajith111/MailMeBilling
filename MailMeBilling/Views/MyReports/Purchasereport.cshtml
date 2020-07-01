@@ -16,6 +16,7 @@
             <table id="example" class="display table table-striped table-bordered" style="width:100%">
                 <thead>
                     <tr class="text-center">
+                        <th>Bill No</th>
                         <th>Vendor Name</th>
                         <th>Mobil Number</th>
                         <th>Balance</th>
@@ -28,6 +29,7 @@
                     @foreach (var item in Model)
                     {
                     <tr>
+                        <td class="text-center">@item.Billid</td>
                         <td class="text-center">@item.Vendorrname</td>
                         <td class="text-center">@item.Mobilenumber</td>
                         <td class="text-right">@item.Balance</td>
@@ -44,14 +46,18 @@
 
                         </td>
                         <td class="text-right">@item.Totalamount</td>
-                        <td class="text-center"><a asp-controller="MyReports" asp-action="Vendorpayment" asp-route-id="@item.Mobilenumber">Edit</a> </td>
+                        <td class="text-center">
+                            <a asp-controller="MyReports" asp-action="Vendorpayment" asp-route-id="@item.Mobilenumber" class="btn btn-primary">Edit</a>
+                            <a asp-controller="MyReports" asp-action="Viewbill" asp-route-id="@item.Billid" class="btn btn-success"  target = "_blank">Print</a>
+                          
+                        </td>
                     </tr>
                     }
 
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th colspan="5" style="text-align:right">Total:</th>
+                        <th colspan="6" style="text-align:right">Total:</th>
                         <th></th>
                     </tr>
                 </tfoot>
@@ -84,7 +90,7 @@
 
                 // Total over all pages
                 total = api
-                    .column(4)
+                    .column(5)
                     .data()
                     .reduce(function (a, b) {
                         return intVal(a) + intVal(b);
@@ -92,14 +98,14 @@
 
                 // Total over this page
                 pageTotal = api
-                    .column(4, { page: 'current' })
+                    .column(5, { page: 'current' })
                     .data()
                     .reduce(function (a, b) {
                         return intVal(a) + intVal(b);
                     }, 0);
 
                 // Update footer
-                $(api.column(4).footer()).html(
+                $(api.column(5).footer()).html(
                     '₹' + pageTotal + ' ( ₹' + total + ' total)'
                 );
             }

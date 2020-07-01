@@ -114,7 +114,7 @@
                                             <h4 class="card-title">upload</h4>
                                             <div class="dropzone" id="single-file-upload">
                                                 <div class="fallback">
-                                                    <input name="upload" type="file" required />
+                                                    <input name="upload" type="file" accept="application/pdf"   required />
                                                 </div>
                                             </div>
                                         </div>
@@ -129,7 +129,7 @@
                                                 <input type="hidden" value="@totalamount" name="u" id="hitAmount" />
                                                 <input type="hidden" value="@qty" name="Totalqty" id="" />
                                                 GST:
-                                                <select name="Gst" id="Gst" required>
+                                                <select name="Gst" id="Gst" onchange="getgst()" required>
                                                     <option value="">Select</option>
                                                     <option value="GST">With GST</option>
                                                     <option value="NOGST">WithOut GST</option>
@@ -137,32 +137,13 @@
                                                 </select>
                                             </p>
                                             <script>
-                                                function getgst(gst) {
-                                                    var GST = gst;
-                                                    var calgstamount = 0;
-                                                    var total = document.getElementById("hitAmount");
-                                                    var gstamount = document.getElementById("gstamt");
-                                                    var igst = document.getElementById("igst");
-                                                    var sgst = document.getElementById("sgst");
-                                                    var cgst = document.getElementById("cgst");
-                                                    var togst = document.getElementById("gstandamount");
-                                                    $(gstamount).empty();
-                                                    $(sgst).empty();
-                                                    $(cgst).empty();
-                                                    calgstamount = (parseFloat(total.value) * parseFloat(GST.value)) / 100;
-                                                    gstamount.value = calgstamount;
-                                                    igst.value = 0;
-                                                    sgst.value = calgstamount / 2;
-                                                    cgst.value = calgstamount / 2;
-                                                    togst.value = parseFloat(total.value) + calgstamount;
-
-                                                }
+                                           
                                                 var gst = document.getElementById("gst");
 
 
 
                                                 var a = ['', 'One ', 'Two ', 'Three ', 'Four ', 'Five ', 'Six ', 'Seven ', 'Eight ', 'Nine ', 'Ten ', 'Eleven ', 'Twelve ', 'Thirteen ', 'Fourteen ', 'Fifteen ', 'Sixteen ', 'Seventeen ', 'Eighteen ', 'Nineteen '];
-                                                var b = ['', '', 'Twenty', 'Thirty', 'FTorty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+                                                var b = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
 
                                                 function inWords(num) {
                                                     if ((num = num.toString()).length > 9) return 'overflow';
@@ -175,6 +156,19 @@
                                                     str += (n[5] != 0) ? ((str != '') ? 'And ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + 'Only ' : '';
                                                     return str;
                                                 }
+                                                function getgst() {
+                                                    var tog = document.getElementById("gstandamount");
+
+                                                    $(tog).empty();
+
+                                                    var ntwo = inWords(parseFloat(tog.value));
+                                                    console.log(ntwo);
+
+                                                    document.getElementById('words').value = ntwo;
+                                                   
+                                                }
+                                                  ;
+
 
                                                 function amountres(amt) {
                                                     var amount = amt;
@@ -182,17 +176,17 @@
                                                     var res = document.getElementById("balance");
                                                     var tmp = parseFloat(togst.value) - parseFloat(amount.value)
                                                     res.value = tmp;
-                                                    var ntw = inWords(amount.value);
-                                                    console.log(tmp);
-                                                    if (isNaN(res.value)) {
-                                                        res.value = 0;
-                                                        document.getElementById('words').value = ntw;
-                                                        console.log("if");
-                                                    }
-                                                    else {
-                                                        document.getElementById('words').value = ntw;
+                                                    //var ntw = inWords(amount.value);
+                                                    //console.log(tmp);
+                                                    //if (isNaN(res.value)) {
+                                                    //    res.value = 0;
+                                                    //    document.getElementById('words').value = ntw;
+                                                    //    console.log("if");
+                                                    //}
+                                                    //else {
+                                                    //    document.getElementById('words').value = ntw;
 
-                                                    }
+                                                    //}
 
                                                 }
                                             </script>

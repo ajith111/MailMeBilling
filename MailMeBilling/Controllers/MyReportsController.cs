@@ -169,5 +169,64 @@ namespace MailMeBilling.Controllers
             return Json(new { success = true, message = "Save successfull." });
         }
 
+        [HttpGet]
+        public FileResult Viewbill(int id)
+        {
+
+            var file = _context.purchaseinvoicesummeries.Where(i => i.Billid == id).FirstOrDefault();
+
+
+
+            return File(file.upload, "application/pdf");
+
+        }
+
+
+
+        public IActionResult print(int id)
+        {
+
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.Now.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+            ViewBag.CustomerPending = pendingcustomer.Count();
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+            ViewBag.VendorPending = pendingvendor.Count();
+            ViewBag.data = HttpContext.Session.GetString("name");
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
+            string Branch = ViewBag.branch;
+            loadtemp load = new loadtemp();
+
+            var billno = _context.salesinvoicesummery.Where(i => i.Billid == id).FirstOrDefault(); //bill No         
+
+            
+            if (billno != null)
+            {               
+               
+                var tmpsale = _context.salesinvoices.Where(i => i.Branch == Branch && i.Billno == id).ToList();
+               
+                    foreach (var item in tmpsale)
+                    {
+                        load.salesinvoices.Add(item);
+                    }
+                    var tmpsummery = _context.salesinvoicesummery.Where(i => i.Billid == id).ToList();
+                   
+
+                        foreach (var item in tmpsummery)
+                        {
+                            load.salesinvoicesummeries.Add(item);
+                        }
+                  
+
+
+
+
+
+
+            }
+            return View(load);
+        }
+
     }
 }
