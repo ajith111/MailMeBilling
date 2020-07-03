@@ -28,7 +28,7 @@ namespace MailMeBilling.Controllers
             ViewBag.branch = HttpContext.Session.GetString("branch");
             ViewBag.roll = HttpContext.Session.GetString("roll");
             string Branch = ViewBag.branch;
-            DateTime todaydate = DateTime.UtcNow;
+            DateTime todaydate =  DateTime.Now;
             DateTime dateStart = DateTime.Now.AddDays(-15);
             var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
 
@@ -47,7 +47,7 @@ namespace MailMeBilling.Controllers
             ViewBag.branch = HttpContext.Session.GetString("branch");
             ViewBag.roll = HttpContext.Session.GetString("roll");
             string Branch = ViewBag.branch;
-            DateTime todaydate = DateTime.UtcNow;
+            DateTime todaydate =  DateTime.Now;
             DateTime dateStart = DateTime.Now.AddDays(-15);
             var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
 
@@ -78,7 +78,7 @@ namespace MailMeBilling.Controllers
             ViewBag.branch = HttpContext.Session.GetString("branch");
             ViewBag.roll = HttpContext.Session.GetString("roll");
             string Branch = ViewBag.branch;
-            DateTime todaydate = DateTime.UtcNow;
+            DateTime todaydate =  DateTime.Now;
             DateTime dateStart = DateTime.Now.AddDays(-15);
             var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
 
@@ -119,7 +119,7 @@ namespace MailMeBilling.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("productid,productname,Category,SubcCategory,Color,Brand,Hsncode,Purchaserate,Salesrate,stock")] Product product)
         {
-            DateTime todaydate = DateTime.UtcNow;
+            DateTime todaydate =  DateTime.Now;
             DateTime dateStart = DateTime.Now.AddDays(-15);
             var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
 
@@ -132,7 +132,7 @@ namespace MailMeBilling.Controllers
             {
                 ViewBag.data = HttpContext.Session.GetString("name");
                 var Name = ViewBag.data;
-                product.Entrydate = DateTime.UtcNow;
+                product.Entrydate =  DateTime.Now;
                 product.Entryby = Name;
                 product.Barcode = "Null";
                 ViewBag.branch = HttpContext.Session.GetString("branch");
@@ -152,7 +152,7 @@ namespace MailMeBilling.Controllers
             ViewBag.branch = HttpContext.Session.GetString("branch");
             ViewBag.roll = HttpContext.Session.GetString("roll");
             string Branch = ViewBag.branch;
-            DateTime todaydate = DateTime.UtcNow;
+            DateTime todaydate =  DateTime.Now;
             DateTime dateStart = DateTime.Now.AddDays(-15);
             var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
 
@@ -201,7 +201,7 @@ namespace MailMeBilling.Controllers
           
             ViewBag.roll = HttpContext.Session.GetString("roll");
            
-            DateTime todaydate = DateTime.UtcNow;
+            DateTime todaydate =  DateTime.Now;
             DateTime dateStart = DateTime.Now.AddDays(-15);
             var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
 
@@ -222,7 +222,7 @@ namespace MailMeBilling.Controllers
                    
                     ViewBag.data = HttpContext.Session.GetString("name");
                     var Name = ViewBag.data;
-                    stock.Entrydate = DateTime.UtcNow;
+                    stock.Entrydate =  DateTime.Now;
                     stock.Entryby = Name;
                     product.Barcode = "Null";
                     ViewBag.branch = HttpContext.Session.GetString("branch");
@@ -258,7 +258,7 @@ namespace MailMeBilling.Controllers
             ViewBag.branch = HttpContext.Session.GetString("branch");
             ViewBag.roll = HttpContext.Session.GetString("roll");
             string Branch = ViewBag.branch;
-            DateTime todaydate = DateTime.UtcNow;
+            DateTime todaydate =  DateTime.Now;
             DateTime dateStart = DateTime.Now.AddDays(-15);
             var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
 

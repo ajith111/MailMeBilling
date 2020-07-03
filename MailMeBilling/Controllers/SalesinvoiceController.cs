@@ -19,7 +19,7 @@ namespace MailMeBilling.Controllers
         }
         public IActionResult Index()
         {
-            DateTime todaydate = DateTime.UtcNow;
+            DateTime todaydate = DateTime.Now;
             DateTime dateStart = DateTime.Now.AddDays(-15);
             var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
 
@@ -93,7 +93,7 @@ namespace MailMeBilling.Controllers
         {
             ViewBag.data = HttpContext.Session.GetString("name");
             var Name = ViewBag.data;
-            tempseccion.Billdate = DateTime.UtcNow;
+            tempseccion.Billdate =  DateTime.Now;
             tempseccion.Billby = Name;
             ViewBag.branch = HttpContext.Session.GetString("branch");
             var Branch = ViewBag.branch;
@@ -109,7 +109,7 @@ namespace MailMeBilling.Controllers
         {
             ViewBag.data = HttpContext.Session.GetString("name");
             var Name = ViewBag.data;
-            tempseccion.Billdate = DateTime.UtcNow;
+            tempseccion.Billdate =  DateTime.Now;
             tempseccion.Billby = Name;
             ViewBag.branch = HttpContext.Session.GetString("branch");
             var Branch = ViewBag.branch;
@@ -123,7 +123,7 @@ namespace MailMeBilling.Controllers
                 cd.Customername = tempseccion.Customername;
                 cd.Address = tempseccion.Address;
                 cd.Branch = Branch;
-                cd.Entrydate = DateTime.UtcNow;
+                cd.Entrydate =  DateTime.Now;
                 cd.Entryby = Name;
                 _context.customerdetails.Add(cd);
                 _context.SaveChanges();
@@ -181,7 +181,7 @@ namespace MailMeBilling.Controllers
             cph.paymenttype = tempseccion.Paymenttype;
             cph.Payment = tempseccion.Paid;
             cph.Recivedby = Name;
-            cph.Paiddate = DateTime.UtcNow;
+            cph.Paiddate =  DateTime.Now;
             cph.Balance = tempseccion.Balance;
             cph.refno = tempseccion.Refcode;
             cph.Branch = Branch;
