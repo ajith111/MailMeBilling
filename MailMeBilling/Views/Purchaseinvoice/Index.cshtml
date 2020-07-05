@@ -398,6 +398,8 @@
                 var amt = document.getElementById("Amount");
                 var qty = document.getElementById("Quantity");
                 var st = document.getElementById("stock");
+                var img = document.getElementById("img");
+                var img2 = document.getElementById("img2");
                 $(Cat).empty();
                 $(sub).empty();
                 $(col).empty();
@@ -408,6 +410,8 @@
                 $(amt).empty();
                 $(qty).empty();
                 $(st).empty();
+                $(img).empty();
+                $(img2).empty();
                 Cat.value = data['category'];
                 sub.value = data['subcCategory'];
                 col.value = data['color'];
@@ -416,6 +420,10 @@
                 hrat.value = data['salesrate'];
                 hsn.value = data['hsncode'];
                 st.value = data['stock'];
+                var imgsrc = 'data:image/png;base64,' + data['productimage']; // here data should be in base64 string
+                img.innerHTML = '<img class="img-responsive" src="' + imgsrc + '" alt="tbl_StaffImage" height="200px" width="350px" data-toggle="modal" data-target=".bd-example-modal-lg">';
+                img2.innerHTML = '<img class="img-responsive" src="' + imgsrc + '" alt="tbl_StaffImage" height="auto" width="auto" data-toggle="modal" data-target=".bd-example-modal-lg">';
+                console.log("img source", img.source);
                 $("#Rate").focus();
                 $("#Save").prop("disabled", false);
                 if (st.value <= 0) {

@@ -21,6 +21,9 @@ namespace MailMeBilling.Models
         [Required(ErrorMessage = " Category  is required")]
         [Display(Name = " Category")]
         public string Category { get; set; }
+        [Required(ErrorMessage = " Image  is required")]
+        [Display(Name = " Image")]
+        public Byte[] productimage { get; set; }
 
         [Display(Name = " Brand")]
         public string Brand { get; set; }

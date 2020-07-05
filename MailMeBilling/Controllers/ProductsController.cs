@@ -9,6 +9,7 @@ using MailMeBilling.Data;
 using MailMeBilling.Models;
 using Microsoft.AspNetCore.Http;
 using Xunit;
+using System.IO;
 
 namespace MailMeBilling.Controllers
 {
@@ -117,7 +118,7 @@ namespace MailMeBilling.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("productid,productname,Category,SubcCategory,Color,Brand,Hsncode,Purchaserate,Salesrate,stock")] Product product)
+        public async Task<IActionResult> Create([Bind("productid,productname,Category,SubcCategory,Color,Brand,Hsncode,Purchaserate,Salesrate,stock")] Product product, List<IFormFile> productimg)
         {
             DateTime todaydate =  DateTime.Now;
             DateTime dateStart = DateTime.Now.AddDays(-15);
@@ -126,7 +127,17 @@ namespace MailMeBilling.Controllers
             ViewBag.CustomerPending = pendingcustomer.Count();
 
             var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
+            foreach (var item in productimg)
+            {
+                if (item.Length > 0)
+                {
+                    using (var stream = new MemoryStream())
+                    {
+                        await item.CopyToAsync(stream);
+                        product.productimage = stream.ToArray();
+                    }
+                }
+            }
             ViewBag.VendorPending = pendingvendor.Count();
             if (ModelState.IsValid)
             {
@@ -195,7 +206,7 @@ namespace MailMeBilling.Controllers
        
         [HttpPost]
        
-        public async Task<IActionResult> Edit(int id,  Product product)
+        public async Task<IActionResult> Edit(int id,  Product product, List<IFormFile> productimg)
         {
             ViewBag.data = HttpContext.Session.GetString("name");
           
@@ -213,8 +224,22 @@ namespace MailMeBilling.Controllers
             var stock = await _context.product.FindAsync(id);
            
             var addstock = stock.stock + product.stock;
+            if (productimg.Count != 0)
+            {
 
 
+                foreach (var item in productimg)
+                {
+                    if (item.Length > 0)
+                    {
+                        using (var stream = new MemoryStream())
+                        {
+                            await item.CopyToAsync(stream);
+                            stock.productimage = stream.ToArray();
+                        }
+                    }
+                }
+            }
             if (ModelState.IsValid)
             {
                 try

@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MailMeBilling.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20200626060003_kll")]
-    partial class kll
+    [Migration("20200705024922_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -140,6 +140,53 @@ namespace MailMeBilling.Migrations
                     b.ToTable("customerdetails");
                 });
 
+            modelBuilder.Entity("MailMeBilling.Models.Customerpaymenthistry", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<string>("Branch")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Customername")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Mobile")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Paiddate")
+                        .HasColumnType("datetime");
+
+                    b.Property<decimal>("Payment")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<string>("Recivedby")
+                        .HasColumnType("text");
+
+                    b.Property<int>("billid")
+                        .HasColumnType("int");
+
+                    b.Property<string>("paymenttype")
+                        .HasColumnType("text");
+
+                    b.Property<string>("refno")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("total")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.HasKey("id");
+
+                    b.ToTable("customerpaymenthistry");
+                });
+
             modelBuilder.Entity("MailMeBilling.Models.Login", b =>
                 {
                     b.Property<int>("Id")
@@ -200,6 +247,9 @@ namespace MailMeBilling.Migrations
                     b.Property<string>("SubcCategory")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<byte[]>("productimage")
+                        .HasColumnType("varbinary(4000)");
 
                     b.Property<string>("productname")
                         .IsRequired()
@@ -311,8 +361,14 @@ namespace MailMeBilling.Migrations
                     b.Property<string>("ntow")
                         .HasColumnType("text");
 
+                    b.Property<decimal>("paid")
+                        .HasColumnType("decimal(18, 2)");
+
                     b.Property<string>("status")
                         .HasColumnType("text");
+
+                    b.Property<byte[]>("upload")
+                        .HasColumnType("varbinary(4000)");
 
                     b.HasKey("id");
 
@@ -467,6 +523,9 @@ namespace MailMeBilling.Migrations
                     b.Property<string>("Mobilenumber")
                         .HasColumnType("text");
 
+                    b.Property<decimal>("Paid")
+                        .HasColumnType("decimal(18, 2)");
+
                     b.Property<string>("Paymenttype")
                         .HasColumnType("text");
 
@@ -481,6 +540,12 @@ namespace MailMeBilling.Migrations
 
                     b.Property<int>("Totalqty")
                         .HasColumnType("int");
+
+                    b.Property<int>("discount")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("nettotal")
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<string>("ntow")
                         .HasColumnType("text");
@@ -570,34 +635,88 @@ namespace MailMeBilling.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Accountnumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Address")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Bankname")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Branch")
                         .HasColumnType("text");
 
-                    b.Property<string>("Ifsccode")
-                        .IsRequired()
+                    b.Property<string>("Entryby")
                         .HasColumnType("text");
 
-                    b.Property<long>("Mobilenumber")
-                        .HasColumnType("bigint");
+                    b.Property<DateTime>("Entrydate")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Ifsccode")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Mobilenumber")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("bankbranch")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("vendorId");
 
                     b.ToTable("vendor");
+                });
+
+            modelBuilder.Entity("MailMeBilling.Models.Vendorpayment", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("Balance")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<string>("Branch")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Mobile")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("Paiddate")
+                        .HasColumnType("datetime");
+
+                    b.Property<decimal>("Payment")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.Property<string>("Recivedby")
+                        .HasColumnType("text");
+
+                    b.Property<int>("billid")
+                        .HasColumnType("int");
+
+                    b.Property<string>("name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("paymenttype")
+                        .HasColumnType("text");
+
+                    b.Property<string>("refno")
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("total")
+                        .HasColumnType("decimal(18, 2)");
+
+                    b.HasKey("id");
+
+                    b.ToTable("vendorpayments");
                 });
 
             modelBuilder.Entity("MailMeBilling.Models.tempseccion", b =>

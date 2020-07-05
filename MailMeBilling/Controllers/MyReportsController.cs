@@ -228,5 +228,93 @@ namespace MailMeBilling.Controllers
             return View(load);
         }
 
+
+        public IActionResult Salesreturnreport()
+        {
+            DateTime todaydate = DateTime.Now;
+            DateTime dateStart = DateTime.Now.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
+            ViewBag.data = HttpContext.Session.GetString("name");
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
+            var sr = _context.salesinvoicesummery.ToList();
+            return View(sr);
+        }
+        public IActionResult Purchasereturnreport()
+        {
+            DateTime todaydate = DateTime.Now;
+            DateTime dateStart = DateTime.Now.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
+            ViewBag.data = HttpContext.Session.GetString("name");
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
+            var sr = _context.purchaseinvoicesummeries.ToList();
+            return View(sr);
+        }
+        public IActionResult Salesreturnbill(int id)
+        {
+
+            DateTime todaydate = DateTime.Now;
+            DateTime dateStart = DateTime.Now.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
+            ViewBag.data = HttpContext.Session.GetString("name");
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
+            string Branch = ViewBag.branch;
+            loadtemp load = new loadtemp();
+
+
+            //for print
+            if (id != 0)
+            {
+              
+                var tmp = _context.tempseccions.Where(i => i.Branch == Branch && i.Billno == id).ToList();
+                var tmpsale = _context.salesinvoices.Where(i => i.Branch == Branch && i.Billno == id).ToList();
+                if (tmpsale.Count != 0)
+               
+                {
+                    foreach (var item in tmpsale)
+                    {
+                        load.salesinvoices.Add(item);
+                    }
+                    var tmpsummery = _context.salesinvoicesummery.Where(i => i.Billid == id && i.Branch == Branch).ToList();
+                    if (tmpsummery != null)
+                    {
+
+                        foreach (var item in tmpsummery)
+                        {
+                            load.salesinvoicesummeries.Add(item);
+                        }
+                    }
+
+                }
+
+
+
+
+
+
+            }
+            return View(load);
+        }
+
     }
 }

@@ -246,6 +246,9 @@ namespace MailMeBilling.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<byte[]>("productimage")
+                        .HasColumnType("varbinary(4000)");
+
                     b.Property<string>("productname")
                         .IsRequired()
                         .HasColumnType("text");
@@ -633,6 +636,7 @@ namespace MailMeBilling.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Address")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Bankname")

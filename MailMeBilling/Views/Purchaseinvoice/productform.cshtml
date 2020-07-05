@@ -7,60 +7,93 @@
             <form id="myform" method="post" name="myform">
                 <div class="row">
                     <input type="hidden" value="@BillNo" name="Billno" id="Billno" />
-                    <div class="col-md-4 form-group mb-3">
-                        <label for="firstName1">Product name</label>
-                        <input class="form-control" name="Productname" id="tags" onkeyup="autoname()" type="text" placeholder="Enter your Product name" onchange="myFun()" required />
-                    </div>
-                    <div class="col-md-4 form-group mb-3">
-                        <label for="lastName1"> Category</label>
-                        <input class="form-control" name="Category" id="Category" type="text" placeholder="Category" readonly value="" />
-                    </div>
-                    <div class="col-md-4 form-group mb-3">
-                        <label for="exampleInputEmail1"> SubCategory</label>
-                        <input class="form-control" name="Subcategory" id="Subcategory" type="text" placeholder="SubCatagory" readonly value="" />
+                    <div class="col-9">
+                        <div class="row">
+                            <div class="col-md-4 form-group mb-3">
+                                <label for="firstName1">Product name</label>
+                                <input class="form-control" name="Productname" id="tags" onkeyup="autoname()" type="text" placeholder="Enter your Product name" onchange="myFun()" required />
+                            </div>
+                            <div class="col-md-4 form-group mb-3">
+                                <label for="lastName1"> Category</label>
+                                <input class="form-control" name="Category" id="Category" type="text" placeholder="Category" readonly value="" />
+                            </div>
+                            <div class="col-md-4 form-group mb-3">
+                                <label for="exampleInputEmail1"> SubCategory</label>
+                                <input class="form-control" name="Subcategory" id="Subcategory" type="text" placeholder="SubCatagory" readonly value="" />
 
-                    </div>
-                    <div class="col-md-4 form-group mb-3">
-                        <label for="phone">Color</label>
-                        <input class="form-control" name="Color" id="Color" placeholder="Color" readonly value="" />
-                    </div>
-                    <div class="col-md-4 form-group mb-3">
-                        <label for="credit1">Brand</label>
-                        <input class="form-control" name="Brand" id="Brand" placeholder="Brand" readonly value="" />
-                    </div>
-                    <div class="col-md-4 form-group mb-3">
-                        <label for="credit1">HSN Code</label>
-                        <input class="form-control" name="Hsncode" id="Hsncode" placeholder="Hsncode" readonly value="" />
-                    </div>
-                    <div class="col-md-3 form-group mb-3">
-                        <label for="website">Avilable Stock</label>
-                        <input class="form-control" name="stock" id="stock" placeholder="stock" readonly value="" />
-                    </div>
+                            </div>
+                            <div class="col-md-4 form-group mb-3">
+                                <label for="phone">Color</label>
+                                <input class="form-control" name="Color" id="Color" placeholder="Color" readonly value="" />
+                            </div>
+                            <div class="col-md-4 form-group mb-3">
+                                <label for="credit1">Brand</label>
+                                <input class="form-control" name="Brand" id="Brand" placeholder="Brand" readonly value="" />
+                            </div>
+                            <div class="col-md-4 form-group mb-3">
+                                <label for="credit1">HSN Code</label>
+                                <input class="form-control" name="Hsncode" id="Hsncode" placeholder="Hsncode" readonly value="" />
+                            </div>
+                            <div class="col-md-3 form-group mb-3">
+                                <label for="website">Avilable Stock</label>
+                                <input class="form-control" name="stock" id="stock" placeholder="stock" readonly value="" />
+                            </div>
 
-                    <div class="col-md-3 form-group mb-3">
+                            <div class="col-md-3 form-group mb-3">
 
-                        <label for="website">Rate</label>
-                        <input class="form-control" name="Rate" id="Rate" placeholder="Rate" value="" />
-                        <input type="hidden" id="hitrate" value="" />
-                    </div>
+                                <label for="website">Rate</label>
+                                <input class="form-control" name="Rate" id="Rate" placeholder="Rate" value="" />
+                                <input type="hidden" id="hitrate" value="" />
+                            </div>
 
-                    <div class="col-md-3 form-group mb-3">
-                        <label for="website">Quantity</label>
-                        <input class="form-control" name="Quantity" value="" id="Quantity" placeholder="Quantity" onkeyup="addamount(this)" required />
+                            <div class="col-md-3 form-group mb-3">
+                                <label for="website">Quantity</label>
+                                <input class="form-control" name="Quantity" value="" id="Quantity" placeholder="Quantity" onkeyup="addamount(this)" required />
+                            </div>
+                            <div class="col-md-3 form-group mb-3">
+                                <label for="website">Amount</label>
+                                <input class="form-control" name="Amount" id="Amount" placeholder="Amount" readonly value="0" required />
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-3 form-group mb-3">
-                        <label for="website">Amount</label>
-                        <input class="form-control" name="Amount" id="Amount" placeholder="Amount" readonly value="0" required />
+                    <div class="col-2 border  shadow-lg p-4 mb-4 bg-white">
+
+                        <div class="row text-center">
+                            <div id="img" class="col-md-12 form-group mb-3" style="width:100%; border:thick; border-color:black">
+
+                                <img src="~/dist-assets/images/photo-wide-5.jpg" />
+                            </div>
+                        </div>
                     </div>
 
                 </div>
             </form>
             <div class="col-md-4 form-group mb-3" style="padding-top:22px">
-                <input type="button" value="Add item" id="addproduct"  onclick=Save() class="btn btn-primary" />
+                <input type="button" value="Add item" id="addproduct" onclick=Save() class="btn btn-primary" />
 
-               
+
             </div>
-           
+            <!--Modal -->
+            <div class="modal fade bd-example-modal-lg" id="" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle">Image</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        </div>
+                        <div id="img2" class="modal-body text-center">
+                            <img src="" style="width:auto;height:auto;" />
+
+                        </div>
+                        <div class="modal-footer">
+
+                            <button class="btn btn-primary ml-2" type="button" data-dismiss="modal"> Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal -->
+
         </div>
     </div>
 </div>

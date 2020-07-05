@@ -19,10 +19,10 @@ namespace MailMeBilling.Models
         [Required(ErrorMessage = " Category  is required")]
         [Display(Name = " Category")]
         public string Category { get; set; }
-
-      
-        [Required(ErrorMessage = "SubcCategory  is required")]
-        [Display(Name = "SubcCategory")]
+       
+        public Byte[] productimage { get; set; }
+        [Required(ErrorMessage = "SubCategory  is required")]
+        [Display(Name = "SubCategory")]
         public string SubcCategory { get; set; }
 
         [Required(ErrorMessage = "Color  is required")]

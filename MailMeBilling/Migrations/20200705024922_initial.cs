@@ -43,8 +43,8 @@ namespace MailMeBilling.Migrations
                 {
                     categoryid = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Catagory = table.Column<string>(nullable: true),
-                    Catagorydiscription = table.Column<string>(nullable: true),
+                    Categorys = table.Column<string>(nullable: false),
+                    Categorydiscription = table.Column<string>(nullable: false),
                     Branch = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
@@ -86,6 +86,30 @@ namespace MailMeBilling.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_customerdetails", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "customerpaymenthistry",
+                columns: table => new
+                {
+                    id = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    billid = table.Column<int>(nullable: false),
+                    Customername = table.Column<string>(nullable: true),
+                    Mobile = table.Column<string>(nullable: true),
+                    Address = table.Column<string>(nullable: true),
+                    paymenttype = table.Column<string>(nullable: true),
+                    refno = table.Column<string>(nullable: true),
+                    Payment = table.Column<decimal>(nullable: false),
+                    total = table.Column<decimal>(nullable: false),
+                    Balance = table.Column<decimal>(nullable: false),
+                    Paiddate = table.Column<DateTime>(nullable: false),
+                    Recivedby = table.Column<string>(nullable: true),
+                    Branch = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_customerpaymenthistry", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -135,6 +159,7 @@ namespace MailMeBilling.Migrations
                     Barcode = table.Column<string>(nullable: true),
                     productname = table.Column<string>(nullable: false),
                     Category = table.Column<string>(nullable: false),
+                    productimage = table.Column<byte[]>(nullable: true),
                     SubcCategory = table.Column<string>(nullable: false),
                     Color = table.Column<string>(nullable: false),
                     Brand = table.Column<string>(nullable: true),
@@ -149,6 +174,60 @@ namespace MailMeBilling.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_product", x => x.productid);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "purchaseinvoices",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Productname = table.Column<string>(nullable: true),
+                    Category = table.Column<string>(nullable: true),
+                    Subcategory = table.Column<string>(nullable: true),
+                    Color = table.Column<string>(nullable: true),
+                    Brand = table.Column<string>(nullable: true),
+                    Hsncode = table.Column<string>(nullable: true),
+                    Rate = table.Column<decimal>(nullable: false),
+                    Quantity = table.Column<int>(nullable: false),
+                    Amount = table.Column<decimal>(nullable: false),
+                    Billno = table.Column<int>(nullable: false),
+                    Billdate = table.Column<DateTime>(nullable: false),
+                    Billby = table.Column<string>(nullable: true),
+                    Branch = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_purchaseinvoices", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "purchaseinvoicesummeries",
+                columns: table => new
+                {
+                    id = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Billid = table.Column<int>(nullable: false),
+                    Totalqty = table.Column<int>(nullable: false),
+                    Totalamount = table.Column<decimal>(nullable: false),
+                    Gst = table.Column<string>(nullable: true),
+                    Paymenttype = table.Column<string>(nullable: true),
+                    Refcode = table.Column<string>(nullable: true),
+                    Balance = table.Column<decimal>(nullable: false),
+                    paid = table.Column<decimal>(nullable: false),
+                    upload = table.Column<byte[]>(nullable: true),
+                    Billdate = table.Column<DateTime>(nullable: false),
+                    Billby = table.Column<string>(nullable: true),
+                    status = table.Column<string>(nullable: true),
+                    Vendorrname = table.Column<string>(nullable: true),
+                    Mobilenumber = table.Column<string>(nullable: true),
+                    Address = table.Column<string>(nullable: true),
+                    ntow = table.Column<string>(nullable: true),
+                    Branch = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_purchaseinvoicesummeries", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -191,7 +270,10 @@ namespace MailMeBilling.Migrations
                     Igst = table.Column<int>(nullable: false),
                     Paymenttype = table.Column<string>(nullable: true),
                     Refcode = table.Column<string>(nullable: true),
+                    Paid = table.Column<decimal>(nullable: false),
+                    discount = table.Column<int>(nullable: false),
                     Balance = table.Column<decimal>(nullable: false),
+                    nettotal = table.Column<decimal>(nullable: false),
                     Billdate = table.Column<DateTime>(nullable: false),
                     Billby = table.Column<string>(nullable: true),
                     status = table.Column<string>(nullable: true),
@@ -247,22 +329,74 @@ namespace MailMeBilling.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "tmppurchases",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Productname = table.Column<string>(nullable: true),
+                    Category = table.Column<string>(nullable: true),
+                    Subcategory = table.Column<string>(nullable: true),
+                    Color = table.Column<string>(nullable: true),
+                    Brand = table.Column<string>(nullable: true),
+                    Hsncode = table.Column<string>(nullable: true),
+                    Rate = table.Column<decimal>(nullable: false),
+                    Quantity = table.Column<int>(nullable: false),
+                    Amount = table.Column<decimal>(nullable: false),
+                    Billno = table.Column<int>(nullable: false),
+                    Billdate = table.Column<DateTime>(nullable: false),
+                    Billby = table.Column<string>(nullable: true),
+                    Branch = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tmppurchases", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "vendor",
                 columns: table => new
                 {
                     vendorId = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: false),
-                    Mobilenumber = table.Column<long>(nullable: false),
-                    Bankname = table.Column<string>(nullable: false),
-                    Accountnumber = table.Column<string>(nullable: false),
-                    Ifsccode = table.Column<string>(nullable: false),
-                    bankbranch = table.Column<string>(nullable: false),
-                    Branch = table.Column<string>(nullable: true)
+                    Mobilenumber = table.Column<string>(nullable: false),
+                    Address = table.Column<string>(nullable: false),
+                    Bankname = table.Column<string>(nullable: true),
+                    Accountnumber = table.Column<string>(nullable: true),
+                    Ifsccode = table.Column<string>(nullable: true),
+                    bankbranch = table.Column<string>(nullable: true),
+                    Branch = table.Column<string>(nullable: true),
+                    Entrydate = table.Column<DateTime>(nullable: false),
+                    Entryby = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_vendor", x => x.vendorId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "vendorpayments",
+                columns: table => new
+                {
+                    id = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    billid = table.Column<int>(nullable: false),
+                    name = table.Column<string>(nullable: true),
+                    Mobile = table.Column<string>(nullable: true),
+                    Address = table.Column<string>(nullable: true),
+                    paymenttype = table.Column<string>(nullable: true),
+                    refno = table.Column<string>(nullable: true),
+                    Payment = table.Column<decimal>(nullable: false),
+                    total = table.Column<decimal>(nullable: false),
+                    Balance = table.Column<decimal>(nullable: false),
+                    Paiddate = table.Column<DateTime>(nullable: false),
+                    Recivedby = table.Column<string>(nullable: true),
+                    Branch = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_vendorpayments", x => x.id);
                 });
         }
 
@@ -284,6 +418,9 @@ namespace MailMeBilling.Migrations
                 name: "customerdetails");
 
             migrationBuilder.DropTable(
+                name: "customerpaymenthistry");
+
+            migrationBuilder.DropTable(
                 name: "employeedetails");
 
             migrationBuilder.DropTable(
@@ -291,6 +428,12 @@ namespace MailMeBilling.Migrations
 
             migrationBuilder.DropTable(
                 name: "product");
+
+            migrationBuilder.DropTable(
+                name: "purchaseinvoices");
+
+            migrationBuilder.DropTable(
+                name: "purchaseinvoicesummeries");
 
             migrationBuilder.DropTable(
                 name: "salesinvoices");
@@ -305,7 +448,13 @@ namespace MailMeBilling.Migrations
                 name: "tempseccions");
 
             migrationBuilder.DropTable(
+                name: "tmppurchases");
+
+            migrationBuilder.DropTable(
                 name: "vendor");
+
+            migrationBuilder.DropTable(
+                name: "vendorpayments");
         }
     }
 }

@@ -1,0 +1,121 @@
+﻿@model IEnumerable<MailMeBilling.Models.Purchaseinvoicesummery>
+@{
+    ViewData["Title"] = "Purchasereturnreport";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+
+<div class="card text-left">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12 text-center">
+                <h2 class="card-title mb-3"><b>PURCHASE RETURN</b></h2>
+
+            </div>
+
+        </div>
+        <div class="table-responsive">
+            <table id="example" class="display table table-striped table-bordered" style="width:100%">
+                <thead>
+                    <tr class="text-center">
+                        <th>Bill No</th>
+                        <th>Vendor Name</th>
+                        <th>Mobil Number</th>
+                        <th>Balance</th>
+                        <th>Status</th>
+                        <th>Amount</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-center">@item.Billid</td>
+                            <td class="text-center">@item.Vendorrname</td>
+                            <td class="text-center">@item.Mobilenumber</td>
+                            <td class="text-right">@item.Balance</td>
+                            <td class="text-center">
+                                @if (@item.status == "Close")
+                                {
+                                    <span class="badge badge-success">Payment @item.status</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-warning">Payment @item.status</span>
+                                }
+
+
+                            </td>
+                            <td class="text-right">@item.Totalamount</td>
+                            <td class="text-center">
+                                <a asp-controller="MyReports" asp-action="Vendorpayment" asp-route-id="@item.Mobilenumber" class="btn btn-primary">Edit</a>
+                                <a asp-controller="MyReports" asp-action="Viewbill" asp-route-id="@item.Billid" class="btn btn-success" target="_blank">Print</a>
+
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="6" style="text-align:right">Total:</th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
+        crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+
+
+<script>
+
+    $(document).ready(function () {
+        $('#example').DataTable({
+            "footerCallback": function (row, data, start, end, display) {
+                var api = this.api(), data;
+
+                // Remove the formatting to get integer data for summation
+                var intVal = function (i) {
+                    return typeof i === 'string' ?
+                        i.replace(/[\₹,]/g, '') * 1 :
+                        typeof i === 'number' ?
+                            i : 0;
+                };
+
+                // Total over all pages
+                total = api
+                    .column(5)
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                // Total over this page
+                pageTotal = api
+                    .column(5, { page: 'current' })
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+
+                // Update footer
+                $(api.column(5).footer()).html(
+                    '₹' + pageTotal + ' ( ₹' + total + ' total)'
+                );
+            }
+        });
+    });
+
+</script>
+
+
+
