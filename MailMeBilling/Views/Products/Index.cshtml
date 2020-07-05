@@ -67,12 +67,15 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        string imageBase64 = Convert.ToBase64String(item.productimage);
-                        string imageSrc = string.Format("data:image/gif;base64,{0}", imageBase64);
                        
-                    <tr class="text-center">
-                        <td >
 
+
+                    <tr class="text-center">
+                        <td>
+                            @if (item.productimage != null)
+                            {
+                                string imageBase64 = Convert.ToBase64String(item.productimage);
+                                string imageSrc = string.Format("data:image/gif;base64,{0}", imageBase64);
                             <img src="@imageSrc" style="width:50px;height:30px; " data-toggle="modal" data-target=".A-@item.productid" />
 
                             <!--Modal -->
@@ -84,8 +87,9 @@
                                             <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
                                         </div>
                                         <div class="modal-body text-center">
+                                           
                                             <img src="@imageSrc" style="width:auto;height:auto;" />
-
+                                           
                                         </div>
                                         <div class="modal-footer">
 
@@ -94,6 +98,7 @@
                                     </div>
                                 </div>
                             </div>
+                            }
                             <!-- Modal -->
                         </td>
 
