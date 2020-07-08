@@ -36,6 +36,11 @@ namespace MailMeBilling.Data
         public DbSet<Customerpaymenthistry> customerpaymenthistry { get; set; }
         public DbSet<Vendorpayment> vendorpayments { get; set; }
 
+        public DbSet<Tmpsalesreturn> tmpsalesreturns { get; set; }
+        public DbSet<SalesReturn> salesreturns { get; set; }
+        public DbSet<Salesreturnpaymenthistry> salesreturnpaymenthistries { get; set; }
+
+        public DbSet<Salesreturnsummery> salesreturnsummeries { get; set; }
 
     }
 }

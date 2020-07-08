@@ -1,0 +1,431 @@
+﻿
+
+@model MailMeBilling.Models.loadtemp
+@{
+    ViewData["Title"] = "Sales Return Bill";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+
+    int counts = 0;
+    int countss = 0;
+    decimal totalamount = 0;
+    int qty = 0;
+
+}
+
+
+
+<!-- ============ Main content start ============= -->
+<div class="main-content" id="main">
+
+
+    <div class="row" id="loadpage">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs justify-content-end mb-4" id="myTab" role="tablist">
+                <li class="nav-item"><a class="nav-link active" id="edit-tab" data-toggle="tab" href="#edit" role="tab" aria-controls="edit" aria-selected="false">Return</a></li>
+                @*<li class="nav-item"><a class="nav-link " id="invoice-tab" data-toggle="tab" href="#invoice" role="tab" aria-controls="invoice" aria-selected="true">Preview</a></li>*@
+
+            </ul>
+            <div class="card">
+
+                <div class="tab-content" id="myTabContent">
+
+
+                    <div class="tab-pane fade " id="invoice" role="tabpanel" aria-labelledby="invoice-tab">
+
+                        <!-- -===== Print Area =======-->
+                        <!-- <partial name="printsection" />-->
+                        <!-- ==== / Print Area =====-->
+
+                    </div>
+
+                    <div class="tab-pane fade show active" id="edit" role="tabpanel" aria-labelledby="edit-tab">
+                        <!-- ==== Edit Area =====-->
+                        @foreach (var itemsum in Model.salesinvoicesummeries)
+                        {
+
+
+                        <div class="row">
+                            <div class="col-4 text-left">
+                                @{var date = DateTime.Now.GetDateTimeFormats()[2];
+                                    var BillNo = itemsum.Billid;
+                                }
+                            </div>
+                            <div class="col-5">
+                                <h3 class="text-center">SALES RETURN</h3>
+                            </div>
+                            <div class="col-3">
+                                <b>Bill No:  @itemsum.Billid </b><br />
+                                <b>  Date:</b> @itemsum.Billdate <br />
+                                <b> BillBy:</b> @itemsum.Billby
+                            </div>
+                        </div>
+
+                        <div class="mt-3 mb-4 border-top"></div>
+                        <!-- ==== Entry Form Area =====-->
+                        <!-- <partial name="productform" />
+    <!-- ==<== Entry Form Area End =====-->
+                        <!-- ==== Form Area =====-->
+                        <fieldset>
+                            <div class="col-md-12 table-responsive">
+                              
+                                
+                                <table id="submissionTable" class="table table-bordered table-checkable">
+                                    <thead class="table table-hover mb-3">
+                                        <tr class="bg-gray-300 text-center">
+                                            <td>S.No</td>
+                                            <td>Product Name</td>
+                                            <td>Category </td>
+                                            <td>Subcategory </td>
+                                            <td> Color</td>
+                                            <td> Brand</td>
+                                            <td>HSN Code</td>
+                                            <td>Rate </td>
+                                            <td>Qty </td>
+                                            <td>Amount </td>
+                                            <td>Action</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model.salesinvoices)
+                                        {
+                                            countss++;                                           
+                                            <tr class="text-center">
+                                                <td>@countss</td>
+                                                <td>@item.Productname</td>
+                                                <td>@item.Category </td>
+                                                <td>@item.Subcategory </td>
+                                                <td> @item.Color</td>
+                                                <td>@item.Brand </td>
+                                                <td>@item.Hsncode </td>
+                                                <td>@item.Rate </td>
+                                                <td>@item.Quantity </td>
+                                                <td>@item.Amount </td>
+                                                <td class="text-center"> <button type="button" class="btn btn-outline-secondary float-right" data-toggle="modal" data-target=".A-@item.Id">Return this</button></td>
+
+                                            </tr>
+                                            <!--Modal -->
+
+
+
+                                            <div class="modal fade A-@item.Id" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle-2" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalCenterTitle-2">Please Enter Quantity and Reason</h5>
+                                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="row">
+
+                                                                <div class="col-3">
+                                                                    <b> <label style="text-align:right">Product Name</label></b>
+                                                                </div>
+                                                                <div class="col-9">
+                                                                    <label style="text-align:left">@item.Productname</label>
+                                                                </div>
+                                                                <div class="col-3">
+                                                                    <b> <label style="text-align:right">Quantity</label></b>
+                                                                </div>
+                                                                <div class="col-9">
+                                                                    <label style="text-align:left">@item.Quantity</label>
+                                                                </div>
+
+                                                            </div>
+                                                            <form id="@item.Id" method="post" enctype="multipart/form-data">
+                                                                <input type="hidden" value="@item.Productname" name="Productname" />
+                                                                <input type="hidden" value="@item.Category" name="Category" />
+                                                                <input type="hidden" value="@item.Subcategory" name="Subcategory" />
+                                                                <input type="hidden" value="@item.Color" name="Color" />
+                                                                <input type="hidden" value="@item.Branch" name="Brand" />
+                                                                <input type="hidden" value="@item.Hsncode" name="Hsncode" />
+                                                                <input type="hidden" value="@item.Rate" name="Rate" />
+                                                                <input type="hidden" value="@item.Amount" name="Amount" />
+                                                                <input type="hidden" value="@item.Billno" name="Billno" />
+
+                                                                <div class="form-group">
+                                                                    <label class="col-form-label" for="recipient-name-1">Quantity:</label>
+                                                                    <input class="form-control" id="Quantity" name="Quantity" type="text" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label class="col-form-label" for="message-text">Reason:</label>
+                                                                    <textarea class="form-control" id="Reasion" name="Reasion"></textarea>
+                                                                </div>
+
+                                                            </form>
+
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button class="btn btn-secondary" type="reset" data-dismiss="modal">Close</button>
+                                                            <input class="btn btn-primary ml-2" type="button" onclick=Save(@item.Id) value="Add Return list" />
+                                                        </div>
+                                                    </div>
+                                                    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+                                                    <script>
+                                                        function Save(id) {
+
+                                                           
+                                                            var form = $("#" + id)[0];
+                                                            var data = new FormData(form);
+                                                           
+                                                            $.ajax({
+                                                                type: "POST",
+                                                                enctype: 'multipart/form-data',
+                                                                url: "/MyReports/SbillAddTmp",
+                                                                data: data,
+                                                                processData: false,
+                                                                contentType: false,
+                                                                cache: false,
+                                                                timeout: 600000,
+                                                                success: function (data) {
+                                                                    if (data.success) {
+                                                                        toastr.success("Add Done");
+                                                                      
+                                                                      
+                                                                        $("#fsum").load(" #fsum");
+                                                                        $("#loadmain").load(" #loadmain");
+                                                                    }
+                                                                    else {
+                                                                        toastr.error(data.message);
+                                                                    }
+                                                                }
+                                                            });
+
+
+                                                        }
+function Delete(id) {
+        var data = id;
+            $.ajax({
+                type: "DELETE",
+                enctype: 'multipart/form-data',
+                url: '@Url.Action("deletetmpreturn")',
+                data: { 'id': data },
+                success: function (data) {
+                    if (data.success) {
+                        toastr.error("Product has been successfully Removed.", "Delete!", {
+                            timeOut: 6000
+                        });
+                       
+                       
+                        $("#loadmain").load(" #loadmain");
+                        $("#fsum").load(" #fsum");
+                    }
+                    else {
+                        toastr.error(data.message);
+                    }
+                }
+            });
+
+
+
+
+    }
+    //Testing end
+                                                    </script>
+                                                </div>
+                                            </div>
+                                            <!-- Modal -->
+                                        }
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="fsum">
+                                @if (Model.tmpsalesreturns.Count != 0)
+                                {
+                                    <div id="loadmain">
+
+
+                                        <table id="submissionTable" class="table table-bordered table-checkable">
+                                            <thead class="table table-hover mb-3">
+                                                <tr class="bg-danger text-center">
+                                                    <td>S.No</td>
+                                                    <td>Product Name</td>
+                                                    <td>Category </td>
+                                                    <td>Subcategory </td>
+                                                    <td> Color</td>
+                                                    <td> Brand</td>
+                                                    <td>HSN Code</td>
+                                                    <td>Rate </td>
+                                                    <td>Qty </td>
+                                                    <td>Amount </td>
+                                                    <td>Action</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var item in Model.tmpsalesreturns)
+                                                {
+                                                    counts++;
+                                                    totalamount += item.Amount;
+                                                    qty += item.Quantity;
+                                                    <tr class="text-center">
+                                                        <td>@counts</td>
+                                                        <td>@item.Productname</td>
+                                                        <td>@item.Category </td>
+                                                        <td>@item.Subcategory </td>
+                                                        <td> @item.Color</td>
+                                                        <td>@item.Brand </td>
+                                                        <td>@item.Hsncode </td>
+                                                        <td>@item.Rate </td>
+                                                        <td>@item.Quantity </td>
+                                                        <td>@item.Amount </td>
+                                                        <td class="text-center"> <button type="button" class="btn btn-outline-secondary float-right" onclick=Delete(@item.Id)>Delete</button></td>
+
+                                                    </tr>
+
+                                                }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+                                <form id="summery">
+                                    <input type="hidden" value="@BillNo" name="Billid" id="Billid" />
+                                    <input type="hidden" value="@qty" name="Totalqty" id="Totalqty" />
+                                    <input type="hidden" value="@totalamount" name="Totalamount" id="Totalamount" />
+                                    <input type="hidden" value="@itemsum.Gst" name="Gst" id="Gst" />
+
+                                    <input type="hidden" value="@itemsum.Customername" name="Customername" id="Customername" />
+                                    <input type="hidden" value="@itemsum.Mobilenumber" name="Mobilenumber" id="Mobilenumber" />
+                                    <input type="hidden" value="@itemsum.Address" name="Address" id="Address" />
+
+
+
+                                    <div class="row">
+                                        <div class="col-md-3">
+
+                                        </div>
+
+
+                                        <br />
+
+
+
+                                        <div class="col-md-9">
+                                            <div class="invoice-summary invoice-summary-input float-right">
+                                                <p> <b> Sub total: <span>@totalamount</span></b></p>
+
+                                                <h5 class="font-weight-bold d-flex align-items-center">
+                                                    Grand Total:<span>
+                                                        <input class="form-control text-right" name="" id="gstandamount" type="text" readonly value="@totalamount" placeholder="0" />
+                                                        <input type="hidden" name="nettotal" id="nettotal" value="" />
+                                                    </span>
+                                                </h5>
+
+
+                                                <div class="border">
+                                                    <h5 class="font-weight-bold d-flex align-items-center">
+                                                        Payment Type:<span>
+                                                            <select name="Paymenttype" required>
+                                                                <option value="">Select</option>
+                                                                <option value="Cash">Cash</option>
+                                                                <option value="Card">Card</option>
+                                                                <option value="Credit">Credit</option>
+                                                                <option value="Nettrancection">Net Transfer</option>
+                                                                <option value="EMI">EMI</option>
+                                                                <option value="UPI">UPI</option>
+
+                                                            </select>
+                                                        </span>
+                                                    </h5><br />
+                                                    <h5 class="font-weight-bold d-flex align-items-center">
+                                                        Reference No:<input class="form-control" name="Refcode" id="ref" autocomplete="off" type="text" value="" />
+
+                                                    </h5>
+                                                </div>
+                                                <h5 class="font-weight-bold d-flex align-items-center">
+                                                    Give:<input class="form-control text-right" autocomplete="off" name="Paid" id="Paid" onkeyup="amountres(this)" type="text" value="" required />
+
+                                                </h5>
+
+                                                <h5 class="font-weight-bold d-flex align-items-center">
+                                                    Balance:<input class="form-control text-right" name="Balance" id="balance" readonly type="text" value="0" />
+
+                                                </h5>
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="row">
+
+                                <div class="col-md-12 form-group mb-3 text-right" style="padding-top: 22px;  padding-right: 22px;">
+                                    <input type="button" value="Save Bill" onclick=Savesum() class="btn btn-primary" />
+                                </div>
+                            </div>
+
+                        </fieldset>
+                                    }
+                    </div>
+                   
+                    <!-- ==== / Form Area =====-->
+                    <!-- ==== / Edit Area =====-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- end of main-content -->
+<!-- Footer Start -->
+<!-- ============ Main content End ============= -->
+
+<script>
+    function amountres(amt) {
+        var amount = amt;
+        var togst = document.getElementById("Totalamount");
+        var res = document.getElementById("balance");
+
+        var tmp = parseFloat(togst.value) - parseFloat(amount.value)
+        console.log(tmp);
+        if (isNaN(tmp)) {
+            res.value = 0;
+        }
+        else {
+            res.value = tmp;
+        }
+
+
+    }
+
+    var Savesum = function () {
+
+        var form = $('#summery').serialize();
+        console.log(form);
+        if ($("#summery").valid()) {
+
+            $("#Save").prop("disabled", true);
+            $.ajax({
+                type: "POST",
+                enctype: 'multipart/form-data',
+                url: '@Url.Action("addtmpreturnsummery")',
+                data: form,
+                processData: false,
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                cache: false,
+                timeout: 600000,
+                success: function (data) {
+                    toastr.success("Your bill Return done", "Bill Save successfully ", {
+                        closeButton: !0
+                    });
+                    $("#print-area").load(" #print-area");
+                    $("#edit").load(" #edit");
+                   
+                },
+                error: function (e) {
+
+                     console.log("ERROR : ", e);
+                    $("#Save").prop("disabled", false);
+                    alert("Error");
+
+                }
+            });
+
+        }
+    }
+  
+
+</script>
+
+
+

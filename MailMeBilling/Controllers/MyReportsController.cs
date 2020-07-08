@@ -97,7 +97,11 @@ namespace MailMeBilling.Controllers
             var billamount = _context.salesinvoicesummery.Where(i => i.Billid == cph.billid).FirstOrDefault();
            decimal paid = cph.Payment;
             decimal cal = billamount.Balance - paid;
+            decimal calamt = billamount.Totalamount + paid;
             billamount.Balance = cal;
+            billamount.Totalamount = calamt;
+
+
             if (cal == 0)
             {
                 billamount.status = "Close";
@@ -157,6 +161,10 @@ namespace MailMeBilling.Controllers
             decimal paid = cph.Payment;
             decimal cal = billamount.Balance - paid;
             billamount.Balance = cal;
+
+            decimal calamt = billamount.Totalamount + paid;
+           
+            billamount.Totalamount = calamt;
             if (cal == 0)
             {
                 billamount.status = "Close";
@@ -286,11 +294,18 @@ namespace MailMeBilling.Controllers
             if (id != 0)
             {
               
-                var tmp = _context.tempseccions.Where(i => i.Branch == Branch && i.Billno == id).ToList();
+                var tmp = _context.tmpsalesreturns.Where(i => i.Branch == Branch && i.Billno == id).ToList();
                 var tmpsale = _context.salesinvoices.Where(i => i.Branch == Branch && i.Billno == id).ToList();
-                if (tmpsale.Count != 0)
-               
+                if (tmpsale.Count != 0)               
                 {
+
+                    if (tmp != null)
+                    {
+                        foreach (var item in tmp)
+                        {
+                            load.tmpsalesreturns.Add(item);
+                        }
+                    }
                     foreach (var item in tmpsale)
                     {
                         load.salesinvoices.Add(item);
@@ -316,5 +331,197 @@ namespace MailMeBilling.Controllers
             return View(load);
         }
 
+        public IActionResult addtmpreturnsummery(Salesreturnsummery tempseccion)
+        {
+            ViewBag.data = HttpContext.Session.GetString("name");
+            var Name = ViewBag.data;
+            tempseccion.Billdate = DateTime.Now;
+            tempseccion.Billby = Name;
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            var Branch = ViewBag.branch;
+            tempseccion.Branch = Branch;           
+
+            if (tempseccion.Balance != 0)
+            {
+                tempseccion.status = "Pending";
+            }
+            else
+            {
+                tempseccion.status = "Close";
+            }
+            List<SalesReturn> salesinvoice = new List<SalesReturn>();
+
+            var tmp = _context.tmpsalesreturns.Where(i => i.Billno == tempseccion.Billid && i.Branch == tempseccion.Branch).ToList();
+            foreach (var item in tmp)
+            {
+                var ss = new SalesReturn();
+
+                ss.Productname = item.Productname;
+                ss.Category = item.Category;
+                ss.Subcategory = item.Subcategory;
+                ss.Color = item.Color;
+                ss.Brand = item.Brand;
+                ss.Rate = item.Rate;
+                ss.Quantity = item.Quantity;
+                ss.Hsncode = item.Hsncode;
+                ss.Amount = item.Amount;
+                ss.Billno = item.Billno;
+                ss.Billdate = item.Billdate;
+                ss.Billby = item.Billby;
+                ss.Branch = Branch;
+                ss.Resion = item.Reasion;
+
+                salesinvoice.Add(ss);
+            }
+            foreach (var item in tmp)
+            {
+                var qty = item.Productname;
+                var prgb = _context.product.Where(p => p.productname == qty).SingleOrDefault();
+                var pquantity = prgb.stock + item.Quantity;
+                prgb.stock = pquantity;
+                _context.product.Update(prgb);
+
+
+            }
+            _context.salesreturns.AddRange(salesinvoice);
+            _context.salesreturnsummeries.Add(tempseccion);
+            _context.SaveChanges();
+            var billno = tempseccion.Billid;
+            Salesreturnpaymenthistry cph = new Salesreturnpaymenthistry();
+            cph.Mobile = tempseccion.Mobilenumber;
+            cph.Customername = tempseccion.Customername;
+            cph.Address = tempseccion.Address;
+            cph.paymenttype = tempseccion.Paymenttype;
+            cph.Payment = tempseccion.Paid;
+            cph.Recivedby = Name;
+            cph.Paiddate = DateTime.Now;
+            cph.Balance = tempseccion.Balance;
+            cph.refno = tempseccion.Refcode;
+            cph.Branch = Branch;          
+            cph.billid = billno;
+            _context.salesreturnpaymenthistries.Add(cph);
+
+
+            
+
+            var salesbill = _context.salesinvoices.Where(i => i.Billno == tempseccion.Billid && i.Branch == tempseccion.Branch).ToList();
+            var salessummery = _context.salesinvoicesummery.Where(i => i.Billid == tempseccion.Billid && i.Branch == tempseccion.Branch).FirstOrDefault();
+
+           
+            var billnum = _context.salesinvoicesummery.OrderByDescending(i => i.Billid).Where(i =>  i.Branch == tempseccion.Branch).FirstOrDefault();
+            var nobill = billnum.Billid + 1;
+            List<Salesinvoice> salesinvoicebill = new List<Salesinvoice>();
+            foreach (var item in salesbill)
+            {
+              
+                var sin = new Salesinvoice();
+                var tmpqty = _context.salesinvoices.Where(i => i.Billno == tempseccion.Billid && i.Branch == cph.Branch && i.Productname == item.Productname).FirstOrDefault();
+                var returnqty = _context.tmpsalesreturns.Where(i => i.Billno == tempseccion.Billid && i.Branch == cph.Branch && i.Productname == item.Productname).FirstOrDefault();
+                ViewBag.totalqty =+ tmpqty.Quantity;
+                ViewBag.totalamt = +tmpqty.Amount;
+                sin.Productname = item.Productname;
+                sin.Category = item.Category;
+                sin.Subcategory = item.Subcategory;
+                sin.Color = item.Color;
+                sin.Brand = item.Brand;
+                sin.Rate = item.Rate;
+                sin.Hsncode = item.Hsncode;
+                var qty = 0;
+                if (returnqty != null)
+                {
+                    qty = tmpqty.Quantity - returnqty.Quantity;
+                }
+                else
+                {
+                    qty = tmpqty.Quantity;
+                }
+               
+                sin.Quantity = qty;
+              
+                sin.Amount = item.Rate * qty;
+                sin.Billno = nobill;
+
+                sin.Billdate = DateTime.Now;
+                sin.Billby = Name;
+                sin.Branch = Branch;
+                salesinvoicebill.Add(sin);
+            }
+            _context.salesinvoices.AddRange(salesinvoicebill);
+
+            Salesinvoicesummery sis = new Salesinvoicesummery();
+            sis.Billid = nobill;
+            sis.Totalqty = ViewBag.totalqty;
+            sis.Totalamount = salessummery.nettotal - tempseccion.Totalamount;
+            sis.Gst = tempseccion.Gst;
+            var gstcal = (ViewBag.totalamt * sis.Gst) / 100;
+            if (sis.Gst != 0)            {
+              
+                sis.Cgst = Convert.ToInt32(gstcal / 2);
+                sis.Sgst = Convert.ToInt32(gstcal / 2);
+                sis.Igst = 0;
+            }
+            else
+            {
+                sis.Cgst =0;
+                sis.Sgst = 0;
+                sis.Igst = 0;
+
+            }
+           
+            sis.Paymenttype = tempseccion.Paymenttype;
+            sis.Refcode = tempseccion.Refcode;
+            sis.discount = 0;
+            sis.Balance = 0;
+            sis.nettotal = sis.Totalamount + gstcal;
+            sis.Billdate = DateTime.Now;
+            sis.Billby = Name;
+            sis.status = "Close";
+            sis.Customername = tempseccion.Customername;
+            sis.Mobilenumber = tempseccion.Mobilenumber;
+            sis.Address = tempseccion.Address;
+            sis.Paid = sis.nettotal;
+
+
+
+            _context.salesinvoicesummery.Add(sis);
+            _context.SaveChanges();
+            var cleartmp = _context.tmpsalesreturns.Where(i => i.Billno == tempseccion.Billid && i.Branch == cph.Branch).ToList();
+            _context.tmpsalesreturns.RemoveRange(cleartmp);
+            _context.SaveChanges();
+
+
+            return Json(new { success = true, message = "Save successful." });
+
+        }
+        //[HttpDelete]
+        public IActionResult deletetmpreturn(int id)
+        {
+            ViewBag.data = HttpContext.Session.GetString("name");
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
+            string Branch = ViewBag.branch;
+            var app = _context.tmpsalesreturns.Where(i => i.Id == id && i.Branch == Branch).FirstOrDefault();
+            _context.tmpsalesreturns.Remove(app);
+            _context.SaveChanges();
+
+            return Json(new { success = true, message = "Delete successful." });
+        }
+
+        [HttpPost]
+        public IActionResult SbillAddTmp(Tmpsalesreturn tmpsalesreturn)
+        {
+            ViewBag.data = HttpContext.Session.GetString("name");
+            var Name = ViewBag.data;
+            tmpsalesreturn.Billdate = DateTime.Now;
+            tmpsalesreturn.Billby = Name;
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            var Branch = ViewBag.branch;
+            tmpsalesreturn.Branch = Branch;
+            var amount = tmpsalesreturn.Rate * tmpsalesreturn.Quantity;
+            tmpsalesreturn.Amount = amount;
+            _context.tmpsalesreturns.Add(tmpsalesreturn);
+            _context.SaveChanges();
+            return Json(new { success = true, message = "Save successfull." });
+        }
     }
 }

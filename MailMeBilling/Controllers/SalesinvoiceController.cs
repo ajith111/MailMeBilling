@@ -13,6 +13,7 @@ namespace MailMeBilling.Controllers
     public class SalesinvoiceController : Controller
     {
         private readonly ApplicationDbContext _context;
+       
         public SalesinvoiceController(ApplicationDbContext context)
         {
             _context = context;
@@ -72,6 +73,9 @@ namespace MailMeBilling.Controllers
 
                         foreach (var item in tmpsummery)
                         {
+                            //DateTime utcdate = DateTime.ParseExact(item.Billdate, "M/dd/yyyy h: mm:ss tt", System.Globalization.CultureInfo.InvariantCulture);
+                            var istdate = TimeZoneInfo.ConvertTimeFromUtc(item.Billdate, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                            ViewBag.billdate = istdate;
                             load.salesinvoicesummeries.Add(item);
                         }
                     }
@@ -109,7 +113,7 @@ namespace MailMeBilling.Controllers
         {
             ViewBag.data = HttpContext.Session.GetString("name");
             var Name = ViewBag.data;
-            tempseccion.Billdate =  DateTime.Now;
+            tempseccion.Billdate =  DateTime.UtcNow;
             tempseccion.Billby = Name;
             ViewBag.branch = HttpContext.Session.GetString("branch");
             var Branch = ViewBag.branch;
