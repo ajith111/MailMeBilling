@@ -1,8 +1,11 @@
-﻿@model IEnumerable<MailMeBilling.Models.Purchaseinvoicesummery>
+﻿
+
+@model IEnumerable<MailMeBilling.Models.Purchasereturnsummery>
 @{
-    ViewData["Title"] = "Purchasereturnreport";
+    ViewData["Title"] = "Purchase Return Report";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
+
 
 
 
@@ -20,7 +23,7 @@
                 <thead>
                     <tr class="text-center">
                         <th>Bill No</th>
-                        <th>Vendor Name</th>
+                        <th>Customer Name</th>
                         <th>Mobil Number</th>
                         <th>Balance</th>
                         <th>Status</th>
@@ -33,7 +36,7 @@
                     {
                         <tr>
                             <td class="text-center">@item.Billid</td>
-                            <td class="text-center">@item.Vendorrname</td>
+                            <td class="text-center">@item.Customername</td>
                             <td class="text-center">@item.Mobilenumber</td>
                             <td class="text-right">@item.Balance</td>
                             <td class="text-center">
@@ -50,10 +53,17 @@
                             </td>
                             <td class="text-right">@item.Totalamount</td>
                             <td class="text-center">
-                                <a asp-controller="MyReports" asp-action="Vendorpayment" asp-route-id="@item.Mobilenumber" class="btn btn-primary">Edit</a>
-                                <a asp-controller="MyReports" asp-action="Viewbill" asp-route-id="@item.Billid" class="btn btn-success" target="_blank">Print</a>
+
+                                @*<a asp-controller="MyReports" asp-action="Salesreturnbill" asp-route-id="@item.Billid" class="btn btn-primary">Return</a>*@
+                                <a asp-controller="MyReports" asp-action="print" asp-route-id="@item.Billid" class="btn btn-success" target="_blank">Print</a>
+
+
+
 
                             </td>
+
+
+
                         </tr>
                     }
 
@@ -116,6 +126,5 @@
     });
 
 </script>
-
 
 

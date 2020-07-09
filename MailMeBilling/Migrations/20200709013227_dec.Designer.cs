@@ -3,14 +3,16 @@ using System;
 using MailMeBilling.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MailMeBilling.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200709013227_dec")]
+    partial class dec
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -371,162 +373,6 @@ namespace MailMeBilling.Migrations
                     b.HasKey("id");
 
                     b.ToTable("purchaseinvoicesummeries");
-                });
-
-            modelBuilder.Entity("MailMeBilling.Models.Purchasereturn", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<string>("Billby")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Billdate")
-                        .HasColumnType("datetime");
-
-                    b.Property<int>("Billno")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Branch")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Brand")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Category")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Color")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Hsncode")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Productname")
-                        .HasColumnType("text");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Rate")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<string>("Resion")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Subcategory")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("purchasereturns");
-                });
-
-            modelBuilder.Entity("MailMeBilling.Models.Purchasereturnpaymenthistry", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Address")
-                        .HasColumnType("text");
-
-                    b.Property<decimal>("Balance")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<string>("Branch")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Customername")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Mobile")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Paiddate")
-                        .HasColumnType("datetime");
-
-                    b.Property<decimal>("Payment")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<string>("Recivedby")
-                        .HasColumnType("text");
-
-                    b.Property<int>("billid")
-                        .HasColumnType("int");
-
-                    b.Property<string>("paymenttype")
-                        .HasColumnType("text");
-
-                    b.Property<string>("refno")
-                        .HasColumnType("text");
-
-                    b.Property<decimal>("total")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.HasKey("id");
-
-                    b.ToTable("purchasereturnpaymenthistries");
-                });
-
-            modelBuilder.Entity("MailMeBilling.Models.Purchasereturnsummery", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Address")
-                        .HasColumnType("text");
-
-                    b.Property<decimal>("Balance")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<string>("Billby")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Billdate")
-                        .HasColumnType("datetime");
-
-                    b.Property<int>("Billid")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Branch")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Customername")
-                        .HasColumnType("text");
-
-                    b.Property<int>("Gst")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Mobilenumber")
-                        .HasColumnType("text");
-
-                    b.Property<decimal>("Paid")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<string>("Paymenttype")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Refcode")
-                        .HasColumnType("text");
-
-                    b.Property<decimal>("Totalamount")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<int>("Totalqty")
-                        .HasColumnType("int");
-
-                    b.Property<string>("status")
-                        .HasColumnType("text");
-
-                    b.HasKey("id");
-
-                    b.ToTable("purchasereturnsummeries");
                 });
 
             modelBuilder.Entity("MailMeBilling.Models.RolleDetails", b =>
@@ -936,59 +782,6 @@ namespace MailMeBilling.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("tmppurchases");
-                });
-
-            modelBuilder.Entity("MailMeBilling.Models.Tmppurchasereturn", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<string>("Billby")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("Billdate")
-                        .HasColumnType("datetime");
-
-                    b.Property<int>("Billno")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Branch")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Brand")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Category")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Color")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Hsncode")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Productname")
-                        .HasColumnType("text");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Rate")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<string>("Reasion")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Subcategory")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("tmppurchasereturns");
                 });
 
             modelBuilder.Entity("MailMeBilling.Models.Tmpsalesreturn", b =>

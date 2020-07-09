@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MailMeBilling.Models.Salesinvoicesummery>
+﻿@model IEnumerable<MailMeBilling.Models.Salesreturnsummery>
 @{
     ViewData["Title"] = "Salesreturnreport";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
@@ -49,11 +49,11 @@
 
 
                             </td>
-                            <td class="text-right">@item.nettotal</td>
+                            <td class="text-right">@item.Totalamount</td>
                             <td class="text-center">
 
-                                <a asp-controller="MyReports" asp-action="Salesreturnbill" asp-route-id="@item.Billid" class="btn btn-primary">Return</a>
-                                @*<a asp-controller="MyReports" asp-action="print" asp-route-id="@item.Billid" class="btn btn-success" target="_blank">Print</a>*@
+                              @*<a asp-controller="MyReports" asp-action="Salesreturnbill" asp-route-id="@item.Billid" class="btn btn-primary">Return</a>*@
+                                <a asp-controller="MyReports" asp-action="print" asp-route-id="@item.Billid" class="btn btn-success" target="_blank">Print</a>
 
 
 

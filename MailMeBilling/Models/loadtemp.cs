@@ -31,6 +31,9 @@ namespace MailMeBilling.Models
         public List<Purchaseinvoicesummery> purchaseinvoicesummerys { get; set; } = new List<Purchaseinvoicesummery>();
 
         public List<Tmpsalesreturn> tmpsalesreturns { get; set; } = new List<Tmpsalesreturn>();
+        public List<Tmppurchasereturn> tmppurchasereturns { get; set; } = new List<Tmppurchasereturn>();
+        public List<Purchaseinvoice> purchaseinvoices { get; set; } = new List<Purchaseinvoice>();
+        public List<Purchaseinvoicesummery> purchaseinvoicesummeries { get; set; } = new List<Purchaseinvoicesummery>();
 
     }
 }

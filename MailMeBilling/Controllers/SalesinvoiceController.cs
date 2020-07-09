@@ -20,8 +20,8 @@ namespace MailMeBilling.Controllers
         }
         public IActionResult Index()
         {
-            DateTime todaydate = DateTime.Now;
-            DateTime dateStart = DateTime.Now.AddDays(-15);
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
             var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
 
             ViewBag.CustomerPending = pendingcustomer.Count();
@@ -73,7 +73,7 @@ namespace MailMeBilling.Controllers
 
                         foreach (var item in tmpsummery)
                         {
-                            //DateTime utcdate = DateTime.ParseExact(item.Billdate, "M/dd/yyyy h: mm:ss tt", System.Globalization.CultureInfo.InvariantCulture);
+                           
                             var istdate = TimeZoneInfo.ConvertTimeFromUtc(item.Billdate, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                             ViewBag.billdate = istdate;
                             load.salesinvoicesummeries.Add(item);
@@ -97,7 +97,7 @@ namespace MailMeBilling.Controllers
         {
             ViewBag.data = HttpContext.Session.GetString("name");
             var Name = ViewBag.data;
-            tempseccion.Billdate =  DateTime.Now;
+            tempseccion.Billdate =  DateTime.UtcNow;
             tempseccion.Billby = Name;
             ViewBag.branch = HttpContext.Session.GetString("branch");
             var Branch = ViewBag.branch;
@@ -127,7 +127,7 @@ namespace MailMeBilling.Controllers
                 cd.Customername = tempseccion.Customername;
                 cd.Address = tempseccion.Address;
                 cd.Branch = Branch;
-                cd.Entrydate =  DateTime.Now;
+                cd.Entrydate =  DateTime.UtcNow;
                 cd.Entryby = Name;
                 _context.customerdetails.Add(cd);
                 _context.SaveChanges();
@@ -185,7 +185,7 @@ namespace MailMeBilling.Controllers
             cph.paymenttype = tempseccion.Paymenttype;
             cph.Payment = tempseccion.Paid;
             cph.Recivedby = Name;
-            cph.Paiddate =  DateTime.Now;
+            cph.Paiddate =  DateTime.UtcNow;
             cph.Balance = tempseccion.Balance;
             cph.refno = tempseccion.Refcode;
             cph.Branch = Branch;

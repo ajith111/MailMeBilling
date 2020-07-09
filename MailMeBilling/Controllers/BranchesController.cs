@@ -22,8 +22,8 @@ namespace MailMeBilling.Controllers
         // GET: Branches
         public async Task<IActionResult> Index()
         {
-            DateTime todaydate =  DateTime.Now;
-            DateTime dateStart = DateTime.Now.AddDays(-15);
+            DateTime todaydate =  DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
             var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
 
             ViewBag.CustomerPending = pendingcustomer.Count();
@@ -37,8 +37,8 @@ namespace MailMeBilling.Controllers
         // GET: Branches/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            DateTime todaydate =  DateTime.Now;
-            DateTime dateStart = DateTime.Now.AddDays(-15);
+            DateTime todaydate =  DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
             var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
 
             ViewBag.CustomerPending = pendingcustomer.Count();
@@ -64,8 +64,8 @@ namespace MailMeBilling.Controllers
         // GET: Branches/Create
         public IActionResult Create()
         {
-            DateTime todaydate =  DateTime.Now;
-            DateTime dateStart = DateTime.Now.AddDays(-15);
+            DateTime todaydate =  DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
             var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
 
             ViewBag.CustomerPending = pendingcustomer.Count();
@@ -96,8 +96,8 @@ namespace MailMeBilling.Controllers
         // GET: Branches/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            DateTime todaydate =  DateTime.Now;
-            DateTime dateStart = DateTime.Now.AddDays(-15);
+            DateTime todaydate =  DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
             var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
 
             ViewBag.CustomerPending = pendingcustomer.Count();
@@ -156,8 +156,8 @@ namespace MailMeBilling.Controllers
         // GET: Branches/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            DateTime todaydate =  DateTime.Now;
-            DateTime dateStart = DateTime.Now.AddDays(-15);
+            DateTime todaydate =  DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
             var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
 
             ViewBag.CustomerPending = pendingcustomer.Count();
