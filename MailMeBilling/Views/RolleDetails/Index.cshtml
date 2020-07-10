@@ -1,20 +1,21 @@
 ﻿@model IEnumerable<MailMeBilling.Models.RolleDetails>
 
 @{
-    ViewData["Title"] = "Rolls";
+    ViewData["Title"] = "Role List";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    int count = 0;
 }
 
     <div class="card text-left">
         <div class="card-body">
             <div class="row">
                 <div class="col-10">
-                    <h4 class="card-title mb-3"><b>Roll List</b></h4>
-                    <p>All  Roll detail list here..</p>
+                    <h4 class="card-title mb-3"><b>Role List</b></h4>
+                    <p>All  Role detail list here..</p>
                 </div>
                 <div class="col-2">
                     <p class="text-right">
-                        <a asp-action="Create" class="btn btn-primary">Create New</a>
+                        <a asp-action="Create" class="btn btn-primary">Add Role</a>
                     </p>
                 </div>
             </div>         
@@ -24,6 +25,7 @@
                 <table class="display table table-striped table-bordered" id="zero_configuration_table" style="width:100%">
                     <thead>
                         <tr class="text-center">
+                            <th>S.No</th>
                             <th>
                                 @Html.DisplayNameFor(model => model.Name)
                             </th>
@@ -58,7 +60,11 @@
                     <tbody>
                         @foreach (var item in Model)
                         {
+                            count++;
                         <tr class="text-center">
+                            <td>
+                                @count
+                            </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.Name)
                             </td>
@@ -88,9 +94,9 @@
                             </td>
 
                             <td>
-                                <a asp-action="Edit" asp-route-id="@item.Employeeid">Edit</a> |
-                                <a asp-action="Details" asp-route-id="@item.Employeeid">Details</a> |
-                                <a asp-action="Delete" asp-route-id="@item.Employeeid">Delete</a>
+                                <a class=" nav-icon mr-2 i-Pen-2" asp-action="Edit" asp-route-id="@item.Employeeid"></a> 
+                                <a class="nav-icon mr-2 i-Information" asp-action="Details" asp-route-id="@item.Employeeid"></a> 
+                                <a class=" nav-icon mr-2 i-Close" asp-action="Delete" asp-route-id="@item.Employeeid"></a>
                             </td>
                         </tr>
                         }

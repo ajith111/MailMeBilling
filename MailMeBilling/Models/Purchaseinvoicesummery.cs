@@ -19,6 +19,7 @@ namespace MailMeBilling.Models
         public string Refcode { get; set; }
         public decimal Balance { get; set; }
         public decimal paid { get; set; }
+       
         public byte[] upload { get; set; }
         public DateTime Billdate { get; set; }
         public string Billby { get; set; }

@@ -10,8 +10,9 @@ namespace MailMeBilling.Models
     {
         [Key]
         public int Id { get; set; }
-
+        [Display(Name ="Brand Name")]
         public string Brandname { get; set; }
+        [Display(Name = "Brand Discription")]
         public string Branddescription { get; set; }
         public string Branch { get; set; }
     }

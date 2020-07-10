@@ -118,7 +118,7 @@ namespace MailMeBilling.Controllers
                 cd.Entrydate =  DateTime.UtcNow;
                 cd.Entryby = Name;
                 _context.vendor.Add(cd);
-                _context.SaveChanges();
+               
             }
             if (tempseccion.Balance != 0)
             {
@@ -163,7 +163,7 @@ namespace MailMeBilling.Controllers
             }
             _context.purchaseinvoices.AddRange(salesinvoice);
             _context.purchaseinvoicesummeries.Add(tempseccion);
-            _context.SaveChanges();
+          
 
             var billno = tempseccion.Billid;
             Vendorpayment cph = new Vendorpayment();

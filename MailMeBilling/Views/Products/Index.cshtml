@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = " Product List";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    int count = 0;
 }
 
 
@@ -27,6 +28,7 @@
             <table class="display table table-striped table-bordered" id="zero_configuration_table" style="width:100%">
                 <thead>
                     <tr class="text-center">
+                        <th>S.No</th>
                         <th>
                             @Html.DisplayNameFor(model => model.productimage)
                         </th>
@@ -48,9 +50,7 @@
                         <th>
                             @Html.DisplayNameFor(model => model.Hsncode)
                         </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Purchaserate)
-                        </th>
+                       
                         <th>
                             @Html.DisplayNameFor(model => model.Salesrate)
                         </th>
@@ -67,16 +67,18 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                       
+                        count++;
+
 
 
                     <tr class="text-center">
+                        <td style="width:10px">@count</td>
                         <td>
                             @if (item.productimage != null)
                             {
                                 string imageBase64 = Convert.ToBase64String(item.productimage);
                                 string imageSrc = string.Format("data:image/gif;base64,{0}", imageBase64);
-                            <img src="@imageSrc" style="width:50px;height:30px; " data-toggle="modal" data-target=".A-@item.productid" />
+                            <img src="@imageSrc" style="width:50px;height:20px; " data-toggle="modal" data-target=".A-@item.productid" />
 
                             <!--Modal -->
                             <div class="modal fade bd-example-modal-lg A-@item.productid" id="" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -121,9 +123,7 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Hsncode)
                         </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Purchaserate)
-                        </td>
+                       
                         <td>
                             @Html.DisplayFor(modelItem => item.Salesrate)
                         </td>
@@ -133,9 +133,11 @@
 
 
                         <td>
-                            <a asp-action="Edit" asp-route-id="@item.productid">Update</a> |
-                            <a asp-action="Details" asp-route-id="@item.productid">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@item.productid">Delete</a>
+                            <span>
+                                <a class=" nav-icon mr-2 i-Pen-2" asp-action="Edit" asp-route-id="@item.productid"></a>
+                                <a class="nav-icon mr-2 i-Information" asp-action="Details" asp-route-id="@item.productid"></a>
+                                <a class=" nav-icon mr-2 i-Close" asp-action="Delete" asp-route-id="@item.productid"></a>
+                            </span>
                         </td>
                     </tr>
                     }

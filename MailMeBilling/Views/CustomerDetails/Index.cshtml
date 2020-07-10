@@ -1,8 +1,9 @@
 ﻿@model IEnumerable<MailMeBilling.Models.CustomerDetails>
 
 @{
-    ViewData["Title"] = "CustomerList";
+    ViewData["Title"] = "Customer List";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    int counter = 0;
 }    
         <div class="card text-left">
             <div class="card-body">
@@ -13,7 +14,7 @@
                     </div>
                     <div class="col-2">
                         <p class="text-right">
-                            <a asp-action="Create" class="btn btn-primary">Create New</a>
+                            <a asp-action="Create" class="btn btn-primary">Add Customer</a>
                         </p>
                     </div>
                 </div>            
@@ -23,39 +24,34 @@
                     <table class="display table table-striped table-bordered" id="zero_configuration_table" style="width:100%">
                         <thead>
                             <tr class="text-center">
-
+                                <th>S.No</th>
                                 <th>NAME</th>
-                                <th>MOBILE NUMBAER</th>
-                                <th>EMAIL</th>
-                               
-                                <th>ADDRESS</th>
-                             
+                                <th>MOBILE NUMBAER</th>                         
+                                <th>ADDRESS</th>                             
                                 <th>ACTION</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach (var item in Model)
                             {
+                                counter++;
                                 <tr class="text-center">
-
+                                    <td> @counter</td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Customername)
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Mobilenumber)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Emailid)
-                                    </td>
+                                    </td>                                  
                                   
                                     <td>
                                         @Html.DisplayFor(modelItem => item.Address)
                                     </td>
                                    
                                     <td>
-                                        <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                                        <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                                        <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                        <a class=" nav-icon mr-2 i-Pen-2" asp-action="Edit" asp-route-id="@item.Id"></a> 
+                                        <a class="nav-icon mr-2 i-Information" asp-action="Details" asp-route-id="@item.Id"></a> 
+                                        <a class=" nav-icon mr-2 i-Close" asp-action="Delete" asp-route-id="@item.Id"></a>
                                     </td>
                                 </tr>
                             }

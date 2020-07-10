@@ -601,22 +601,18 @@ namespace MailMeBilling.Controllers
 
                         foreach (var item in tmpsummery)
                         {
-                            load.purchaseinvoicesummeries.Add(item);
+                            load.purchaseinvoicesummerys.Add(item);
                         }
                     }
 
                 }
-
-
-
-
-
 
             }
             return View(load);
         }
 
         public IActionResult addtmpPurchasereturnsummery(Purchasereturnsummery tempseccion)
+        
         {
             ViewBag.data = HttpContext.Session.GetString("name");
             var Name = ViewBag.data;
@@ -775,8 +771,8 @@ namespace MailMeBilling.Controllers
             cph.billid = billno;
             _context.purchasereturnpaymenthistries.Add(cph);
 
-            var cleartmp = _context.tmpsalesreturns.Where(i => i.Billno == tempseccion.Billid && i.Branch == cph.Branch).ToList();
-            _context.tmpsalesreturns.RemoveRange(cleartmp);
+            var cleartmp = _context.tmppurchasereturns.Where(i => i.Billno == tempseccion.Billid && i.Branch == cph.Branch).ToList();
+            _context.tmppurchasereturns.RemoveRange(cleartmp);
 
 
             var statusclose = _context.purchaseinvoicesummeries.Where(i => i.Billid == tempseccion.Billid && i.Branch == cph.Branch).FirstOrDefault();
@@ -819,5 +815,56 @@ namespace MailMeBilling.Controllers
             _context.SaveChanges();
             return Json(new { success = true, message = "Save successfull." });
         }
+
+
+        public IActionResult printpurchasereturn(int id)
+        {
+
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+            ViewBag.CustomerPending = pendingcustomer.Count();
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+            ViewBag.VendorPending = pendingvendor.Count();
+            ViewBag.data = HttpContext.Session.GetString("name");
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
+            string Branch = ViewBag.branch;
+            loadtemp load = new loadtemp();
+
+            var billno = _context.purchasereturnsummeries.Where(i => i.Billid == id).FirstOrDefault(); //bill No         
+
+
+            if (billno != null)
+            {
+
+                var tmpsale = _context.purchasereturns.Where(i => i.Branch == Branch && i.Billno == id).ToList();
+
+                foreach (var item in tmpsale)
+                {
+
+                    load.purchasereturns.Add(item);
+                }
+                var tmpsummery = _context.purchasereturnsummeries.Where(i => i.Billid == id).ToList();
+
+
+                foreach (var item in tmpsummery)
+                {
+                    var istdate = TimeZoneInfo.ConvertTimeFromUtc(item.Billdate, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                    ViewBag.billdate = istdate;
+                    load.purchasereturnsummeries.Add(item);
+                }
+
+
+
+
+
+
+
+            }
+            return View(load);
+        }
+
+
     }
 }

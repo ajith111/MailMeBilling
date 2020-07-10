@@ -10,7 +10,9 @@ namespace MailMeBilling.Models
     {
         [Key]
         public int Subcategoryid { get; set; }
+        [Display(Name ="SubCategory")]
         public string Subcatagory { get; set; }
+        [Display(Name = "SubCategory Discription")]
         public string Subcatagorydiscription { get; set; }
         public string Branch { get; set; }
     }

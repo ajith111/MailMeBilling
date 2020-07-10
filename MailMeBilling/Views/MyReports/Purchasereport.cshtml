@@ -47,9 +47,10 @@
                         </td>
                         <td class="text-right">@item.Totalamount</td>
                         <td class="text-center">
-                            <a asp-controller="MyReports" asp-action="Vendorpayment" asp-route-id="@item.Mobilenumber" class="btn btn-primary">Edit</a>
-                            <a asp-controller="MyReports" asp-action="Viewbill" asp-route-id="@item.Billid" class="btn btn-success"  target = "_blank">Print</a>
-                          
+                            <a asp-controller="MyReports" asp-action="Vendorpayment" asp-route-id="@item.Mobilenumber" class="btn btn-primary">Pay</a>
+                            <a asp-controller="MyReports" asp-action="Viewbill" asp-route-id="@item.Billid" class="btn btn-success" target="_blank">Print</a>
+                            <a asp-controller="MyReports" asp-action="Purchasereturnbill" asp-route-id="@item.Billid" class="btn btn-danger">Return</a>
+
                         </td>
                     </tr>
                     }

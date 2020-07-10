@@ -36,8 +36,8 @@ namespace MailMeBilling.Models
 
 
 
-        [Required(ErrorMessage = "Roll  is required")]
-        [Display(Name = "Roll")]
+        [Required(ErrorMessage = "Role  is required")]
+        [Display(Name = "Role")]
         public string Roll { get; set; }
 
         [Required(ErrorMessage = "Email  is required")]      
