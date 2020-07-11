@@ -6,6 +6,7 @@ using MailMeBilling.Data;
 using MailMeBilling.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TimeZoneConverter;
 
 namespace MailMeBilling.Controllers
 {
@@ -49,7 +50,7 @@ namespace MailMeBilling.Controllers
             ViewBag.data = HttpContext.Session.GetString("name");
             ViewBag.branch = HttpContext.Session.GetString("branch");
             ViewBag.roll = HttpContext.Session.GetString("roll");
-            var sr = _context.purchaseinvoicesummeries.ToList();
+            var sr = _context.purchaseinvoicesummeries.Where(i => i.status !="Return").ToList();
             return View(sr);
         }
 
@@ -226,8 +227,11 @@ namespace MailMeBilling.Controllers
 
                         foreach (var item in tmpsummery)
                         {
-                    var istdate = TimeZoneInfo.ConvertTimeFromUtc(item.Billdate, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
-                    ViewBag.billdate = istdate;
+                    //var istdate = TimeZoneInfo.ConvertTimeFromUtc(item.Billdate, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                    //ViewBag.billdate = istdate;
+                    TimeZoneInfo timeZone = TZConvert.GetTimeZoneInfo("India Standard Time");
+                    var isdate = TimeZoneInfo.ConvertTime(item.Billdate, timeZone);
+                    ViewBag.billdate = isdate;
                     load.salesinvoicesummeries.Add(item);
                         }
                   
@@ -728,11 +732,21 @@ namespace MailMeBilling.Controllers
 
             Purchaseinvoicesummery sis = new Purchaseinvoicesummery();
 
+            var file = _context.purchaseinvoicesummeries.Where(i => i.Billid == tempseccion.Billid).FirstOrDefault();
+          
+
             sis.Billid = nobill;
-            sis.Totalqty = salessummery.Totalqty - tempseccion.Totalqty;
-            sis.Totalamount = salessummery.Totalamount - tempseccion.Totalamount ;
+            sis.Totalqty = file.Totalqty - tempseccion.Totalqty;
+            sis.Totalamount = file.Totalamount - tempseccion.Totalamount ;
+            if (file.Gst =="GST")
+            {
+                sis.Gst = "GST";
+            }
+            else
+            {
+                sis.Gst = "NOGST";
+            }
            
-            sis.Gst = "Gst";
            
 
             sis.Paymenttype = tempseccion.Paymenttype;
@@ -742,12 +756,21 @@ namespace MailMeBilling.Controllers
           
             sis.Billdate = DateTime.UtcNow;
             sis.Billby = Name;
-            sis.status = "Close";
+            if (file.Balance == 0)
+            {
+                sis.status = "Close";
+            }
+            else
+            {
+                sis.status = "Pending";
+            }
+           
             sis.Vendorrname = tempseccion.Customername;
             sis.Mobilenumber = tempseccion.Mobilenumber;
             sis.Address = tempseccion.Address;
-           
+            sis.paid = tempseccion.Paid;
             sis.Branch = Branch;
+            sis.upload = file.upload;
 
 
             if (sis != null)

@@ -6,6 +6,7 @@ using MailMeBilling.Data;
 using MailMeBilling.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TimeZoneConverter;
 
 namespace MailMeBilling.Controllers
 {
@@ -73,9 +74,10 @@ namespace MailMeBilling.Controllers
 
                         foreach (var item in tmpsummery)
                         {
-                           
-                            var istdate = TimeZoneInfo.ConvertTimeFromUtc(item.Billdate, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
-                            ViewBag.billdate = istdate;
+                            // var istdate = TimeZoneInfo.ConvertTimeFromUtc(item.Billdate, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                            TimeZoneInfo timeZone = TZConvert.GetTimeZoneInfo("India Standard Time");                           
+                            var isdate = TimeZoneInfo.ConvertTime(item.Billdate, timeZone);
+                            ViewBag.billdate = isdate;
                             load.salesinvoicesummeries.Add(item);
                         }
                     }
