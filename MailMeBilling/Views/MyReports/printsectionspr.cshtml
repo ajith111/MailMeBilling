@@ -58,12 +58,12 @@
             <table style="width:100%">
 
                 <tr class="text-center">
-                    <th width="20">S.NO</th>
-                    <th width="20">PARTICULAR</th>
-                    <th width="20">HSN CODE</th>
-                    <th width="20">QTY</th>
-                    <th width="20">RATE</th>
-                    <th width="20">AMOUNT</th>
+                    <th style="padding-left: 0px; padding-right: 0px;  width: 1%;">S.No</th>
+                    <th >PARTICULAR</th>
+                    <th >HSN CODE</th>
+                    <th >QTY</th>
+                    <th >RATE</th>
+                    <th >AMOUNT</th>
                 </tr>
 
                 @foreach (var item in Model.purchasereturns)
@@ -95,7 +95,7 @@
 
 
 
-                <th colspan="6" style="border-bottom-color:black;text-align:left;padding-left:15px;"><span> RUPEES: <p id="ntoww"></p></span> </th>
+                <th colspan="6" style="border-bottom-color:black;text-align:left;padding-left:15px;"> RUPEES: <span id="ntoww"></span> </th>
               
                
 
@@ -107,7 +107,7 @@
                 {
             <tr class="text-center">
                
-                    <th colspan="6" style="border-bottom-color:black;text-align:left;padding-left:15px;"> <span>RUPEES: <p id="ntow"></p></span> </th>
+                    <th colspan="6" style="border-bottom-color:black;text-align:left;padding-left:15px;"> RUPEES: <span id="ntow"></span> </th>
 
               
 
@@ -117,8 +117,8 @@
 
                 }
             <tr class="text-center">
-                <th colspan="1" style="text-align:left;border-right-color:white;">VEHICLE NO :</th>
-                <th style="text-align:center;border-right-color: white;">CHECKED BY:</th>
+                <th colspan="1" style="text-align:left;border-right-color:white;"></th>
+                <th style="text-align:left;border-right-color: white;"><span style="text-align:left">VEHICLE NO :</span> <span style="text-align: center; padding-left: 300px;">CHECKED BY:</span></th>
                 <th colspan="2" style="text-align:left"></th>
                 <th>NET AMOUNT</th>
                 <th class="text-right" style="padding-right:30px"> ₹  @sums.Totalamount</th>
