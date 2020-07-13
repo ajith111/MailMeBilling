@@ -1,0 +1,70 @@
+﻿
+
+
+@model IEnumerable<MailMeBilling.Models.CustomerDetails>
+
+@{
+    ViewData["Title"] = "Customer Statement";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    int counter = 0;
+}
+<div class="card text-left">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12">
+                <h4 class="card-title mb-3"><b>Customer Statement</b></h4>
+                <p>All Branch Customer detail list here..</p>
+            </div>
+           
+        </div>
+
+
+        <div class="table-responsive">
+            <table class="display table table-striped table-bordered" id="zero_configuration_table" style="width:100%">
+                <thead>
+                    <tr class="text-center">
+                        <th>S.No</th>
+                        <th>NAME</th>
+                        <th>MOBILE NUMBAER</th>
+                        <th>ADDRESS</th>
+                        <th>ACTION</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        counter++;
+                        <tr class="text-center">
+                            <td> @counter</td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Customername)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Mobilenumber)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Address)
+                            </td>
+
+                            <td>
+                                <a class="btn btn-primary" asp-action="viewcustomerstatement" asp-route-Mobnumber="@item.Mobilenumber">View Statement</a>
+                                
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+
+
+    </div>
+</div>
+
+
+
+
+
+
+

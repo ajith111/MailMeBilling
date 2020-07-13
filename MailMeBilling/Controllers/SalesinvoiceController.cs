@@ -191,7 +191,7 @@ namespace MailMeBilling.Controllers
             cph.Balance = tempseccion.Balance;
             cph.refno = tempseccion.Refcode;
             cph.Branch = Branch;
-            cph.total = tempseccion.nettotal;
+            cph.total = tempseccion.Totalamount;
             cph.billid = billno;
             _context.customerpaymenthistry.Add(cph);
 
