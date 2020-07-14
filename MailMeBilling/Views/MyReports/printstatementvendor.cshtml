@@ -8,38 +8,44 @@
 
 <!--print test-->
 
-<div id="print-area" style="font-family:'Courier New';font-size:medium;padding-top:0px;">
+<div id="print-area" style="font-family: New Century;  font-size:medium; padding-top: 0px;">
     <div class="row">
        
         <div class="col-12 text-center">
 
 
-            <h1><b>CUSTOMER STATEMENT</b></h1>
-            <div class="col-12 text-left">
-                @foreach (var item in Model.customerdetails)
+            <div class="col-12 text-center" style="font-family: Apple Chancery;">
+                <h1><b>ABDULLAH FURNITURES </b></h1>
+                <h5><b>WHOLESALE DEALER : STEEL FURNITURE & WOODEN FURNITURE, HOME APPLIANCE</b></h5>
+                <h5><b>17 A Vanjinathan Aiyar Street (Near New Bus Stand), Salem – 636004 </b></h5>
+                <p> <b>E-Mail: newabdullahfurniture@gmail.com </b> <b>Mobile:9894921453,9445933235</b></p>
+                @foreach (var item in Model.vendors)
                 {
-                <p><b>Customer Name: </b>@item.Customername</p>
-                <p><b> Mobile Number:</b>@item.Mobilenumber</p>
-                <p><b> Adddress:</b>@item.Address</p>
+                    <h3><b></b>@item.Name</h3>
+                   
+                    <p><b> Ledger Account</b></p>
                 }
 
+
+
             </div>
+            
 
 
             <table style="width:100%">
 
 
-                <tr class="text-center" style="border: 1px solid black;font-family: Apple Chancery">
+                <tr class="text-center" style="border: 1px solid black;">
                     <th style="padding-left: 10px; padding-right: 0px;  width: 1%;">S.No</th>
                     <th style=" width: 15%;">DATE</th>
-                    <th style=" width: 15%;">PAYMENT TYPE</th>
-                    <th style=" width: 10%;">REFERENCE No</th>
+                    <th style=" width: 15%;">PAY-TYPE</th>
+                    <th style=" width: 10%;">REF-No</th>
                     <th style=" width: 7%;">BILL No</th>
                     <th style="width: 15%;text-align: right">DEBIT</th>
                     <th style="width: 20%;text-align: right">CREDIT</th>
                     <th style="width: 20%;text-align: right; padding-right:50px">BALANCE</th>
                 </tr>
-                @foreach (var item in Model.customerpaymenthistries)
+                @foreach (var item in Model.vendorpayments)
                 {
                     count++;
                     totalcredit += item.Payment;

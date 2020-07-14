@@ -11,5 +11,11 @@ namespace MailMeBilling.Models
         public List<Customerpaymenthistry> customerpaymenthistries { get; set; } = new List<Customerpaymenthistry>();
 
         public List<Salesinvoicesummery> salesinvoicesummeries { get; set; } = new List<Salesinvoicesummery>();
+
+        public List<Vendor> vendors { get; set; } = new List<Vendor>();
+
+        public List<Vendorpayment> vendorpayments { get; set; } = new List<Vendorpayment>();
+
+        public List<Purchaseinvoicesummery> purchaseinvoicesummeries { get; set; } = new List<Purchaseinvoicesummery>();
     }
 }
