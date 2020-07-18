@@ -322,5 +322,12 @@ namespace MailMeBilling.Controllers
         {
             return _context.product.Any(e => e.productid == id);
         }
+        public JsonResult fillpname(string mob)
+        {
+
+            var deatils = _context.product.Where(c => c.productname == mob).SingleOrDefault();
+            return new JsonResult(deatils);
+
+        }
     }
 }

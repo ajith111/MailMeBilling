@@ -308,9 +308,11 @@ namespace MailMeBilling.Controllers
 
             ViewBag.VendorPending = pendingvendor.Count();
             ViewBag.data = HttpContext.Session.GetString("name");
-            ViewBag.branch = HttpContext.Session.GetString("branch");
+          
             ViewBag.roll = HttpContext.Session.GetString("roll");
-            var sr = _context.salesreturnsummeries.ToList();
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            string Branch = ViewBag.branch;
+            var sr = _context.salesinvoicesummery.Where(i => i.status == "Return" && i.Branch == Branch).ToList();
             return View(sr);
         }
      
@@ -510,17 +512,25 @@ namespace MailMeBilling.Controllers
             }
            
             sis.Paymenttype = tempseccion.Paymenttype;
-            sis.Refcode = tempseccion.Refcode;
+            sis.Refcode = salessummery.Refcode;
             sis.discount = 0;
-            sis.Balance = 0;
+            sis.Balance = tempseccion.Balance;
             sis.nettotal = sis.Totalamount + gstcal;
             sis.Billdate = DateTime.UtcNow;
             sis.Billby = Name;
-            sis.status = "Close";
+            if (sis.Balance !=0)
+            {
+                sis.status = "Pending";
+            }
+            else
+            {
+                sis.status = "Close";
+            }
+           
             sis.Customername = tempseccion.Customername;
             sis.Mobilenumber = tempseccion.Mobilenumber;
             sis.Address = tempseccion.Address;
-            sis.Paid = sis.nettotal;
+            sis.Paid = tempseccion.Paid;
             sis.Branch = Branch;
 
 
@@ -529,6 +539,20 @@ namespace MailMeBilling.Controllers
                 _context.salesinvoicesummery.Add(sis);
                
             }
+            Customerpaymenthistry cph1 = new Customerpaymenthistry();
+            cph1.Mobile = tempseccion.Mobilenumber;
+            cph1.Customername = tempseccion.Customername;
+            cph1.Address = tempseccion.Address;
+            cph1.paymenttype = tempseccion.Paymenttype;
+            cph1.Payment = tempseccion.Paid;
+            cph1.Recivedby = Name;
+            cph1.Paiddate = DateTime.UtcNow;
+            cph1.Balance = tempseccion.Balance;
+            cph1.refno = tempseccion.Refcode;
+            cph1.Branch = Branch;
+            cph1.total = sis.nettotal;
+            cph1.billid = nobill;
+            _context.customerpaymenthistry.Add(cph1);
             //Store Histry
             var billno = tempseccion.Billid;
             Salesreturnpaymenthistry cph = new Salesreturnpaymenthistry();
@@ -546,20 +570,7 @@ namespace MailMeBilling.Controllers
             _context.salesreturnpaymenthistries.Add(cph);
 
           
-            Customerpaymenthistry cph1 = new Customerpaymenthistry();
-            cph1.Mobile = tempseccion.Mobilenumber;
-            cph1.Customername = tempseccion.Customername;
-            cph1.Address = tempseccion.Address;
-            cph1.paymenttype = tempseccion.Paymenttype;
-            cph1.Payment = tempseccion.Paid;
-            cph1.Recivedby = Name;
-            cph1.Paiddate = DateTime.UtcNow;
-            cph1.Balance = tempseccion.Balance;
-            cph1.refno = tempseccion.Refcode;
-            cph1.Branch = Branch;
-            cph1.total = tempseccion.Totalamount;
-            cph1.billid = billno;
-            _context.customerpaymenthistry.Add(cph1);
+          
 
             var cleartmp = _context.tmpsalesreturns.Where(i => i.Billno == tempseccion.Billid && i.Branch == cph.Branch).ToList();
             _context.tmpsalesreturns.RemoveRange(cleartmp);
@@ -576,6 +587,35 @@ namespace MailMeBilling.Controllers
 
         }
         //[HttpDelete]
+        public IActionResult salesreturn(int id)
+        {
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            string Branch = ViewBag.branch;
+            ViewBag.data = HttpContext.Session.GetString("name");
+            var Name = ViewBag.data;
+            var bill = _context.salesinvoicesummery.Where(i => i.Billid == id && i.Branch == Branch).FirstOrDefault();
+            bill.status = "Return";
+            _context.salesinvoicesummery.Update(bill);
+            _context.SaveChanges();
+            var mob = bill.Mobilenumber;
+            creditnote cn = new creditnote();
+            cn.cdate = DateTime.UtcNow;
+            cn.branch = Branch;
+            cn.totalamount = bill.Paid;
+            cn.person = "customer";
+            cn.mobilenumber = bill.Mobilenumber;
+            cn.name = bill.Customername;
+            cn.address = bill.Address;
+            cn.addby = Name;
+            cn.paymenttype = bill.Paymenttype;
+            cn.refno = bill.Refcode;
+            cn.particular = "Sales Return Amount for B.No " + id;
+            _context.creditnote.Add(cn);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index","Salesinvoice");
+        
+        }
         public IActionResult deletetmpreturn(int id)
         {
             ViewBag.data = HttpContext.Session.GetString("name");
@@ -990,6 +1030,7 @@ namespace MailMeBilling.Controllers
         }
 
         public IActionResult viewcustomerstatement(string Mobnumber)
+
         {
             DateTime todaydate = DateTime.UtcNow;
             DateTime dateStart = DateTime.UtcNow.AddDays(-15);
@@ -1008,15 +1049,50 @@ namespace MailMeBilling.Controllers
 
             var customerdetil = _context.customerdetails.Where(i => i.Mobilenumber == Mobnumber).FirstOrDefault();
 
-            var sumofamount = _context.salesinvoicesummery.Where(i => i.Mobilenumber == Mobnumber && i.status != "Return").Sum(i => i.Totalamount).ToString();
+            var sumofamount = _context.salesinvoicesummery.Where(i => i.Mobilenumber == Mobnumber && i.status !="Return" ).Sum(i => i.Totalamount).ToString();
             ViewBag.sumofcustomerbuyamount = sumofamount;
           
             cusstatement.customerdetails.Add(customerdetil);
-            var paymenthistry = _context.customerpaymenthistry.Where(i => i.Mobile == Mobnumber).ToList();
-            foreach (var item in paymenthistry)
+            var returnlist = _context.salesinvoicesummery.Where(i => i.Mobilenumber == Mobnumber && i.status != "Return").ToList();
+            if (returnlist.Count != 0)
             {
-                cusstatement.customerpaymenthistries.Add(item);
-            }
+                foreach (var billno in returnlist)
+                {
+                    var paymenthistry = _context.customerpaymenthistry.Where(i => i.Mobile == Mobnumber && i.billid == billno.Billid).ToList();
+                    foreach (var item in paymenthistry)
+                    {
+                        cusstatement.customerpaymenthistries.Add(item);
+                    }
+                }
+            }     var creditnote = _context.creditnote.Where(i => i.mobilenumber == Mobnumber).ToList();
+                    foreach (var item in creditnote)
+                    {
+                        cusstatement.creditnotes.Add(item);
+
+                    }
+
+               //}
+
+           //}
+            //else
+            //{
+               
+            //        var paymenthistry = _context.customerpaymenthistry.Where(i => i.Mobile == Mobnumber ).ToList();
+            //        foreach (var item in paymenthistry)
+            //        {
+            //            cusstatement.customerpaymenthistries.Add(item);
+            //        }
+            //    var creditnote = _context.creditnote.Where(i => i.mobilenumber == Mobnumber).ToList();
+            //    foreach (var item in creditnote)
+            //    {
+            //        cusstatement.creditnotes.Add(item);
+
+            //    }
+                
+
+            //}
+            
+           
 
             return View(cusstatement);
         }
@@ -1070,6 +1146,95 @@ namespace MailMeBilling.Controllers
             }
 
             return View(cusstatement);
+        }
+
+        public IActionResult Todaysalesreport()
+        {
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
+            ViewBag.data = HttpContext.Session.GetString("name");
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
+            string Branch = ViewBag.branch;
+
+            var todaysale = _context.salesinvoicesummery.Where(i => i.Branch == Branch && i.Billdate.Date == todaydate.Date && i.status != "Return").ToList();
+            var sumofamount = _context.salesinvoicesummery.Where( i => i.status != "Return" && i.Branch == Branch && i.Billdate.Date == todaydate.Date).Sum(i => i.Totalamount).ToString();
+            ViewBag.sumofcustomerbuyamount = sumofamount;
+
+            return View(todaysale);
+        }
+        public IActionResult Weeksalesreport()
+        {
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
+            ViewBag.data = HttpContext.Session.GetString("name");
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
+            string Branch = ViewBag.branch;
+            DateTime week = DateTime.UtcNow.AddDays(-7);
+            var todaysale = _context.salesinvoicesummery.Where(i => i.Branch == Branch && i.Billdate.Date >= week.Date && i.Billdate.Date <= todaydate.Date && i.status != "Return").ToList();
+            var sumofamount = _context.salesinvoicesummery.Where(i => i.status != "Return" && i.Branch == Branch && i.Billdate.Date >= week.Date && i.Billdate.Date <=todaydate.Date).Sum(i => i.Totalamount).ToString();
+            ViewBag.sumofcustomerbuyamount = sumofamount;
+
+            return View(todaysale);
+        }
+        public IActionResult Monthsalesreport()
+        {
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
+            ViewBag.data = HttpContext.Session.GetString("name");
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
+            string Branch = ViewBag.branch;
+            DateTime week = DateTime.UtcNow.AddDays(-30);
+            var todaysale = _context.salesinvoicesummery.Where(i => i.Branch == Branch && i.Billdate.Date >= week.Date && i.Billdate.Date <= todaydate.Date && i.status != "Return").ToList();
+            var sumofamount = _context.salesinvoicesummery.Where(i => i.status != "Return" && i.Branch == Branch && i.Billdate.Date >= week.Date && i.Billdate.Date <= todaydate.Date).Sum(i => i.Totalamount).ToString();
+            ViewBag.sumofcustomerbuyamount = sumofamount;
+
+            return View(todaysale);
+        }
+        public IActionResult Yearsalesreport()
+        {
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-365);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
+            ViewBag.data = HttpContext.Session.GetString("name");
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
+            string Branch = ViewBag.branch;
+            DateTime week = DateTime.UtcNow.AddDays(-30);
+            var todaysale = _context.salesinvoicesummery.Where(i => i.Branch == Branch && i.Billdate.Date >= week.Date && i.Billdate.Date <= todaydate.Date && i.status != "Return").ToList();
+            var sumofamount = _context.salesinvoicesummery.Where(i => i.status != "Return" && i.Branch == Branch && i.Billdate.Date >= week.Date && i.Billdate.Date <= todaydate.Date).Sum(i => i.Totalamount).ToString();
+            ViewBag.sumofcustomerbuyamount = sumofamount;
+
+            return View(todaysale);
         }
 
     }

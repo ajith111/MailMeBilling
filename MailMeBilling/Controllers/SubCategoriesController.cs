@@ -221,5 +221,12 @@ namespace MailMeBilling.Controllers
         {
             return _context.subcategory.Any(e => e.Subcategoryid == id);
         }
+        public JsonResult fillsub(string mob)
+        {
+
+            var deatils = _context.subcategory.Where(c => c.Subcatagory == mob).SingleOrDefault();
+            return new JsonResult(deatils);
+
+        }
     }
 }

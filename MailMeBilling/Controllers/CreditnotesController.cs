@@ -11,23 +11,23 @@ using Microsoft.AspNetCore.Http;
 
 namespace MailMeBilling.Controllers
 {
-    public class CategoriesController : Controller
+    public class creditnotesController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public CategoriesController(ApplicationDbContext context)
+        public creditnotesController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Categories
+        // GET: creditnotes
         public async Task<IActionResult> Index()
         {
             ViewBag.data = HttpContext.Session.GetString("name");
             ViewBag.branch = HttpContext.Session.GetString("branch");
             ViewBag.roll = HttpContext.Session.GetString("roll");
             string Branch = ViewBag.branch;
-            DateTime todaydate =  DateTime.UtcNow;
+            DateTime todaydate = DateTime.UtcNow;
             DateTime dateStart = DateTime.UtcNow.AddDays(-15);
             var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
 
@@ -36,17 +36,52 @@ namespace MailMeBilling.Controllers
             var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
 
             ViewBag.VendorPending = pendingvendor.Count();
-            return View(await _context.category.ToListAsync());
+            return View(await _context.creditnote.ToListAsync());
+        }
+        public async Task<IActionResult> CustomerIndex()
+        {
+            ViewBag.data = HttpContext.Session.GetString("name");
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
+            string Branch = ViewBag.branch;
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
+            return View(await _context.creditnote.Where(i => i.person == "customer").ToListAsync());
         }
 
-        // GET: Categories/Details/5
+        public async Task<IActionResult> VendorIndex()
+        {
+            ViewBag.data = HttpContext.Session.GetString("name");
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
+            string Branch = ViewBag.branch;
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
+            return View(await _context.creditnote.Where(i => i.person == "vendor").ToListAsync());
+        }
+
+        // GET: creditnotes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             ViewBag.data = HttpContext.Session.GetString("name");
             ViewBag.branch = HttpContext.Session.GetString("branch");
             ViewBag.roll = HttpContext.Session.GetString("roll");
             string Branch = ViewBag.branch;
-            DateTime todaydate =  DateTime.UtcNow;
+            DateTime todaydate = DateTime.UtcNow;
             DateTime dateStart = DateTime.UtcNow.AddDays(-15);
             var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
 
@@ -60,24 +95,24 @@ namespace MailMeBilling.Controllers
                 return NotFound();
             }
 
-            var category = await _context.category
-                .FirstOrDefaultAsync(m => m.categoryid == id);
-            if (category == null)
+            var creditnote = await _context.creditnote
+                .FirstOrDefaultAsync(m => m.cid == id);
+            if (creditnote == null)
             {
                 return NotFound();
             }
 
-            return View(category);
+            return View(creditnote);
         }
 
-        // GET: Categories/Create
+        // GET: creditnotes/Create
         public IActionResult Create()
         {
             ViewBag.data = HttpContext.Session.GetString("name");
             ViewBag.branch = HttpContext.Session.GetString("branch");
             ViewBag.roll = HttpContext.Session.GetString("roll");
             string Branch = ViewBag.branch;
-            DateTime todaydate =  DateTime.UtcNow;
+            DateTime todaydate = DateTime.UtcNow;
             DateTime dateStart = DateTime.UtcNow.AddDays(-15);
             var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
 
@@ -89,37 +124,72 @@ namespace MailMeBilling.Controllers
             return View();
         }
 
-        // POST: Categories/Create
+        // POST: creditnotes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("categoryid,Categorys,Categorydiscription")] Category category)
+        public async Task<IActionResult> Create([Bind("cid,person,particular,totalamount,name,mobilenumber,address,paymenttype,refno")] creditnote creditnote)
         {
-            ViewBag.data = HttpContext.Session.GetString("name");
-           
-            ViewBag.roll = HttpContext.Session.GetString("roll");
-           
             if (ModelState.IsValid)
             {
+                ViewBag.data = HttpContext.Session.GetString("name");
+                var Name = ViewBag.data;              
                 ViewBag.branch = HttpContext.Session.GetString("branch");
                 var Branch = ViewBag.branch;
-                category.Branch = Branch;
-                _context.Add(category);
+
+                if (creditnote.person =="customer")
+                {
+                    var checkcustomer = _context.customerdetails.Where(i => i.Mobilenumber == creditnote.mobilenumber).FirstOrDefault();
+                    if (checkcustomer == null)
+                    {
+                        CustomerDetails cd = new CustomerDetails();
+                        cd.Mobilenumber = creditnote.mobilenumber;
+                        cd.Customername = creditnote.name;
+                        cd.Address = creditnote.address;
+                        cd.Branch = Branch;
+                        cd.Entrydate = DateTime.UtcNow;
+                        cd.Entryby = Name;
+                        _context.customerdetails.Add(cd);
+                        _context.SaveChanges();
+                    }
+
+                }
+
+                if (creditnote.person == "vendor")
+                {
+                    var checkvendor = _context.vendor.Where(i => i.Mobilenumber == creditnote.mobilenumber).FirstOrDefault();
+                    if (checkvendor == null)
+                    {
+                        Vendor cd = new Vendor();
+                        cd.Mobilenumber = creditnote.mobilenumber;
+                        cd.Name = creditnote.name;
+                        cd.Address = creditnote.address;
+                        cd.Branch = Branch;
+                        cd.Entrydate = DateTime.UtcNow;
+                        cd.Entryby = Name;
+                        _context.vendor.Add(cd);
+                        _context.SaveChanges();
+                    }
+                }
+                creditnote.addby = Name;
+                creditnote.branch = Branch;
+                creditnote.cdate = DateTime.UtcNow;
+                _context.Add(creditnote);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return View();
             }
-            return View(category);
+            return View(creditnote);
         }
 
-        // GET: Categories/Edit/5
+        // GET: creditnotes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             ViewBag.data = HttpContext.Session.GetString("name");
             ViewBag.branch = HttpContext.Session.GetString("branch");
             ViewBag.roll = HttpContext.Session.GetString("roll");
             string Branch = ViewBag.branch;
-            DateTime todaydate =  DateTime.UtcNow;
+            DateTime todaydate = DateTime.UtcNow;
             DateTime dateStart = DateTime.UtcNow.AddDays(-15);
             var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
 
@@ -133,26 +203,35 @@ namespace MailMeBilling.Controllers
                 return NotFound();
             }
 
-            var category = await _context.category.FindAsync(id);
-            if (category == null)
+            var creditnote = await _context.creditnote.FindAsync(id);
+            if (creditnote == null)
             {
                 return NotFound();
             }
-            return View(category);
+            return View(creditnote);
         }
 
-        // POST: Categories/Edit/5
+        // POST: creditnotes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("categoryid,Categorys,Categorydiscription")] Category category)
+        public async Task<IActionResult> Edit(int id, [Bind("cid,cdate,person,particular,totalamount,name,mobilenumber,address")] creditnote creditnote)
         {
             ViewBag.data = HttpContext.Session.GetString("name");
-           
+            ViewBag.branch = HttpContext.Session.GetString("branch");
             ViewBag.roll = HttpContext.Session.GetString("roll");
-         
-            if (id != category.categoryid)
+            string Branch = ViewBag.branch;
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
+            if (id != creditnote.cid)
             {
                 return NotFound();
             }
@@ -161,15 +240,12 @@ namespace MailMeBilling.Controllers
             {
                 try
                 {
-                    ViewBag.branch = HttpContext.Session.GetString("branch");
-                    var Branch = ViewBag.branch;
-                    category.Branch = Branch;
-                    _context.Update(category);
+                    _context.Update(creditnote);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CategoryExists(category.categoryid))
+                    if (!creditnoteExists(creditnote.cid))
                     {
                         return NotFound();
                     }
@@ -178,19 +254,19 @@ namespace MailMeBilling.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return View();
             }
-            return View(category);
+            return View(creditnote);
         }
 
-        // GET: Categories/Delete/5
+        // GET: creditnotes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             ViewBag.data = HttpContext.Session.GetString("name");
             ViewBag.branch = HttpContext.Session.GetString("branch");
             ViewBag.roll = HttpContext.Session.GetString("roll");
             string Branch = ViewBag.branch;
-            DateTime todaydate =  DateTime.UtcNow;
+            DateTime todaydate = DateTime.UtcNow;
             DateTime dateStart = DateTime.UtcNow.AddDays(-15);
             var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
 
@@ -204,36 +280,36 @@ namespace MailMeBilling.Controllers
                 return NotFound();
             }
 
-            var category = await _context.category
-                .FirstOrDefaultAsync(m => m.categoryid == id);
-            if (category == null)
+            var creditnote = await _context.creditnote
+                .FirstOrDefaultAsync(m => m.cid == id);
+            if (creditnote == null)
             {
                 return NotFound();
             }
 
-            return View(category);
+            return View(creditnote);
         }
 
-        // POST: Categories/Delete/5
+        // POST: creditnotes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var category = await _context.category.FindAsync(id);
-            _context.category.Remove(category);
+            var creditnote = await _context.creditnote.FindAsync(id);
+            _context.creditnote.Remove(creditnote);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return View();
         }
 
-        private bool CategoryExists(int id)
+        private bool creditnoteExists(int id)
         {
-            return _context.category.Any(e => e.categoryid == id);
+            return _context.creditnote.Any(e => e.cid == id);
         }
-
-        public JsonResult fillcat(string mob)
+        [HttpGet]
+        public JsonResult fillcusdetails(string mob)
         {
 
-            var deatils = _context.category.Where(c => c.Categorys == mob).SingleOrDefault();
+            var deatils = _context.customerdetails.Where(c => c.Mobilenumber == mob).SingleOrDefault();
             return new JsonResult(deatils);
 
         }

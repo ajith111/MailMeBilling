@@ -1,0 +1,44 @@
+﻿@model MailMeBilling.Models.Expens
+
+@{
+    ViewData["Title"] = "Expens Details";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+
+<div>
+    <h4>Expens Detail</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.reason)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.reason)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.amount)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.amount)
+        </dd>
+      
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.entrydate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.entrydate)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.entryby)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.entryby)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.eid">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>

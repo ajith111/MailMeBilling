@@ -12,8 +12,8 @@ namespace MailMeBilling.Models
 
         [Display(Name = "BarCode")]
         public string Barcode { get; set; }
-        [Required(ErrorMessage = "Product Number  is required")]
-        [Display(Name = "Product Number")]
+        [Required(ErrorMessage = "Product Name  is required")]
+        [Display(Name = "Product Name")]
         public string productname { get; set; }
 
         [Display(Name = "HSN Code")]

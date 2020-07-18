@@ -3,14 +3,16 @@ using System;
 using MailMeBilling.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace MailMeBilling.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200717111534_mjk")]
+    partial class mjk
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -183,32 +185,6 @@ namespace MailMeBilling.Migrations
                     b.HasKey("id");
 
                     b.ToTable("customerpaymenthistry");
-                });
-
-            modelBuilder.Entity("MailMeBilling.Models.Expens", b =>
-                {
-                    b.Property<int>("eid")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("amount")
-                        .HasColumnType("decimal(18, 2)");
-
-                    b.Property<string>("branch")
-                        .HasColumnType("text");
-
-                    b.Property<string>("entryby")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("entrydate")
-                        .HasColumnType("datetime");
-
-                    b.Property<string>("reason")
-                        .HasColumnType("text");
-
-                    b.HasKey("eid");
-
-                    b.ToTable("expens");
                 });
 
             modelBuilder.Entity("MailMeBilling.Models.Login", b =>
@@ -1173,6 +1149,9 @@ namespace MailMeBilling.Migrations
                     b.Property<string>("address")
                         .HasColumnType("text");
 
+                    b.Property<decimal>("amount")
+                        .HasColumnType("decimal(18, 2)");
+
                     b.Property<string>("branch")
                         .HasColumnType("text");
 
@@ -1188,14 +1167,11 @@ namespace MailMeBilling.Migrations
                     b.Property<string>("particular")
                         .HasColumnType("text");
 
-                    b.Property<string>("paymenttype")
-                        .HasColumnType("text");
-
                     b.Property<string>("person")
                         .HasColumnType("text");
 
-                    b.Property<string>("refno")
-                        .HasColumnType("text");
+                    b.Property<int>("qty")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("totalamount")
                         .HasColumnType("decimal(18, 2)");

@@ -222,5 +222,12 @@ namespace MailMeBilling.Controllers
         {
             return _context.color.Any(e => e.Colorid == id);
         }
+        public JsonResult fillcol(string mob)
+        {
+
+            var deatils = _context.color.Where(c => c.Colors == mob).SingleOrDefault();
+            return new JsonResult(deatils);
+
+        }
     }
 }

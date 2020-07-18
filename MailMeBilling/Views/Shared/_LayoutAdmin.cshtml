@@ -175,6 +175,7 @@
                                         <ul>
                                             <li><a asp-controller="MyReports" asp-action="Salesreport"><i class="nav-icon mr-2 i-Bar-Chart-2"></i><span class="item-name">Sales </span></a></li>
                                             <li><a asp-controller="MyReports" asp-action="Purchasereport"><i class="nav-icon mr-2 i-Bar-Chart-2"></i><span class="item-name">Purchase </span></a></li>
+
                                         </ul>
                                     </div>
                                 </div>
@@ -186,8 +187,8 @@
 
                                         <input id="drop-2" type="checkbox" />
                                         <ul>
-                                            <li><a asp-controller="MyReports" asp-action="Salesreturnreport"><i class="nav-icon mr-2 i-Bar-Chart-2"></i><span class="item-name">Sales </span></a></li>
-                                            <li><a asp-controller="MyReports" asp-action="Purchasereturnreport"><i class="nav-icon mr-2 i-Bar-Chart-2"></i><span class="item-name">Purchase </span></a></li>
+                                            <li><a asp-controller="MyReports" asp-action="Salesreturnreport"><i class="nav-icon mr-2 i-File-Clipboard-Text--Image"></i><span class="item-name">Sales </span></a></li>
+                                            <li><a asp-controller="MyReports" asp-action="Purchasereturnreport"><i class="nav-icon mr-2 i-File-Clipboard-Text--Image"></i><span class="item-name">Purchase </span></a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -199,8 +200,42 @@
 
                                         <input id="drop-2" type="checkbox" />
                                         <ul>
-                                            <li><a asp-controller="MyReports" asp-action="Salestatement"><i class="nav-icon mr-2 i-Bar-Chart-2"></i><span class="item-name">Customer </span></a></li>
-                                            <li><a asp-controller="MyReports" asp-action="Purshasestatement"><i class="nav-icon mr-2 i-Bar-Chart-2"></i><span class="item-name">Vendor </span></a></li>
+                                            <li><a asp-controller="MyReports" asp-action="Salestatement"><i class="nav-icon mr-2 i-Width-Window"></i><span class="item-name">Customer </span></a></li>
+                                            <li><a asp-controller="MyReports" asp-action="Purshasestatement"><i class="nav-icon mr-2 i-Width-Window"></i><span class="item-name">Vendor </span></a></li>
+                                            <li><a asp-controller="MyReports" asp-action="Todaysalesreport"><i class="nav-icon mr-2 i-Width-Window"></i><span class="item-name">Today Sales </span></a></li>
+                                            <li><a asp-controller="MyReports" asp-action="Weeksalesreport"><i class="nav-icon mr-2 i-Width-Window"></i><span class="item-name">Week Sales </span></a></li>
+                                            <li><a asp-controller="MyReports" asp-action="Monthsalesreport"><i class="nav-icon mr-2 i-Width-Window"></i><span class="item-name">Month Sales </span></a></li>
+                                            <li><a asp-controller="MyReports" asp-action="Yearsalesreport"><i class="nav-icon mr-2 i-Width-Window"></i><span class="item-name">Year Sales </span></a></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <div>
+                                        <label class="toggle" for="drop-2">Credit Note</label><a href="#"><i class="nav-icon mr-2 i-File-Clipboard-File--Text"></i> Credit Note</a>
+
+                                        <input id="drop-2" type="checkbox" />
+                                        <ul>
+                                            <li><a asp-controller="creditnotes" asp-action="Create"><i class="nav-icon mr-2 i-Receipt-4"></i><span class="item-name">Add Credit </span></a></li>
+                                            <li><a asp-controller="creditnotes" asp-action="CustomerIndex"><i class="nav-icon mr-2 i-Receipt-4"></i><span class="item-name">Customer </span></a></li>
+                                            <li><a asp-controller="creditnotes" asp-action="VendorIndex"><i class="nav-icon mr-2 i-Receipt-4"></i><span class="item-name">Vendor </span></a></li>
+
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <div>
+                                    <div>
+                                        <label class="toggle" for="drop-2">Expens </label><a href="#"><i class="nav-icon i-Library mr-2"></i>  Expens</a>
+
+                                        <input id="drop-2" type="checkbox" />
+                                        <ul>
+                                            <li><a asp-controller="Expens" asp-action="Create"><i class="nav-icon mr-2 i-Approved-Window"></i><span class="item-name">Add Expens </span></a></li>
+                                            <li><a asp-controller="Expens" asp-action="Index"><i class="nav-icon mr-2 i-Approved-Window"></i><span class="item-name">Expens List </span></a></li>
+
                                         </ul>
                                     </div>
                                 </div>

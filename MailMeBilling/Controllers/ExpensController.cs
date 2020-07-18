@@ -11,23 +11,23 @@ using Microsoft.AspNetCore.Http;
 
 namespace MailMeBilling.Controllers
 {
-    public class BrandsController : Controller
+    public class ExpensController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public BrandsController(ApplicationDbContext context)
+        public ExpensController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: Brands
+        // GET: Expens
         public async Task<IActionResult> Index()
         {
             ViewBag.data = HttpContext.Session.GetString("name");
             ViewBag.branch = HttpContext.Session.GetString("branch");
             ViewBag.roll = HttpContext.Session.GetString("roll");
             string Branch = ViewBag.branch;
-            DateTime todaydate =  DateTime.UtcNow;
+            DateTime todaydate = DateTime.UtcNow;
             DateTime dateStart = DateTime.UtcNow.AddDays(-15);
             var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
 
@@ -36,17 +36,17 @@ namespace MailMeBilling.Controllers
             var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
 
             ViewBag.VendorPending = pendingvendor.Count();
-            return View(await _context.brand.ToListAsync());
+            return View(await _context.expens.ToListAsync());
         }
 
-        // GET: Brands/Details/5
+        // GET: Expens/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             ViewBag.data = HttpContext.Session.GetString("name");
             ViewBag.branch = HttpContext.Session.GetString("branch");
             ViewBag.roll = HttpContext.Session.GetString("roll");
             string Branch = ViewBag.branch;
-            DateTime todaydate =  DateTime.UtcNow;
+            DateTime todaydate = DateTime.UtcNow;
             DateTime dateStart = DateTime.UtcNow.AddDays(-15);
             var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
 
@@ -60,24 +60,24 @@ namespace MailMeBilling.Controllers
                 return NotFound();
             }
 
-            var brand = await _context.brand
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (brand == null)
+            var expens = await _context.expens
+                .FirstOrDefaultAsync(m => m.eid == id);
+            if (expens == null)
             {
                 return NotFound();
             }
 
-            return View(brand);
+            return View(expens);
         }
 
-        // GET: Brands/Create
+        // GET: Expens/Create
         public IActionResult Create()
         {
             ViewBag.data = HttpContext.Session.GetString("name");
             ViewBag.branch = HttpContext.Session.GetString("branch");
             ViewBag.roll = HttpContext.Session.GetString("roll");
             string Branch = ViewBag.branch;
-            DateTime todaydate =  DateTime.UtcNow;
+            DateTime todaydate = DateTime.UtcNow;
             DateTime dateStart = DateTime.UtcNow.AddDays(-15);
             var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
 
@@ -89,34 +89,47 @@ namespace MailMeBilling.Controllers
             return View();
         }
 
-        // POST: Brands/Create
+        // POST: Expens/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Brandname,Branddescription")] Brand brand)
+        public async Task<IActionResult> Create([Bind("eid,reason,amount")] Expens expens)
         {
+            ViewBag.data = HttpContext.Session.GetString("name");
+            string Name = ViewBag.data;
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
+            string Branch = ViewBag.branch;
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
 
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
             if (ModelState.IsValid)
             {
-                ViewBag.branch = HttpContext.Session.GetString("branch");
-                var Branch = ViewBag.branch;
-                brand.Branch = Branch;
-                _context.Add(brand);
+                expens.branch = Branch;
+                expens.entrydate = DateTime.UtcNow;
+                expens.entryby = Name;
+                _context.Add(expens);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return View();
             }
-            return View(brand);
+            return View(expens);
         }
 
-        // GET: Brands/Edit/5
+        // GET: Expens/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             ViewBag.data = HttpContext.Session.GetString("name");
             ViewBag.branch = HttpContext.Session.GetString("branch");
             ViewBag.roll = HttpContext.Session.GetString("roll");
             string Branch = ViewBag.branch;
-            DateTime todaydate =  DateTime.UtcNow;
+            DateTime todaydate = DateTime.UtcNow;
             DateTime dateStart = DateTime.UtcNow.AddDays(-15);
             var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
 
@@ -130,22 +143,36 @@ namespace MailMeBilling.Controllers
                 return NotFound();
             }
 
-            var brand = await _context.brand.FindAsync(id);
-            if (brand == null)
+            var expens = await _context.expens.FindAsync(id);
+            if (expens == null)
             {
                 return NotFound();
             }
-            return View(brand);
+            return View(expens);
         }
 
-        // POST: Brands/Edit/5
+        // POST: Expens/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Brandname,Branddescription")] Brand brand)
+        public async Task<IActionResult> Edit(int id, [Bind("eid,reason,amount")] Expens expens)
         {
-            if (id != brand.Id)
+            ViewBag.data = HttpContext.Session.GetString("name");
+            var Name = ViewBag.data;
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
+            string Branch = ViewBag.branch;
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
+            if (id != expens.eid)
             {
                 return NotFound();
             }
@@ -154,15 +181,15 @@ namespace MailMeBilling.Controllers
             {
                 try
                 {
-                    ViewBag.branch = HttpContext.Session.GetString("branch");
-                    var Branch = ViewBag.branch;
-                    brand.Branch = Branch;
-                    _context.Update(brand);
+                    expens.branch = Branch;
+                    expens.entrydate = DateTime.UtcNow;
+                    expens.entryby = Name;
+                    _context.Update(expens);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BrandExists(brand.Id))
+                    if (!ExpensExists(expens.eid))
                     {
                         return NotFound();
                     }
@@ -171,19 +198,19 @@ namespace MailMeBilling.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return View();
             }
-            return View(brand);
+            return View(expens);
         }
 
-        // GET: Brands/Delete/5
+        // GET: Expens/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             ViewBag.data = HttpContext.Session.GetString("name");
             ViewBag.branch = HttpContext.Session.GetString("branch");
             ViewBag.roll = HttpContext.Session.GetString("roll");
             string Branch = ViewBag.branch;
-            DateTime todaydate =  DateTime.UtcNow;
+            DateTime todaydate = DateTime.UtcNow;
             DateTime dateStart = DateTime.UtcNow.AddDays(-15);
             var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
 
@@ -192,42 +219,49 @@ namespace MailMeBilling.Controllers
             var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
 
             ViewBag.VendorPending = pendingvendor.Count();
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var brand = await _context.brand
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (brand == null)
+            var expens = await _context.expens
+                .FirstOrDefaultAsync(m => m.eid == id);
+            if (expens == null)
             {
                 return NotFound();
             }
 
-            return View(brand);
+            return View(expens);
         }
 
-        // POST: Brands/Delete/5
+        // POST: Expens/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var brand = await _context.brand.FindAsync(id);
-            _context.brand.Remove(brand);
+            ViewBag.data = HttpContext.Session.GetString("name");
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
+            string Branch = ViewBag.branch;
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
+            var expens = await _context.expens.FindAsync(id);
+            _context.expens.Remove(expens);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BrandExists(int id)
+        private bool ExpensExists(int id)
         {
-            return _context.brand.Any(e => e.Id == id);
-        }
-        public JsonResult fillbrand(string mob)
-        {
-
-            var deatils = _context.brand.Where(c => c.Brandname == mob).SingleOrDefault();
-            return new JsonResult(deatils);
-
+            return _context.expens.Any(e => e.eid == id);
         }
     }
 }
