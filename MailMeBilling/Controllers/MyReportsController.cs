@@ -1151,11 +1151,13 @@ namespace MailMeBilling.Controllers
 
             var customerdetil = _context.customerdetails.Where(i => i.Mobilenumber == Mobnumber).FirstOrDefault();
 
-            var sumofamount = _context.salesinvoicesummery.Where(i => i.Mobilenumber == Mobnumber  ).Sum(i => i.Totalamount).ToString();
+            var sumofamount = _context.salesinvoicesummery.Where(i => i.Mobilenumber == Mobnumber && i.status != "Return").Sum(i => i.Totalamount).ToString();
             ViewBag.sumofcustomerbuyamount = sumofamount;
 
             var sumofreturn = _context.salesinvoicesummery.Where(i => i.Mobilenumber == Mobnumber && i.status =="Return").Sum(i => i.Balance).ToString();
             ViewBag.sumofreturn = sumofreturn;
+            var sumofreturntotal = _context.salesinvoicesummery.Where(i => i.Mobilenumber == Mobnumber && i.status == "Return").Sum(i => i.Paid).ToString();
+            ViewBag.sumofreturntotal = sumofreturntotal;
 
             cusstatement.customerdetails.Add(customerdetil);
             var returnlist = _context.salesinvoicesummery.Where(i => i.Mobilenumber == Mobnumber ).ToList();
