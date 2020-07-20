@@ -675,7 +675,7 @@ namespace MailMeBilling.Controllers
             creditnote cn = new creditnote();
             cn.cdate = DateTime.UtcNow;
             cn.branch = Branch;
-            cn.totalamount = bill.Balance;
+            cn.totalamount = bill.Totalamount - bill.Balance;
             cn.person = "vendor";
             cn.mobilenumber = bill.Mobilenumber;
             cn.name = bill.Vendorrname;
@@ -765,7 +765,7 @@ namespace MailMeBilling.Controllers
             ViewBag.data = HttpContext.Session.GetString("name");
             ViewBag.branch = HttpContext.Session.GetString("branch");
             ViewBag.roll = HttpContext.Session.GetString("roll");
-            var sr = _context.purchasereturnsummeries.ToList();
+            var sr = _context.purchaseinvoicesummeries.Where(i => i.status =="Return").ToList();
             return View(sr);
         }
         public IActionResult Purchasereturnbill(int id)
@@ -1230,8 +1230,14 @@ namespace MailMeBilling.Controllers
 
             var customerdetil = _context.vendor.Where(i => i.Mobilenumber == Mobnumber).FirstOrDefault();
 
-            var sumofamount = _context.purchaseinvoicesummeries.Where(i => i.Mobilenumber == Mobnumber ).Sum(i => i.Totalamount).ToString();
-            ViewBag.sumofcustomerbuyamount = sumofamount;
+            var sumofamount = _context.purchaseinvoicesummeries.Where(i => i.Mobilenumber == Mobnumber && i.status !="Return" ).Sum(i => i.Totalamount).ToString();
+            ViewBag.sumofcustomerbuyamount = sumofamount;         
+
+            var sumofreturnbill = _context.purchaseinvoicesummeries.Where(i => i.Mobilenumber == Mobnumber && i.status == "Return").ToList();
+            ViewBag.sumofreturn = sumofreturnbill;
+
+            var sumofreturntotal = _context.purchaseinvoicesummeries.Where(i => i.Mobilenumber == Mobnumber && i.status == "Return").Sum(i => i.Totalamount).ToString();
+            ViewBag.sumofreturntotal = sumofreturntotal;
 
             cusstatement.vendors.Add(customerdetil);
             var paymenthistry = _context.vendorpayments.Where(i => i.Mobile == Mobnumber).ToList();

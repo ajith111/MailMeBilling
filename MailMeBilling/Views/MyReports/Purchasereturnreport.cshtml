@@ -1,6 +1,6 @@
 ﻿
 
-@model IEnumerable<MailMeBilling.Models.Purchasereturnsummery>
+@model IEnumerable<MailMeBilling.Models.Purchaseinvoicesummery>
 @{
     ViewData["Title"] = "Purchase Return Report";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
@@ -36,7 +36,7 @@
                     {
                         <tr>
                             <td class="text-center">@item.Billid</td>
-                            <td class="text-center">@item.Customername</td>
+                            <td class="text-center">@item.Vendorrname</td>
                             <td class="text-center">@item.Mobilenumber</td>
                             <td class="text-right">@item.Balance</td>
                             <td class="text-center">
