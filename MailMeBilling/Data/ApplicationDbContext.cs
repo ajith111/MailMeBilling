@@ -49,5 +49,6 @@ namespace MailMeBilling.Data
         public DbSet<Purchasereturnpaymenthistry> purchasereturnpaymenthistries { get; set; }
         public DbSet<MailMeBilling.Models.creditnote> creditnote { get; set; }
         public DbSet<MailMeBilling.Models.Expens> expens { get; set; }
+        public DbSet<Creditpaymenthistry> creditpaymenthistries { get; set; }
     }
 }

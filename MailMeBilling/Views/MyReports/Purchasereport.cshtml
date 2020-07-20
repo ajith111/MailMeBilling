@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<MailMeBilling.Models.Purchaseinvoicesummery>
 @{
-    ViewData["Title"] = "Purchasereport";
+    ViewData["Title"] = "Purchase Report";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 <div class="card text-left">
@@ -49,7 +49,7 @@
                         <td class="text-center">
                             <a asp-controller="MyReports" asp-action="Vendorpayment" asp-route-id="@item.Mobilenumber" class="btn btn-primary">Pay</a>
                             <a asp-controller="MyReports" asp-action="Viewbill" asp-route-id="@item.Billid" class="btn btn-success" target="_blank">Print</a>
-                            <a asp-controller="MyReports" asp-action="Purchasereturnbill" asp-route-id="@item.Billid" class="btn btn-danger">Return</a>
+                            <a asp-controller="MyReports" asp-action="purchasereturn" asp-route-id="@item.Billid" class="btn btn-danger">Return</a>
 
                         </td>
                     </tr>

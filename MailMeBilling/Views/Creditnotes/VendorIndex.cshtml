@@ -15,7 +15,7 @@
     <thead>
         <tr>
             <th>
-                S.No
+                Bill.No
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.cdate)
@@ -53,7 +53,7 @@
             con++;
         <tr>
             <td>
-                @con;
+                @Html.DisplayFor(modelItem => item.cid)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.cdate)
@@ -84,8 +84,8 @@
                 @Html.DisplayFor(modelItem => item.address)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.cid">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.cid">Details</a> |
+                <a asp-action="cCreditustomerpayment" asp-controller="MyReports" asp-route-id="@item.cid" asp-route-mob="@item.mobilenumber">Pay</a>
+                <a asp-action="Details" asp-route-id="@item.cid">Details</a> 
                 <a asp-action="Delete" asp-route-id="@item.cid">Delete</a>
             </td>
         </tr>

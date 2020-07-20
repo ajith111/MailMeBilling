@@ -103,7 +103,7 @@ namespace MailMeBilling.Controllers
             decimal calamt = billamount.Paid + paid;
             billamount.Balance = cal;
             billamount.Paid = calamt;
-            cph.total = billamount.nettotal;
+            cph.total = billamount.Totalamount;
 
             if (cal == 0)
             {
@@ -168,12 +168,27 @@ namespace MailMeBilling.Controllers
 
             decimal calamt = billamount.Totalamount + paid;
            
-            billamount.Totalamount = calamt;
+            billamount.paid = calamt;
             if (cal == 0)
             {
                 billamount.status = "Close";
             }
             _context.purchaseinvoicesummeries.Update(billamount);
+            Creditpaymenthistry cph1 = new Creditpaymenthistry();
+            cph1.Mobile = cph.Mobile;
+            cph1.Customername = cph.name;
+            cph1.Address = cph.Address;
+            cph1.paymenttype = cph.paymenttype;
+            cph1.Payment = cph.Balance;
+            cph1.Recivedby = Name;
+            cph1.Paiddate = DateTime.UtcNow;
+            cph1.Balance = cph.Balance;
+            cph1.refno = cph.refno;
+            cph1.Branch = Branch;
+            cph1.total = cph.total;
+            cph1.billid = cph.billid;
+            _context.creditpaymenthistries.Add(cph1);
+
             _context.SaveChanges();
 
 
@@ -595,8 +610,22 @@ namespace MailMeBilling.Controllers
             var Name = ViewBag.data;
             var bill = _context.salesinvoicesummery.Where(i => i.Billid == id && i.Branch == Branch).FirstOrDefault();
             bill.status = "Return";
-            _context.salesinvoicesummery.Update(bill);
-            _context.SaveChanges();
+            _context.salesinvoicesummery.Update(bill);         
+
+
+            var tmp = _context.salesinvoices.Where(i => i.Billno == id && i.Branch == Branch).ToList();
+           
+            foreach (var item in tmp)
+            {
+                var qty = item.Productname;
+                var prgb = _context.product.Where(p => p.productname == qty).SingleOrDefault();
+                var pquantity = prgb.stock + item.Quantity;
+                prgb.stock = pquantity;
+                _context.product.Update(prgb);
+
+
+            }
+
             var mob = bill.Mobilenumber;
             creditnote cn = new creditnote();
             cn.cdate = DateTime.UtcNow;
@@ -612,9 +641,82 @@ namespace MailMeBilling.Controllers
             cn.particular = "Sales Return Amount for B.No " + id;
             _context.creditnote.Add(cn);
             _context.SaveChanges();
+            var billno = cn.cid;
+
+            Creditpaymenthistry cph = new Creditpaymenthistry();
+            cph.Mobile = bill.Mobilenumber;
+            cph.Customername = bill.Customername;
+            cph.Address = bill.Address;
+            cph.paymenttype = bill.Paymenttype;
+            cph.Payment = bill.Paid;
+            cph.Recivedby = Name;
+            cph.Paiddate = DateTime.UtcNow;
+            cph.Balance = bill.Balance;
+            cph.refno = bill.Refcode;
+            cph.Branch = Branch;
+            cph.total = bill.Totalamount;
+            cph.billid = billno;
+            _context.creditpaymenthistries.Add(cph);
+            _context.SaveChanges();
 
             return RedirectToAction("Index","Salesinvoice");
         
+        }
+        public IActionResult purchasereturn(int id)
+        {
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            string Branch = ViewBag.branch;
+            ViewBag.data = HttpContext.Session.GetString("name");
+            var Name = ViewBag.data;
+            var bill = _context.purchaseinvoicesummeries.Where(i => i.Billid == id && i.Branch == Branch).FirstOrDefault();
+            bill.status = "Return";
+            _context.purchaseinvoicesummeries.Update(bill);
+        
+            creditnote cn = new creditnote();
+            cn.cdate = DateTime.UtcNow;
+            cn.branch = Branch;
+            cn.totalamount = bill.Balance;
+            cn.person = "vendor";
+            cn.mobilenumber = bill.Mobilenumber;
+            cn.name = bill.Vendorrname;
+            cn.address = bill.Address;
+            cn.addby = Name;
+            cn.paymenttype = bill.Paymenttype;
+            cn.refno = bill.Refcode;
+            cn.particular = "Purchase Return Amount for B.No " + id;
+            _context.creditnote.Add(cn);
+            _context.SaveChanges();
+            var billno = cn.cid;
+
+            Creditpaymenthistry cph = new Creditpaymenthistry();
+            cph.Mobile = bill.Mobilenumber;
+            cph.Customername = bill.Vendorrname;
+            cph.Address = bill.Address;
+            cph.paymenttype = bill.Paymenttype;
+            cph.Payment = bill.Balance;
+            cph.Recivedby = Name;
+            cph.Paiddate = DateTime.UtcNow;
+            cph.Balance = bill.Balance;
+            cph.refno = bill.Refcode;
+            cph.Branch = Branch;
+            cph.total = bill.Totalamount;
+            cph.billid = billno;
+            _context.creditpaymenthistries.Add(cph);
+          
+            var tmp = _context.salesinvoices.Where(i => i.Billno == id && i.Branch == Branch).ToList();
+            foreach (var item in tmp)
+            {
+                var qty = item.Productname;
+                var prgb = _context.product.Where(p => p.productname == qty).SingleOrDefault();
+                var pquantity = prgb.stock - item.Quantity;
+                prgb.stock = pquantity;
+                _context.product.Update(prgb);
+            }          
+           
+            _context.SaveChanges();
+
+            return RedirectToAction("Index", "Purchaseinvoice");
+
         }
         public IActionResult deletetmpreturn(int id)
         {
@@ -1049,11 +1151,14 @@ namespace MailMeBilling.Controllers
 
             var customerdetil = _context.customerdetails.Where(i => i.Mobilenumber == Mobnumber).FirstOrDefault();
 
-            var sumofamount = _context.salesinvoicesummery.Where(i => i.Mobilenumber == Mobnumber && i.status !="Return" ).Sum(i => i.Totalamount).ToString();
+            var sumofamount = _context.salesinvoicesummery.Where(i => i.Mobilenumber == Mobnumber  ).Sum(i => i.Totalamount).ToString();
             ViewBag.sumofcustomerbuyamount = sumofamount;
-          
+
+            var sumofreturn = _context.salesinvoicesummery.Where(i => i.Mobilenumber == Mobnumber && i.status =="Return").Sum(i => i.Balance).ToString();
+            ViewBag.sumofreturn = sumofreturn;
+
             cusstatement.customerdetails.Add(customerdetil);
-            var returnlist = _context.salesinvoicesummery.Where(i => i.Mobilenumber == Mobnumber && i.status != "Return").ToList();
+            var returnlist = _context.salesinvoicesummery.Where(i => i.Mobilenumber == Mobnumber ).ToList();
             if (returnlist.Count != 0)
             {
                 foreach (var billno in returnlist)
@@ -1067,32 +1172,20 @@ namespace MailMeBilling.Controllers
             }     var creditnote = _context.creditnote.Where(i => i.mobilenumber == Mobnumber).ToList();
                     foreach (var item in creditnote)
                     {
-                        cusstatement.creditnotes.Add(item);
+                var creditnotehis = _context.creditpaymenthistries.Where(i => i.Mobile == Mobnumber && i.billid == item.cid).ToList();
+                foreach (var itemc in creditnotehis)
+                {
+                    cusstatement.creditpaymenthistries.Add(itemc);
+
+                }
+                cusstatement.creditnotes.Add(item);
 
                     }
+          
 
-               //}
-
-           //}
-            //else
-            //{
-               
-            //        var paymenthistry = _context.customerpaymenthistry.Where(i => i.Mobile == Mobnumber ).ToList();
-            //        foreach (var item in paymenthistry)
-            //        {
-            //            cusstatement.customerpaymenthistries.Add(item);
-            //        }
-            //    var creditnote = _context.creditnote.Where(i => i.mobilenumber == Mobnumber).ToList();
-            //    foreach (var item in creditnote)
-            //    {
-            //        cusstatement.creditnotes.Add(item);
-
-            //    }
-                
-
-            //}
-            
            
+
+
 
             return View(cusstatement);
         }
@@ -1135,14 +1228,27 @@ namespace MailMeBilling.Controllers
 
             var customerdetil = _context.vendor.Where(i => i.Mobilenumber == Mobnumber).FirstOrDefault();
 
-            var sumofamount = _context.purchaseinvoicesummeries.Where(i => i.Mobilenumber == Mobnumber && i.status != "Return").Sum(i => i.Totalamount).ToString();
+            var sumofamount = _context.purchaseinvoicesummeries.Where(i => i.Mobilenumber == Mobnumber ).Sum(i => i.Totalamount).ToString();
             ViewBag.sumofcustomerbuyamount = sumofamount;
 
             cusstatement.vendors.Add(customerdetil);
             var paymenthistry = _context.vendorpayments.Where(i => i.Mobile == Mobnumber).ToList();
             foreach (var item in paymenthistry)
             {
+
                 cusstatement.vendorpayments.Add(item);
+            }
+            var creditnote = _context.creditnote.Where(i => i.mobilenumber == Mobnumber).ToList();
+            foreach (var item in creditnote)
+            {
+                var creditnotehis = _context.creditpaymenthistries.Where(i => i.Mobile == Mobnumber && i.billid == item.cid).ToList();
+                foreach (var itemc in creditnotehis)
+                {
+                    cusstatement.creditpaymenthistries.Add(itemc);
+
+                }
+                cusstatement.creditnotes.Add(item);
+
             }
 
             return View(cusstatement);
@@ -1236,6 +1342,66 @@ namespace MailMeBilling.Controllers
 
             return View(todaysale);
         }
+        public IActionResult cCreditustomerpayment(int id ,string mob)
+        {
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
+            ViewBag.data = HttpContext.Session.GetString("name");
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
+            var list = _context.customerdetails.Where(i => i.Mobilenumber == mob).FirstOrDefault();
+            var bill = _context.creditnote.Where(i => i.cid == id).ToList();
+            ViewBag.billsummery = bill;
+            var histry = _context.creditpaymenthistries.Where(i => i.billid == id).ToList();
+            ViewBag.histry = histry;
+
+
+            return View(list);
+        }
+
+        public IActionResult creditUpdatepayments(Creditpaymenthistry cph)
+        {
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
+            ViewBag.data = HttpContext.Session.GetString("name");
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            var Name = ViewBag.data;
+            var Branch = ViewBag.branch;
+            cph.Paiddate = DateTime.UtcNow;
+            cph.Recivedby = Name;         
+            
+            cph.Branch = Branch;
+
+
+            var billamount = _context.creditnote.Where(i => i.cid == cph.billid).FirstOrDefault();
+            decimal paid = cph.Payment;
+            decimal cal = cph.Balance;          
+            cph.total = cal;
+            var billhis = _context.creditpaymenthistries.Add(cph);
+            billamount.totalamount = cal;
+            _context.creditnote.Update(billamount);
+
+            _context.SaveChanges();
+
+
+
+            return Json(new { success = true, message = "Save successfull." });
+        }
+
 
     }
 }

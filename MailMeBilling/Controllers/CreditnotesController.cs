@@ -131,13 +131,30 @@ namespace MailMeBilling.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("cid,person,particular,totalamount,name,mobilenumber,address,paymenttype,refno")] creditnote creditnote)
         {
+            ViewBag.data = HttpContext.Session.GetString("name");
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
+            string Branch = ViewBag.branch;
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
             if (ModelState.IsValid)
             {
                 ViewBag.data = HttpContext.Session.GetString("name");
                 var Name = ViewBag.data;              
                 ViewBag.branch = HttpContext.Session.GetString("branch");
-                var Branch = ViewBag.branch;
-
+                creditnote.addby = Name;
+                creditnote.branch = Branch;
+                creditnote.cdate = DateTime.UtcNow;
+                _context.Add(creditnote);
+                await _context.SaveChangesAsync();
+                var cno = creditnote.cid;
                 if (creditnote.person =="customer")
                 {
                     var checkcustomer = _context.customerdetails.Where(i => i.Mobilenumber == creditnote.mobilenumber).FirstOrDefault();
@@ -151,6 +168,26 @@ namespace MailMeBilling.Controllers
                         cd.Entrydate = DateTime.UtcNow;
                         cd.Entryby = Name;
                         _context.customerdetails.Add(cd);
+
+                        
+
+
+                        Creditpaymenthistry cph1 = new Creditpaymenthistry();
+                        cph1.Mobile = creditnote.mobilenumber;
+                        cph1.Customername = creditnote.name;
+                        cph1.Address = creditnote.address;
+                        cph1.paymenttype = creditnote.paymenttype;
+                        cph1.Payment = creditnote.totalamount;
+                        cph1.Recivedby = Name;
+                        cph1.Paiddate = DateTime.UtcNow;
+                        cph1.Balance = 0;
+                        cph1.refno = creditnote.refno;
+                        cph1.Branch = Branch;
+                        cph1.total = creditnote.totalamount;
+                        cph1.billid = cno;
+                        _context.creditpaymenthistries.Add(cph1);
+
+                     
                         _context.SaveChanges();
                     }
 
@@ -169,14 +206,24 @@ namespace MailMeBilling.Controllers
                         cd.Entrydate = DateTime.UtcNow;
                         cd.Entryby = Name;
                         _context.vendor.Add(cd);
+                        Creditpaymenthistry cph1 = new Creditpaymenthistry();
+                        cph1.Mobile = creditnote.mobilenumber;
+                        cph1.Customername = creditnote.name;
+                        cph1.Address = creditnote.address;
+                        cph1.paymenttype = creditnote.paymenttype;
+                        cph1.Payment = creditnote.totalamount;
+                        cph1.Recivedby = Name;
+                        cph1.Paiddate = DateTime.UtcNow;
+                        cph1.Balance = 0;
+                        cph1.refno = creditnote.refno;
+                        cph1.Branch = Branch;
+                        cph1.total = creditnote.totalamount;
+                        cph1.billid = cno;
+                        _context.creditpaymenthistries.Add(cph1);
                         _context.SaveChanges();
                     }
                 }
-                creditnote.addby = Name;
-                creditnote.branch = Branch;
-                creditnote.cdate = DateTime.UtcNow;
-                _context.Add(creditnote);
-                await _context.SaveChangesAsync();
+                
                 return View();
             }
             return View(creditnote);
@@ -240,6 +287,7 @@ namespace MailMeBilling.Controllers
             {
                 try
                 {
+                    creditnote.cdate = DateTime.UtcNow;
                     _context.Update(creditnote);
                     await _context.SaveChangesAsync();
                 }
