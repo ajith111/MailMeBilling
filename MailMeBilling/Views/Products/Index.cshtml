@@ -6,7 +6,8 @@
     int count = 0;
 }
 
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.21/css/dataTables.bootstrap4.min.css" />
 
 
 <div class="card text-left">
@@ -25,127 +26,229 @@
 
 
         <div class="table-responsive">
-            <table class="display table table-striped table-bordered" id="zero_configuration_table" style="width:100%">
+            <table id="example" class="table table-striped table-bordered" style="width:100%">
                 <thead>
                     <tr class="text-center">
-                        <th>S.No</th>
+                      
                         <th>
-                            @Html.DisplayNameFor(model => model.productimage)
+                            Product Image
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.productname)
+                            Product Name
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Category)
+                            Category
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.SubcCategory)
+                            SubCategory
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Color)
+                            Color
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Brand)
+                            Brand
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.Hsncode)
+                            HSN Code
                         </th>
-                       
+
                         <th>
-                            @Html.DisplayNameFor(model => model.Salesrate)
+                            Price
                         </th>
                         <th>
-                            @Html.DisplayNameFor(model => model.stock)
+                            Stock
                         </th>
 
 
 
-                        <th>ACTION</th>
+                        <th >ACTION</th>
                     </tr>
                 </thead>
 
-                <tbody>
-                    @foreach (var item in Model)
+                @*<tbody>
+            @foreach (var item in Model)
+            {
+                count++;
+
+
+
+            <tr class="text-center">
+                <td style="width:10px">@count</td>
+                <td>
+                    @if (item.productimage != null)
                     {
-                        count++;
+                        string imageBase64 = Convert.ToBase64String(item.productimage);
+                        string imageSrc = string.Format("data:image/gif;base64,{0}", imageBase64);
+                    <img src="@imageSrc" style="width:50px;height:20px; " data-toggle="modal" data-target=".A-@item.productid" />
 
+                    Modal
+                    <div class="modal fade bd-example-modal-lg A-@item.productid" id="" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalCenterTitle">@item.productname</h5>
+                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                </div>
+                                <div class="modal-body text-center">
 
+                                    <img src="@imageSrc" style="width:auto;height:auto;" />
 
-                    <tr class="text-center">
-                        <td style="width:10px">@count</td>
-                        <td>
-                            @if (item.productimage != null)
-                            {
-                                string imageBase64 = Convert.ToBase64String(item.productimage);
-                                string imageSrc = string.Format("data:image/gif;base64,{0}", imageBase64);
-                            <img src="@imageSrc" style="width:50px;height:20px; " data-toggle="modal" data-target=".A-@item.productid" />
+                                </div>
+                                <div class="modal-footer">
 
-                            <!--Modal -->
-                            <div class="modal fade bd-example-modal-lg A-@item.productid" id="" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                <div class="modal-dialog modal-lg">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalCenterTitle">@item.productname</h5>
-                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                        </div>
-                                        <div class="modal-body text-center">
-                                           
-                                            <img src="@imageSrc" style="width:auto;height:auto;" />
-                                           
-                                        </div>
-                                        <div class="modal-footer">
-
-                                            <button class="btn btn-primary ml-2" type="button" data-dismiss="modal"> Close</button>
-                                        </div>
-                                    </div>
+                                    <button class="btn btn-primary ml-2" type="button" data-dismiss="modal"> Close</button>
                                 </div>
                             </div>
-                            }
-                            <!-- Modal -->
-                        </td>
-
-                       
-                        <td>
-                            @Html.DisplayFor(modelItem => item.productname)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Category)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.SubcCategory)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Color)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Brand)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Hsncode)
-                        </td>
-                       
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Salesrate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.stock)
-                        </td>
-
-
-                        <td>
-                            <span>
-                                <a class=" nav-icon mr-2 i-Pen-2" asp-action="Edit" asp-route-id="@item.productid"></a>
-                                <a class="nav-icon mr-2 i-Information" asp-action="Details" asp-route-id="@item.productid"></a>
-                                <a class=" nav-icon mr-2 i-Close" asp-action="Delete" asp-route-id="@item.productid"></a>
-                            </span>
-                        </td>
-                    </tr>
+                        </div>
+                    </div>
                     }
-                </tbody>
+                     Modal
+                </td>
+
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.productname)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SubcCategory)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Color)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Brand)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Hsncode)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Salesrate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.stock)
+                </td>
+
+
+                <td>
+                    <span>
+                        <a class=" nav-icon mr-2 i-Pen-2" asp-action="Edit" asp-route-id="@item.productid"></a>
+                        <a class="nav-icon mr-2 i-Information" asp-action="Details" asp-route-id="@item.productid"></a>
+                        <a class=" nav-icon mr-2 i-Close" asp-action="Delete" asp-route-id="@item.productid"></a>
+                    </span>
+                </td>
+            </tr>
+            }
+        </tbody>*@
 
             </table>
 
-           
-        </div>
+
+        </div >
     </div>
 </div>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/dataTables.bootstrap4.min.js"></script>
+<script>
+    var dataTable;
+
+
+    $(document).ready(function () {
+        loadDataTable();
+       
+    });
+
+
+
+
+    function loadDataTable() {
+        var con = 0;
+        dataTable = $('#example').DataTable({
+            "ajax": {
+                "url": "/Products/getall",
+                "type": "GET",
+                "datatype": "json"
+
+            },
+
+            "columns": [
+               
+
+                {
+                    
+                  
+
+                    data: "productimage", name: "productimage",
+                    render: function (data, type, row, meta) {
+                        con++;
+                        var sno = con;
+                        var imgsrc = 'data:image/png;base64,' + data; // here data should be in base64 string
+                        console.log(con);
+                        if (imgsrc.length == "22") {
+                            return '<img class="img-responsive" src="/dist-assets/images/photo-wide-6.jpg" alt="Logo" height="50px" width="50px" style="text-align:center"/>';
+
+                        }
+                        else {
+                            return '<img class="img-responsive" src="' + imgsrc + '" alt="tbl_StaffImage" height="50px" width="50px" style="text-align:center" data-toggle="modal" data-target="A+' + sno + '">' +
+                                '<div class="modal fade bd-example-modal-lg A+' + sno + '" id = "' + sno + '" tabindex = "-1" role = "dialog" aria - labelledby="exampleModalCenterTitle" aria - hidden="true" >'+
+                       ' <div class="modal-dialog modal-lg">' +
+                          ' <div class="modal-content">'+
+                                '<div class="modal-header">'+
+                                   ' <h5 class="modal-title" id="exampleModalCenterTitle">Product</h5>'+
+                                   ' <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>'+
+                              '  </div>'+
+                                '<div class="modal-body text-center">'+
+
+                                   ' <img lass="img-responsive" src="' + imgsrc + '" style="width:auto;height:auto;" />'+
+
+                               ' </div>'+
+                               ' <div class="modal-footer">'+
+
+                                   ' <button class="btn btn-primary ml-2" type="button" data-dismiss="modal"> Close</button>'+
+                               ' </div>'+
+                           ' </div>'+
+                        '</div>'+
+                   ' </div> ';
+                        }
+                    }
+                },
+                { 'data': 'productname' },
+                { 'data': 'category' },
+                { 'data': 'subcCategory' },
+                { 'data': 'color' },
+                { 'data': 'brand' },
+                { 'data': 'hsncode' },
+                { 'data': 'salesrate' },
+                { 'data': 'stock' },
+                {
+                    "data": "productid",
+                    "render": function (data) {
+                        return `<div >
+
+                                 <a class=" nav-icon mr-2 i-Pen-2"   href="/Products/Edit/${data}"></a>
+                        <a class="nav-icon mr-2 i-Information"  href="/Products/Details/${data}"></a>
+                        <a class=" nav-icon mr-2 i-Close"  href="/Products/Delete/${data}"></a>
+
+
+                            </div>
+                            `;
+                    }, "width": "10%"
+                }
+            ],
+            "language": {
+                "emptyTable": "No records found."
+            },
+            "width": "100%"
+        });
+    }
+
+
+
+
+
+
+</script>

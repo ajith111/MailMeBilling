@@ -10,6 +10,7 @@ using MailMeBilling.Models;
 using Microsoft.AspNetCore.Http;
 using Xunit;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace MailMeBilling.Controllers
 {
@@ -21,9 +22,28 @@ namespace MailMeBilling.Controllers
         {
             _context = context;
         }
+        public IActionResult Index()
+        {
+            ViewBag.data = HttpContext.Session.GetString("name");
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
+            string Branch = ViewBag.branch;
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
 
-        // GET: Products
-        public async Task<IActionResult> Index()
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+             ViewBag.VendorPending = pendingvendor.Count();
+            return View();
+        }
+
+            // GET: Products
+            #region API CALLS
+            [HttpGet]
+        public IActionResult getall()
         {
             ViewBag.data = HttpContext.Session.GetString("name");
             ViewBag.branch = HttpContext.Session.GetString("branch");
@@ -37,9 +57,12 @@ namespace MailMeBilling.Controllers
 
             var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
 
-            ViewBag.VendorPending = pendingvendor.Count();
-            return View(await _context.product.ToListAsync());
+           ViewBag.VendorPending = pendingvendor.Count();
+             //return Json(JsonConvert.SerializeObject(_context.product.ToList()));
+            // return View( _context.product.ToList());
+            return Json(new { data = _context.product.ToList() });
         }
+        #endregion
 
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
