@@ -14,6 +14,16 @@ namespace MailMeBilling.Models
         public string reason { get; set; }
         [Display(Name ="Amount")]
         public decimal amount { get; set; }
+
+
+
+
+
+
+
+
+
+
         public string branch { get; set; }
         [Display(Name ="Entry Date")]
         public DateTime entrydate { get; set; }

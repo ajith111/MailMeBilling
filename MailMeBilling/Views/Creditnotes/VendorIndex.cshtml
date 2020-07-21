@@ -6,89 +6,108 @@
     int con = 0;
 }
 
-    <h1>Vendor Credit Note List</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Bill.No
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.cdate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.person)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.particular)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.paymenttype)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.refno)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.totalamount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.mobilenumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.address)
-            </th>
-            <th>Action</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            con++;
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.cid)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.cdate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.person)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.particular)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.paymenttype)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.refno)
-            </td>
 
-            <td>
-                @Html.DisplayFor(modelItem => item.totalamount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.mobilenumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.address)
-            </td>
-            <td>
-                <a asp-action="cCreditustomerpayment" asp-controller="MyReports" asp-route-id="@item.cid" asp-route-mob="@item.mobilenumber">Pay</a>
-                <a asp-action="Details" asp-route-id="@item.cid">Details</a> 
-                <a asp-action="Delete" asp-route-id="@item.cid">Delete</a>
-            </td>
-        </tr>
-        }
-    </tbody>
-</table>
+
+<div class="card text-left">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-10">
+                <h4 class="card-title mb-3"><b> Credit Note</b></h4>
+                <p>Vendor Credit Note List</p>
+            </div>
+            <div class="col-2">
+                <p class="text-right">
+                    <a asp-action="Create" class="btn btn-primary">Add Note</a>
+                </p>
+            </div>
+        </div>
+
+
+        <div class="table-responsive">
+            <table class="display table table-striped table-bordered" id="zero_configuration_table" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>
+                            Bill.No
+                        </th>
+                        <th  style="width:100px">
+                            @Html.DisplayNameFor(model => model.cdate)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.person)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.particular)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.paymenttype)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.refno)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.totalamount)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.name)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.mobilenumber)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.address)
+                        </th>
+                        <th style="width:70px">Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        con++;
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.cid)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.cdate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.person)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.particular)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.paymenttype)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.refno)
+                            </td>
+
+                            <td>
+                                @Html.DisplayFor(modelItem => item.totalamount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.mobilenumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.address)
+                            </td>
+                            <td>
+                                <a class=" nav-icon mr-2 i-Pen-2" asp-action="cCreditustomerpayment" asp-controller="MyReports" asp-route-id="@item.cid" asp-route-mob="@item.mobilenumber"></a>
+                                <a class="nav-icon mr-2 i-Information" asp-action="Details" asp-route-id="@item.cid"></a>
+                                <a class="nav-icon mr-2 i-Close" asp-action="Delete" asp-route-id="@item.cid"></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+</div>

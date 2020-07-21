@@ -54,9 +54,7 @@
                             <td class="text-right">@item.Totalamount</td>
                             <td class="text-center">
 
-                                @*<a asp-controller="MyReports" asp-action="Salesreturnbill" asp-route-id="@item.Billid" class="btn btn-primary">Return</a>*@
-                                <a asp-controller="MyReports" asp-action="printpurchasereturn" asp-route-id="@item.Billid" class="btn btn-success" target="_blank">Print</a>
-
+                                <a asp-controller="MyReports" asp-action="Viewbill" asp-route-id="@item.Billid" class="btn btn-success" target="_blank">Print</a>
 
 
 

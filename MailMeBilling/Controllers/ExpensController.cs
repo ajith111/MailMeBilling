@@ -263,5 +263,260 @@ namespace MailMeBilling.Controllers
         {
             return _context.expens.Any(e => e.eid == id);
         }
+
+        public IActionResult Addtransport()
+        {
+            ViewBag.data = HttpContext.Session.GetString("name");
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
+            string Branch = ViewBag.branch;
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
+            return View();
+        }
+
+        // POST: Expens/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Addtransport( Expens expens)
+        {
+            ViewBag.data = HttpContext.Session.GetString("name");
+            string Name = ViewBag.data;
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
+            string Branch = ViewBag.branch;
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
+            if (ModelState.IsValid)
+            {
+                expens.branch = Branch;
+                expens.entrydate = DateTime.UtcNow;
+                expens.entryby = Name;
+                _context.Add(expens);
+                await _context.SaveChangesAsync();
+                return View();
+            }
+            return View(expens);
+        }
+        public IActionResult Addsalary()
+        {
+            ViewBag.data = HttpContext.Session.GetString("name");
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
+            string Branch = ViewBag.branch;
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
+            return View();
+        }
+
+        // POST: Expens/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Addsalary(Expens expens)
+        {
+            ViewBag.data = HttpContext.Session.GetString("name");
+            string Name = ViewBag.data;
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
+            string Branch = ViewBag.branch;
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
+            if (ModelState.IsValid)
+            {
+                expens.branch = Branch;
+                expens.entrydate = DateTime.UtcNow;
+                expens.entryby = Name;
+                _context.Add(expens);
+                await _context.SaveChangesAsync();
+                return View();
+            }
+            return View(expens);
+        }
+
+        public IActionResult Addfule()
+        {
+            ViewBag.data = HttpContext.Session.GetString("name");
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
+            string Branch = ViewBag.branch;
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
+            return View();
+        }
+
+        // POST: Expens/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Addfule(Expens expens)
+        {
+            ViewBag.data = HttpContext.Session.GetString("name");
+            string Name = ViewBag.data;
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
+            string Branch = ViewBag.branch;
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
+            if (ModelState.IsValid)
+            {
+                expens.branch = Branch;
+                expens.entrydate = DateTime.UtcNow;
+                expens.entryby = Name;
+                _context.Add(expens);
+                await _context.SaveChangesAsync();
+                return View();
+            }
+            return View(expens);
+        }
+
+
+        public IActionResult Addcompanyex()
+        {
+            ViewBag.data = HttpContext.Session.GetString("name");
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
+            string Branch = ViewBag.branch;
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
+            return View();
+        }
+
+        // POST: Expens/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Addcompanyex(Expens expens)
+        {
+            ViewBag.data = HttpContext.Session.GetString("name");
+            string Name = ViewBag.data;
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
+            string Branch = ViewBag.branch;
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
+            if (ModelState.IsValid)
+            {
+                expens.branch = Branch;
+                expens.entrydate = DateTime.UtcNow;
+                expens.entryby = Name;
+                _context.Add(expens);
+                await _context.SaveChangesAsync();
+                return View();
+            }
+            return View(expens);
+        }
+        public IActionResult Addstationary()
+        {
+            ViewBag.data = HttpContext.Session.GetString("name");
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
+            string Branch = ViewBag.branch;
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
+            return View();
+        }
+
+        // POST: Expens/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Addstationary(Expens expens)
+        {
+            ViewBag.data = HttpContext.Session.GetString("name");
+            string Name = ViewBag.data;
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
+            string Branch = ViewBag.branch;
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
+            if (ModelState.IsValid)
+            {
+                expens.branch = Branch;
+                expens.entrydate = DateTime.UtcNow;
+                expens.entryby = Name;
+                _context.Add(expens);
+                await _context.SaveChangesAsync();
+                return View();
+            }
+            return View(expens);
+        }
+
     }
 }

@@ -29,7 +29,9 @@
             <table id="example" class="table table-striped table-bordered" style="width:100%">
                 <thead>
                     <tr class="text-center">
-                      
+                        <th style="text-align:center">
+                           S.No
+                        </th>
                         <th>
                             Product Image
                         </th>
@@ -61,7 +63,7 @@
 
 
 
-                        <th >ACTION</th>
+                        <th>ACTION</th>
                     </tr>
                 </thead>
 
@@ -174,23 +176,21 @@
                 "datatype": "json"
 
             },
-
-            "columns": [
-               
+      
+            "columns": [      
+                { data: "productid"},
 
                 {
-                    
-                  
-
                     data: "productimage", name: "productimage",
                     render: function (data, type, row, meta) {
-                        con++;
-                        var sno = con;
+                      
+                        var sno = row.productid;
+                        console.log(sno);
                         var imgsrc = 'data:image/png;base64,' + data; // here data should be in base64 string
-                        console.log(con);
+                     
                         if (imgsrc.length == "22") {
                             return '<img class="img-responsive" src="/dist-assets/images/photo-wide-6.jpg" alt="Logo" height="50px" width="50px" style="text-align:center"/>';
-
+                          
                         }
                         else {
                             return '<img class="img-responsive" src="' + imgsrc + '" alt="tbl_StaffImage" height="50px" width="50px" style="text-align:center" data-toggle="modal" data-target="A+' + sno + '">' +
@@ -212,8 +212,10 @@
                                ' </div>'+
                            ' </div>'+
                         '</div>'+
-                   ' </div> ';
+                                ' </div> ';
+                          
                         }
+                      
                     }
                 },
                 { 'data': 'productname' },

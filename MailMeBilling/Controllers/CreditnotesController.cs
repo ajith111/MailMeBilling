@@ -356,8 +356,14 @@ namespace MailMeBilling.Controllers
         [HttpGet]
         public JsonResult fillcusdetails(string mob)
         {
-
+          
             var deatils = _context.customerdetails.Where(c => c.Mobilenumber == mob).SingleOrDefault();
+            var vdetils = _context.vendor.Where(c => c.Mobilenumber == mob).SingleOrDefault();
+
+            if (vdetils != null)
+            {
+                return new JsonResult(vdetils);
+            }
             return new JsonResult(deatils);
 
         }
