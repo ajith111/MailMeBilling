@@ -48,12 +48,50 @@
 
             </div>
             <div class="col-6 text-left" style="border: 1px solid black;">
-                <label><b>INVOICE NO :</b> @sums.Billid</label><br />
-                <label><b>DATE & TIME :</b> @ViewBag.billdate</label>
+                <div class="row">
+                    <div class="col-4" style="text-align:left">
+                        <label><b>INVOICE NO</b></label>
+                    </div>
+                    <div class="col-8" style="text-align:left">
+                        <label>: @sums.Billid</label><br />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4" style="text-align:left">
+                        <label><b>DATE & TIME </b></label>
+                    </div>
+                    <div class="col-8" style="text-align:left">
+                        <label>: @ViewBag.billdate</label>
+                    </div>
+                </div>
+
+
                 <h4><b><u>CUSTOMER DETAILS</u> </b></h4>
-                <label><b>NAME       :</b> @sums.Customername</label><br />
-                <label><b>MOBILE     :</b> @sums.Mobilenumber</label><br />
-                <label><b>ADDRESS    :</b> @sums.Address</label><br />
+                <div class="row">
+                    <div class="col-4" style="text-align:left">
+                        <label><b>NAME       </b></label><br />
+                    </div>
+                    <div class="col-8" style="text-align:left">
+                        <label>: @sums.Customername</label><br />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4" style="text-align:left">
+                        <label><b>MOBILE     </b></label><br />
+                    </div>
+                    <div class="col-8" style="text-align:left">
+                        <label>: @sums.Mobilenumber</label><br />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-4" style="text-align:left">
+                        <label><b>ADDRESS    </b></label><br />
+                    </div>
+                    <div class="col-8" style="text-align:left">
+                        <label>: @sums.Address</label><br />
+                    </div>
+                </div>
+
 
             </div>
 
@@ -66,13 +104,13 @@
             <table style="width:100%">
 
 
-                <tr class="text-center">
+                <tr class="text-center" style="width:100%;">
                     <th style="padding-left: 0px; padding-right: 0px;  width: 1%;">S.No</th>
                     <th>PARTICULAR</th>
                     <th>HSN CODE</th>
                     <th>QTY</th>
                     <th>RATE</th>
-                    <th>AMOUNT</th>
+                    <th style="width:15%;">AMOUNT</th>
                 </tr>
                 <tbody>
 
@@ -101,7 +139,7 @@
                         <th></th>
                         <th> Total Qty (@sums.Totalqty)</th>
                         <th></th>
-                        <th class="text-right" style="padding-right:30px"> ₹  @amttotal</th>
+                        <th class="text-right" style="padding-right:30px ;width:100px"> ₹  @amttotal</th>
                     </tr>
                     @if (sums.Gst != 0)
                     {
@@ -152,14 +190,26 @@
                         </tr>
 
                     }
-                <tr class="text-center">
-                    <th colspan="1" style="text-align:left;border-right-color:white; width:150px;"></th>
-                    <th style="text-align:left;border-right-color: white;"><span style="text-align:left">VEHICLE NO :</span> <span style="text-align: center; padding-left: 300px;">CHECKED BY:</span></th>
-                    <th colspan="2" style="text-align:left"></th>
-                    <th>NET AMOUNT</th>
-                    <th class="text-right" style="padding-right:30px"> ₹  @sums.nettotal</th>
-                    <input type="hidden" id="tamt" value=" @sums.nettotal" />
-                </tr>
+                    <tr class="text-center">
+                        <th colspan="4" style="text-align:left;border-right-color:white;"></th>
+
+                        <th>PAID </th>
+                        <th class="text-right" style="padding-right:30px;text-align:right; color:forestgreen"> ₹  @sums.Paid</th>
+                    </tr>
+                    <tr class="text-center">
+                        <th colspan="4" style="text-align:left;border-right-color:white;"></th>
+
+                        <th>BALANCE </th>
+                        <th class="text-right" style="padding-right:30px;text-align:right;color:red "> ₹  @sums.Balance</th>
+                    </tr>
+                    <tr class="text-center">
+                        <th colspan="1" style="text-align:left;border-right-color:white; width:150px;"></th>
+                        <th style="text-align:left;border-right-color: white;"><span style="text-align:left">VEHICLE NO :</span> <span style="text-align: center; padding-left: 300px;">CHECKED BY:</span></th>
+                        <th colspan="2" style="text-align:left"></th>
+                        <th>NET AMOUNT</th>
+                        <th class="text-right" style="padding-right:30px ; color:blueviolet;"> ₹  @sums.nettotal</th>
+                        <input type="hidden" id="tamt" value=" @sums.nettotal" />
+                    </tr>
                 </tbody>
             </table>
            
@@ -207,15 +257,15 @@
     </div>
     @if (Model.tempseccions.Count != 0)
     {
-        <table style="width:auto">
+        <table style="width:100%">
 
             <tr class="text-center">
-                <th width="20">S.NO</th>
-                <th width="20">PARTICULAR</th>
-                <th width="20">HSN CODE</th>
-                <th width="20">QTY</th>
-                <th width="20">RATE</th>
-                <th width="20">AMOUNT</th>
+                <th>S.NO</th>
+                <th>PARTICULAR</th>
+                <th>HSN CODE</th>
+                <th>QTY</th>
+                <th>RATE</th>
+                <th style="width:15%">AMOUNT</th>
             </tr>
 
             @foreach (var item in Model.tempseccions)
@@ -227,7 +277,7 @@
                     <th>@item.Hsncode</th>
                     <th>@item.Quantity</th>
                     <th class="text-right" style="padding-right:30px">@item.Rate</th>
-                    <th class="text-right" style="padding-right:30px"> ₹  @item.Amount</th>
+                    <th class="text-right" style="padding-right:30px; width:200px;"> ₹  @item.Amount</th>
                     
                 </tr>
             }

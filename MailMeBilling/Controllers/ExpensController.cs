@@ -94,7 +94,7 @@ namespace MailMeBilling.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("eid,reason,amount")] Expens expens)
+        public async Task<IActionResult> Create( Expens expens)
         {
             ViewBag.data = HttpContext.Session.GetString("name");
             string Name = ViewBag.data;
@@ -485,38 +485,7 @@ namespace MailMeBilling.Controllers
             return View();
         }
 
-        // POST: Expens/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Addstationary(Expens expens)
-        {
-            ViewBag.data = HttpContext.Session.GetString("name");
-            string Name = ViewBag.data;
-            ViewBag.branch = HttpContext.Session.GetString("branch");
-            ViewBag.roll = HttpContext.Session.GetString("roll");
-            string Branch = ViewBag.branch;
-            DateTime todaydate = DateTime.UtcNow;
-            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
-            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.CustomerPending = pendingcustomer.Count();
-
-            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.VendorPending = pendingvendor.Count();
-            if (ModelState.IsValid)
-            {
-                expens.branch = Branch;
-                expens.entrydate = DateTime.UtcNow;
-                expens.entryby = Name;
-                _context.Add(expens);
-                await _context.SaveChangesAsync();
-                return View();
-            }
-            return View(expens);
-        }
+       
 
     }
 }

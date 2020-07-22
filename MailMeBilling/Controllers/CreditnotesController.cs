@@ -129,7 +129,7 @@ namespace MailMeBilling.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("cid,person,particular,totalamount,name,mobilenumber,address,paymenttype,refno")] creditnote creditnote)
+        public async Task<IActionResult> Create([Bind("cid,cdate,person,particular,totalamount,name,mobilenumber,address,paymenttype,refno")] creditnote creditnote)
         {
             ViewBag.data = HttpContext.Session.GetString("name");
             ViewBag.branch = HttpContext.Session.GetString("branch");
@@ -151,7 +151,11 @@ namespace MailMeBilling.Controllers
                 ViewBag.branch = HttpContext.Session.GetString("branch");
                 creditnote.addby = Name;
                 creditnote.branch = Branch;
-                creditnote.cdate = DateTime.UtcNow;
+                if (creditnote.cdate == null)
+                {
+                    creditnote.cdate = DateTime.UtcNow;
+                }
+              
                 _context.Add(creditnote);
                 await _context.SaveChangesAsync();
                 var cno = creditnote.cid;
@@ -167,9 +171,7 @@ namespace MailMeBilling.Controllers
                         cd.Branch = Branch;
                         cd.Entrydate = DateTime.UtcNow;
                         cd.Entryby = Name;
-                        _context.customerdetails.Add(cd);
-
-                        
+                        _context.customerdetails.Add(cd);                      
 
 
                         Creditpaymenthistry cph1 = new Creditpaymenthistry();
@@ -221,12 +223,13 @@ namespace MailMeBilling.Controllers
                         cph1.billid = cno;
                         _context.creditpaymenthistries.Add(cph1);
                         _context.SaveChanges();
+                        return View();
                     }
                 }
                 
-                return View();
+                return RedirectToAction("Create");
             }
-            return View(creditnote);
+            return View();
         }
 
         // GET: creditnotes/Edit/5

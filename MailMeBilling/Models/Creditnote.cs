@@ -11,7 +11,9 @@ namespace MailMeBilling.Models
     {
         [Key]
         public int cid { get; set; }
+        [Required]
         [Display(Name ="Date")]
+        [DataType(DataType.Date)]
         public DateTime cdate { get; set; }
         [Display(Name ="Person")]
         public string person { get; set; }

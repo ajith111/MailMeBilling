@@ -1,0 +1,57 @@
+﻿@model MailMeBilling.Models.Expens
+@{
+    ViewData["Title"] = "Addstationary";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+
+
+
+
+
+<h4> Add Stationary Expense</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="reason" class="control-label"></label>
+
+                <select asp-for="reason" class="form-control" required>
+                    <option value="">Select Reason of Expense</option>
+
+                    <option value="(Stationary)Paper"> Paper</option>
+                    <option value="(Stationary)Pen">Pen</option>
+                    <option value="(Stationary)Pencil">Pencil</option>
+
+                    <option value="(Stationary)Rubber"> Rubber</option>
+                    <option value="(Stationary)File">File</option>
+                    <option value="(Stationary)Sketch">Sketch</option>
+                    <option value="(Stationary)Ink"> Ink</option>
+                    <option value="(Stationary)Nife">Nife</option>
+                    <option value="(Stationary)Tape">Tape</option>
+                    <option value="(Stationary)ACNote"> A/C Note</option>
+                    <option value="(Stationary)PunchingMachine">Punching Machine</option>
+                    <option value="(Stationary)Seal">Seal</option>
+                    <option value="(Stationary)Stamp "> Stamp</option>
+                    <option value="(Stationary)Other">Other</option>
+
+                </select>
+                <span asp-validation-for="reason" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="amount" class="control-label"></label>
+                <input asp-for="amount" class="form-control" required />
+                <span asp-validation-for="amount" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
