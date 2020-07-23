@@ -1,16 +1,20 @@
 ﻿
 
 
-@model IEnumerable<MailMeBilling.Models.Salesinvoicesummery>
+
+
+
+
+@model IEnumerable<MailMeBilling.Models.Purchaseinvoicesummery>
 @{
-    ViewData["Title"] = "Today Sales Report";
+    ViewData["Title"] = " Purchase Report";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
     int count = 0;
     decimal totalcredit = 0;
     decimal totaldebit = 0;
     decimal totalbalance = 0;
 }
-<link href="~/css/PrintStyle.css" rel="stylesheet" />
+    <link href="~/css/PrintStyle.css" rel="stylesheet" />
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 
@@ -29,9 +33,21 @@
                 <div class="tab-content" id="myTabContent">
                     <div class="tab-pane fade show active " id="invoice" role="tabpanel" aria-labelledby="invoice-tab">
 
+                        <form method="get" asp-action="customsalesreport">
+                            <div class="row">
+                                <div class="col-4">
+                                    <b> FROM DATE:</b><span> <input type="date" name="fromdate" /></span>
+                                </div>
 
+                                <div class="col-3">
+                                    <b> TO DATE:</b><span> <input type="date" name="todate" /></span>
+                                </div>
+                                <div class="col-5" style="text-align:left;">
+                                    <input type="submit" value="Show" class="btn btn-success" />
+                                </div>
+                            </div>
 
-
+                        </form>
                         <div class="d-sm-flex mb-5" data-view="print" id="printb">
                             <span class="m-auto"></span>
                             <button class="btn btn-primary mb-sm-0 mb-3 print-invoice">Print Statement</button>
@@ -43,7 +59,7 @@
                                 <div class="col-12 text-center">
 
 
-                                    <h1><b>TODAY SALE STATEMENT</b></h1>
+                                    <h1><b> PURCHASE STATEMENT</b></h1>
 
 
 
@@ -64,9 +80,9 @@
                                         @foreach (var item in Model)
                                         {
                                             count++;
-                                            totalcredit += item.Paid;
+                                            totalcredit += item.paid;
                                             totalbalance += item.Balance;
-                                            totaldebit += item.nettotal;
+                                         
 
                                             string datein = Convert.ToDateTime(item.Billdate).ToString("dd/MM/yyyy");
 
@@ -80,8 +96,8 @@
                                                 <th>@item.Paymenttype</th>
                                                 <th>@item.Refcode</th>
                                                 <th>@item.Billid</th>
-                                                <th style="text-align:right;">@item.nettotal</th>
-                                                <th style="text-align:right;">@item.Paid</th>
+                                                <th style="text-align:right;">@item.Totalamount</th>
+                                                <th style="text-align:right;">@item.paid</th>
 
                                                 <th style="text-align:right;padding-right:50px">@item.Balance</th>
                                             </tr>
@@ -157,6 +173,6 @@
             </div>
         </div>
     </div><!-- end of main-content -->
-    </div>
     <!-- Footer Start -->
-    <!-- ============ Main content End ============= -->
+</div>
+<!-- ============ Main content End ============= -->

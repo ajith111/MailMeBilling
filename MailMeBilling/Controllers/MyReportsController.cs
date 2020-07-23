@@ -166,7 +166,7 @@ namespace MailMeBilling.Controllers
             decimal cal = billamount.Balance - paid;
             billamount.Balance = cal;
 
-            decimal calamt = billamount.Totalamount + paid;
+            decimal calamt = billamount.paid + paid;
            
             billamount.paid = calamt;
             if (cal == 0)
@@ -1409,6 +1409,158 @@ namespace MailMeBilling.Controllers
 
             return Json(new { success = true, message = "Save successfull." });
         }
+
+        public IActionResult customsalesreport(DateTime fromdate ,DateTime todate)
+        {
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
+            ViewBag.data = HttpContext.Session.GetString("name");
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
+            string Branch = ViewBag.branch;
+
+            var cussale = _context.salesinvoicesummery.Where(i => i.Branch == Branch && i.Billdate.Date >= fromdate.Date && i.Billdate.Date <= todate.Date  && i.status != "Return").ToList();
+            var allsale = _context.salesinvoicesummery.Where(i => i.status != "Return").ToList();
+            var sumofamount = _context.salesinvoicesummery.Where(i => i.status != "Return" && i.Branch == Branch && i.Billdate.Date >= fromdate.Date && i.Billdate.Date <= todate.Date).Sum(i => i.Totalamount).ToString();
+            var allamount = _context.salesinvoicesummery.Where(i => i.status != "Return" && i.Branch == Branch ).Sum(i => i.Totalamount).ToString();
+            if (sumofamount != "0")
+            {
+                ViewBag.sumofcustomerbuyamount = sumofamount;
+            }
+            else
+            {
+                ViewBag.sumofcustomerbuyamount = allamount;
+            }
+           
+            if (cussale.Count != 0)
+            {
+                return View(cussale);
+            }
+            else
+            {
+                return View(allsale);
+            }
+           
+        }
+
+        public IActionResult custompurchasereport(DateTime fromdate, DateTime todate)
+        {
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
+            ViewBag.data = HttpContext.Session.GetString("name");
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
+            string Branch = ViewBag.branch;
+
+            var cussale = _context.purchaseinvoicesummeries.Where(i => i.Branch == Branch && i.Billdate.Date >= fromdate.Date && i.Billdate.Date <= todate.Date && i.status != "Return").ToList();
+            var allsale = _context.purchaseinvoicesummeries.Where(i => i.status != "Return").ToList();
+            var sumofamount = _context.purchaseinvoicesummeries.Where(i => i.status != "Return" && i.Branch == Branch && i.Billdate.Date >= fromdate.Date && i.Billdate.Date <= todate.Date).Sum(i => i.Totalamount).ToString();
+            var allamount = _context.purchaseinvoicesummeries.Where(i => i.status != "Return" && i.Branch == Branch).Sum(i => i.Totalamount).ToString();
+            if (sumofamount != "0")
+            {
+                ViewBag.sumofcustomerbuyamount = sumofamount;
+            }
+            else
+            {
+                ViewBag.sumofcustomerbuyamount = allamount;
+            }
+
+            if (cussale.Count != 0)
+            {
+                return View(cussale);
+            }
+            else
+            {
+                return View(allsale);
+            }
+
+        }
+
+        public IActionResult Expense(DateTime fromdate, DateTime todate)
+        {
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
+            ViewBag.data = HttpContext.Session.GetString("name");
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
+            string Branch = ViewBag.branch;
+
+            var cussale = _context.expens.Where(i => i.branch == Branch && i.entrydate.Date >= fromdate.Date && i.entrydate.Date <= todate.Date).ToList();
+            var allsale = _context.expens.ToList();
+            var sumofamount = _context.expens.Where(i =>  i.branch == Branch && i.entrydate.Date >= fromdate.Date && i.entrydate.Date <= todate.Date).Sum(i => i.amount).ToString();
+            var allamount = _context.expens.Where(i =>  i.branch == Branch).Sum(i => i.amount).ToString();
+            if (sumofamount != "0")
+            {
+                ViewBag.sumofcustomerbuyamount = sumofamount;
+            }
+            else
+            {
+                ViewBag.sumofcustomerbuyamount = allamount;
+            }
+
+            if (cussale.Count != 0)
+            {
+                return View(cussale);
+            }
+            else
+            {
+                return View(allsale);
+            }
+
+        }
+
+        public IActionResult productstock()
+        {
+            DateTime todaydate = DateTime.UtcNow;
+            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
+            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.CustomerPending = pendingcustomer.Count();
+
+            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+            ViewBag.VendorPending = pendingvendor.Count();
+            ViewBag.data = HttpContext.Session.GetString("name");
+            ViewBag.branch = HttpContext.Session.GetString("branch");
+            ViewBag.roll = HttpContext.Session.GetString("roll");
+            string Branch = ViewBag.branch;
+
+           
+            var allsale = _context.product.ToList();
+          
+            var allamount = _context.product.Where(i => i.Branch == Branch).Sum(i => i.Salesrate).ToString();
+            var allstock = _context.product.Where(i => i.Branch == Branch).Sum(i => i.stock).ToString();
+
+            ViewBag.sumofamount = allamount;
+            ViewBag.sumofstock = allstock;
+
+
+            return View(allsale);
+            
+
+        }
+
 
 
     }

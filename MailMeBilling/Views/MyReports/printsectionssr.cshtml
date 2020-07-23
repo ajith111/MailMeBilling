@@ -3,21 +3,22 @@
 
 
 
+<link href="~/css/PrintStyle.css" rel="stylesheet" />
 
 <!--print test-->
 
 <div id="print-area" style="font-family:'Courier New';font-size:large;padding-top:0px;">
-    <div class="row" >
+    <div class="row">
         @foreach (var sums in Model.salesinvoicesummeries)
         {
-        <div class="col-7 text-right">
+            <div class="col-7 text-right">
 
-           
+
                 <h1 style="color:red"><b>SALES RETURN</b></h1>
-          
 
 
-        </div>
+
+            </div>
         }
 
         <div class="col-5 text-right">
@@ -25,7 +26,7 @@
         </div>
 
     </div>
-    <div class="row"  style=" background-image: url( /dist-assets/images/photo-wide-7.jpg);background-size: contain; padding-top: 0px; padding-bottom: 0px; ">
+    <div class="row" style=" background-image: url( /dist-assets/images/photo-wide-7.jpg);background-size: contain; padding-top: 0px; padding-bottom: 0px; ">
 
 
         @foreach (var sums in Model.salesinvoicesummeries)
@@ -97,16 +98,17 @@
 
 
             <table style="width:100%">
+                <thead>
 
-
-                <tr class="text-center">
-                    <th style="padding-left: 0px; padding-right: 0px;  width: 1%;">S.No</th>
-                    <th>PARTICULAR</th>
-                    <th>HSN CODE</th>
-                    <th>QTY</th>
-                    <th>RATE</th>
-                    <th style="width:15%;">AMOUNT</th>
-                </tr>
+                    <tr class="text-center">
+                        <th style="padding-left: 0px; padding-right: 0px;  width: 1%;">S.No</th>
+                        <th>PARTICULAR</th>
+                        <th>HSN CODE</th>
+                        <th>QTY</th>
+                        <th>RATE</th>
+                        <th style="width:15%;">AMOUNT</th>
+                    </tr>
+                </thead>
                 <tbody>
 
 
@@ -207,29 +209,29 @@
                     </tr>
                 </tbody>
             </table>
-           
+
             <script>
-                $(                 
+                $(
                     function () {
                         var sum = document.getElementById("tamt");
-                        var tmp = inWords(parseInt(sum.value));                    
-                       
-                        var nw = document.getElementById("ntoww"); 
-                        var nto = document.getElementById("ntow");    
+                        var tmp = inWords(parseInt(sum.value));
+
+                        var nw = document.getElementById("ntoww");
+                        var nto = document.getElementById("ntow");
                         $(nto).empty();
                         $(nw).empty();
                         if (nto == null) {
                             nw.innerHTML = tmp;
-                            console.log("1thif", tmp)  
+                            console.log("1thif", tmp)
                         }
                         if (nw == null) {
                             nto.innerHTML = tmp;
-                             console.log("2thif", tmp)        
+                            console.log("2thif", tmp)
 
                         }
                     }
-                    
-                     );
+
+                );
 
 
                 var a = ['', 'One ', 'Two ', 'Three ', 'Four ', 'Five ', 'Six ', 'Seven ', 'Eight ', 'Nine ', 'Ten ', 'Eleven ', 'Twelve ', 'Thirteen ', 'Fourteen ', 'Fifteen ', 'Sixteen ', 'Seventeen ', 'Eighteen ', 'Nineteen '];
@@ -273,7 +275,7 @@
                     <th>@item.Quantity</th>
                     <th class="text-right" style="padding-right:30px">@item.Rate</th>
                     <th class="text-right" style="padding-right:30px"> ₹  @item.Amount</th>
-                    
+
                 </tr>
             }
         </table>

@@ -1,0 +1,69 @@
+﻿@model MailMeBilling.Models.Expens
+
+@{
+    ViewData["Title"] = "Add Transport";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+
+    <h4>Add Transport Expens</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="reason" value="Transport" />
+
+            <div class="form-group">
+                <label asp-for="regno" class="control-label"></label>
+                <input asp-for="regno" class="form-control" required />
+                <span asp-validation-for="regno" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="drivername" class="control-label"></label>
+                <input asp-for="drivername" class="form-control" required />
+                <span asp-validation-for="drivername" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="drmobile" class="control-label"></label>
+                <input asp-for="drmobile" class="form-control" required />
+                <span asp-validation-for="drmobile" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="dic" class="control-label"></label>
+                <input asp-for="dic" class="form-control" required />
+                <span asp-validation-for="dic" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="vtype" class="control-label"></label>
+                <select asp-for="vtype" class="form-control" required>
+                    <option value="">Select Type of Vehicle</option>
+                    <option value="Lorry">Lorry</option>
+                    <option value="Truck">Truck</option>
+                </select>
+                <span asp-validation-for="vtype" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="totalkg" class="control-label"></label>
+                <input asp-for="totalkg" class="form-control" required />
+                <span asp-validation-for="totalkg" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="amount" class="control-label"></label>
+                <input asp-for="amount" class="form-control" required />
+                <span asp-validation-for="amount" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

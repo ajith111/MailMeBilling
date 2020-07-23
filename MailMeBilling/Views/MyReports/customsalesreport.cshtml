@@ -1,0 +1,149 @@
+﻿@model IEnumerable<MailMeBilling.Models.Salesinvoicesummery>
+@{
+    ViewData["Title"] = " Sales Report";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    int count = 0;
+    decimal totalcredit = 0;
+    decimal totaldebit = 0;
+    decimal totalbalance = 0;
+}
+<link href="~/css/PrintStyle.css" rel="stylesheet" />
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+
+
+
+
+
+    <div class="row" id="loadpage">
+        <div class="col-md-12" style="padding-bottom:30px;">
+           
+            <div class="card">
+
+
+                <form method="get" asp-action="customsalesreport">
+                    <div class="row" style="padding-top:30px; padding-left:30px">
+                        <div class="col-4">
+                            <b> FROM DATE:</b><span> <input type="date" name="fromdate" /></span>
+                        </div>
+
+                        <div class="col-3">
+                            <b> TO DATE:</b><span> <input type="date" name="todate" /></span>
+                        </div>
+                        <div class="col-5" style="text-align:left;">
+                            <input type="submit" value="Show" class="btn btn-success" />
+
+                        </div>
+                    </div>
+
+                </form>
+
+                <div class="d-sm-flex mb-5" data-view="print" style="padding-right:30px">
+                    <span class="m-auto"></span>
+                    <button class="btn btn-primary mb-sm-0 mb-3 print-invoice" >Print Statement</button>
+                </div>
+
+
+
+                <div id="print-area" class="page" style="font-family:'Courier New';font-size:medium;padding-top:0px;">
+                    <div class="row">
+                       
+                        <div class="col-12 text-center">
+
+                            <div>
+                                <h1><b> SALES STATEMENT</b></h1>
+
+                            </div>
+                            <div class="">
+                                <table style="width:100%">
+
+                                    <thead>
+                                        <tr class="text-center" style="border: 1px solid black;font-family: Apple Chancery">
+
+                                            <th style="padding-left: 10px; padding-right: 0px;  width: 1%;">S.No</th>
+                                            <th style=" width: 15%;">DATE</th>
+                                            <th style=" width: 15%;">PAYMENT TYPE</th>
+                                            <th style=" width: 10%;">REF No</th>
+                                            <th style=" width: 7%;">BILL No</th>
+                                            <th style="width: 15%;text-align: right">DEBIT</th>
+                                            <th style="width: 20%;text-align: right">CREDIT</th>
+                                            <th style="width: 20%;text-align: right; padding-right:50px">BALANCE</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            count++;
+                                            totalcredit += item.Paid;
+                                            totalbalance += item.Balance;
+                                            totaldebit += item.nettotal;
+
+                                            string datein = Convert.ToDateTime(item.Billdate).ToString("dd/MM/yyyy");
+
+
+
+
+
+                                            <tr class="text-center ">
+                                                <th>@count</th>
+                                                <th>@datein</th>
+                                                <th>@item.Paymenttype</th>
+                                                <th>@item.Refcode</th>
+                                                <th>@item.Billid</th>
+                                                <th style="text-align:right;">@item.nettotal</th>
+                                                <th style="text-align:right;">@item.Paid</th>
+
+                                                <th style="text-align:right;padding-right:50px">@item.Balance</th>
+                                            </tr>
+
+
+                                        }
+                                        <tr style="text-align:right; border: 1px solid black; border-bottom-color:white; border-right-color:white; border-left-color:white; ">
+                                            @{ var todebi = totalcredit + totalbalance;
+                                                var sumamt = Convert.ToDecimal(ViewBag.sumofcustomerbuyamount);
+                                                var balance = Convert.ToDecimal(sumamt) - Convert.ToDecimal(totalcredit);}
+                                            <th colspan="6"><h4><b> @ViewBag.sumofcustomerbuyamount </b> </h4></th>
+                                            <th><h4><b> @totalcredit </b></h4></th>
+                                            <th style="text-align:right;padding-right:50px"><h4> <b> </b></h4></th>
+                                        </tr>
+                                        <tr style="text-align:right; border: 1px solid black; border-bottom-color:black; border-right-color:white; border-left-color:white; ">
+
+                                            <th colspan="6" style="text-align:center"><h4><b>Closing Balance </b> </h4></th>
+                                            <th><h4 style="color:red"><b> @balance </b></h4></th>
+                                            <th style="text-align:right;padding-right:50px"><h4> <b> </b></h4></th>
+                                        </tr>
+
+                                        <tr style="text-align: right;border: 1px solid black;border-bottom-color: black;border-right-color: white;border-left-color: white; border-top-color: black;">
+
+                                            <th colspan="6"><h4><b> @ViewBag.sumofcustomerbuyamount </b> </h4></th>
+                                            <th><h4><b> @ViewBag.sumofcustomerbuyamount</b></h4></th>
+                                            <th style="text-align:right;padding-right:50px"><h4> <b> </b></h4></th>
+                                        </tr>
+
+
+                                    </tbody>
+
+                                    <tfoot>
+
+
+                                    </tfoot>
+                                </table>
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+
+
+                </div>
+
+
+
+            </div>
+                </div>
+            </div>
+    

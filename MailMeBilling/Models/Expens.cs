@@ -15,7 +15,7 @@ namespace MailMeBilling.Models
         public string reason { get; set; }
         [Display(Name ="Amount")]
         public decimal amount { get; set; }
-        [Display(Name = "Reg No")]
+        [Display(Name = "Vehicle No")]
         public string regno { get; set; }
         [Display(Name = "Driver Name")]
         public string drivername { get; set; }
@@ -23,13 +23,13 @@ namespace MailMeBilling.Models
         public string drmobile { get; set; }
         [Display(Name = "Tpye of Vehicle")]
         public string vtype { get; set; }
-        [Display(Name = "Total KG")]
+        [Display(Name = "Total Kilometer")]
         public string totalkg { get; set; }
-        [Display(Name = "Fule Amount")]
-        public string fuleamount { get; set; }
-        [Display(Name = "Fule Station")]
+        [Display(Name = "Driver IC")]
+        public string dic { get; set; }
+        [Display(Name = "Fuel Station")]
         public string fulestation { get; set; }
-        [Display(Name = "Fule Type")]
+        [Display(Name = "Fuel Type")]
         public string ftype { get; set; }
         [Display(Name = "Employee Name")]
         public string employeename { get; set; }

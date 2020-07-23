@@ -1,0 +1,21 @@
+﻿
+ 
+ 
+    thead {
+        display: table-header-group;
+        padding-top:10px;
+
+    }
+
+    tfoot {
+        display: table-footer-group;
+    }
+
+    button {
+        display: none;
+    }
+
+    body {
+        margin: 0;
+    }
+ 

@@ -11,34 +11,207 @@
     <h4>Expens Detail</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+
+        @if (Model.idpro != null)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.idpro)
+            </dt>
+            <dd class="col-sm-10">
+                @{
+                    string imageBase64 = Convert.ToBase64String(Model.idpro);
+                    string imageSrc = string.Format("data:image/gif;base64,{0}", imageBase64);
+                }
+                <img src="@imageSrc" style="width:200px;height:200px; " data-toggle="modal" data-target=".A" />
+                <!--Modal -->
+                <div class="modal fade bd-example-modal-lg A" id="" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalCenterTitle">@Model.employeename</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            </div>
+                            <div class="modal-body text-center">
+
+                                <img src="@imageSrc" style="width:auto;height:auto;" />
+
+                            </div>
+                            <div class="modal-footer">
+
+                                <button class="btn btn-primary ml-2" type="button" data-dismiss="modal"> Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal -->
+            </dd>
+
+        }
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.reason)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.reason)
         </dd>
-        <dt class = "col-sm-2">
+
+        @if (Model.regno != null)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.regno)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.regno)
+            </dd>
+
+        }
+        @if (Model.drivername != null)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.drivername)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.drivername)
+            </dd>
+
+        }
+        @if (Model.drmobile != null)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.drmobile)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.drmobile)
+            </dd>
+
+        }
+        @if (Model.dic != null)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.dic)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.dic)
+            </dd>
+
+        }
+
+
+        @if (Model.vtype != null)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.vtype)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.vtype)
+            </dd>
+
+        }
+        @if (Model.totalkg != null)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.totalkg)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.totalkg)
+            </dd>
+
+        }
+        @if (Model.fulestation != null)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.fulestation)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.fulestation)
+            </dd>
+
+        }
+        @if (Model.ftype != null)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.ftype)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.ftype)
+            </dd>
+
+        }
+        @if (Model.employeename != null)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.employeename)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.employeename)
+            </dd>
+
+        }
+        @if (Model.resonemp != null)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.resonemp)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.resonemp)
+            </dd>
+
+        }
+        @if (Model.address != null)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.address)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.address)
+            </dd>
+
+        }
+        @if (Model.empmobile != null)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.empmobile)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.empmobile)
+            </dd>
+
+        }
+        @if (Model.empmobile != null)
+        {
+            <dt class="col-sm-2">
+                @Html.DisplayNameFor(model => model.empmobile)
+            </dt>
+            <dd class="col-sm-10">
+                @Html.DisplayFor(model => model.empmobile)
+            </dd>
+
+        }
+
+
+
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.amount)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.amount)
         </dd>
-      
-        <dt class = "col-sm-2">
+
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.entrydate)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.entrydate)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.entryby)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.entryby)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.eid">Edit</a> |
+  
     <a asp-action="Index">Back to List</a>
 </div>

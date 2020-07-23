@@ -17,7 +17,7 @@
     <div class="card-body">
         <div class="row">
             <div class="col-12 text-center">
-                <h2 class="card-title mb-3"><b>Company Expens List</b></h2>
+                <h2 class="card-title mb-3"><b>All Expens List</b></h2>
 
             </div>
 
@@ -65,7 +65,7 @@
                                 @Html.DisplayFor(modelItem => item.entryby)
                             </td>
                             <td>
-                                <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.eid">Edit</a> 
+                              
                                 <a  class="btn btn-success" asp-action="Details" asp-route-id="@item.eid">Details</a> 
                                 <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.eid">Delete</a>
                             </td>
