@@ -1,4 +1,4 @@
-﻿@model IEnumerable<MailMeBilling.Models.Product>
+﻿@*@model IEnumerable<MailMeBilling.Models.Product>
 
 @{
     ViewData["Title"] = " Product List";
@@ -80,7 +80,7 @@
                                     string imageSrc = string.Format("data:image/gif;base64,{0}", imageBase64);
                                     <img src="@imageSrc" style="width:50px;height:20px; " data-toggle="modal" data-target=".A-@item.productid" />
 
-                                    <!--Modal -->
+                                    Modal 
                                     <div class="modal fade bd-example-modal-lg A-@item.productid" id="" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                         <div class="modal-dialog modal-lg">
                                             <div class="modal-content">
@@ -101,7 +101,7 @@
                                         </div>
                                     </div>
                                 }
-                                <!-- Modal -->
+                                 Modal 
                             </td>
 
 
@@ -148,8 +148,9 @@
 
         </div>
     </div>
-</div>
-@*@model IEnumerable<MailMeBilling.Models.Product>
+</div>*@
+
+@model IEnumerable<MailMeBilling.Models.Product>
 
     @{
         ViewData["Title"] = " Product List";
@@ -183,9 +184,9 @@
                             <th style="text-align:center">
                                S.No
                             </th>
-                            <th>
+                            @*<th>
                                 Product Image
-                            </th>
+                            </th>*@
                             <th>
                                 Product Name
                             </th>
@@ -219,82 +220,7 @@
                     </thead>
 
                     <tbody>
-                @foreach (var item in Model)
-                {
-                    count++;
-
-
-
-                <tr class="text-center">
-                    <td style="width:10px">@count</td>
-                    <td>
-                        @if (item.productimage != null)
-                        {
-                            string imageBase64 = Convert.ToBase64String(item.productimage);
-                            string imageSrc = string.Format("data:image/gif;base64,{0}", imageBase64);
-                        <img src="@imageSrc" style="width:50px;height:20px; " data-toggle="modal" data-target=".A-@item.productid" />
-
-                        Modal
-                        <div class="modal fade bd-example-modal-lg A-@item.productid" id="" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-lg">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalCenterTitle">@item.productname</h5>
-                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                    </div>
-                                    <div class="modal-body text-center">
-
-                                        <img src="@imageSrc" style="width:auto;height:auto;" />
-
-                                    </div>
-                                    <div class="modal-footer">
-
-                                        <button class="btn btn-primary ml-2" type="button" data-dismiss="modal"> Close</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        }
-                         Modal
-                    </td>
-
-
-                    <td>
-                        @Html.DisplayFor(modelItem => item.productname)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Category)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.SubcCategory)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Color)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Brand)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Hsncode)
-                    </td>
-
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Salesrate)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.stock)
-                    </td>
-
-
-                    <td>
-                        <span>
-                            <a class=" nav-icon mr-2 i-Pen-2" asp-action="Edit" asp-route-id="@item.productid"></a>
-                            <a class="nav-icon mr-2 i-Information" asp-action="Details" asp-route-id="@item.productid"></a>
-                            <a class=" nav-icon mr-2 i-Close" asp-action="Delete" asp-route-id="@item.productid"></a>
-                        </span>
-                    </td>
-                </tr>
-                }
+               
             </tbody>
 
                 </table>
@@ -321,54 +247,61 @@
         function loadDataTable() {
             var con = 0;
             dataTable = $('#example').DataTable({
+
                 "ajax": {
                     "url": "/Products/getall",
                     "type": "GET",
                     "datatype": "json"
 
                 },
-
+                "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+                    $("td:first", nRow).html(iDisplayIndex + 1);
+                    return nRow;
+                },
+              
+                timeout: 600000,
+               
                 "columns": [
                     { data: "productid"},
 
-                    {
-                        data: "productimage", name: "productimage",
-                        render: function (data, type, row, meta) {
+                    //{
+                    //    data: "productimage", name: "productimage",
+                    //    render: function (data, type, row, meta) {
 
-                            var sno = row.productid;
-                            console.log(sno);
-                            var imgsrc = 'data:image/png;base64,' + data; // here data should be in base64 string
+                    //        var sno = row.productid;
+                    //        console.log(sno);
+                    //        var imgsrc = 'data:image/png;base64,' + data; // here data should be in base64 string
 
-                            if (imgsrc.length == "22") {
-                                return '<img class="img-responsive" src="/dist-assets/images/photo-wide-6.jpg" alt="Logo" height="50px" width="50px" style="text-align:center"/>';
+                    //        if (imgsrc.length == "22") {
+                    //            return '<img class="img-responsive" src="/dist-assets/images/photo-wide-6.jpg" alt="Logo" height="50px" width="50px" style="text-align:center"/>';
 
-                            }
-                            else {
-                                return '<img class="img-responsive" src="' + imgsrc + '" alt="tbl_StaffImage" height="50px" width="50px" style="text-align:center" data-toggle="modal" data-target="A+' + sno + '">' +
-                                    '<div class="modal fade bd-example-modal-lg A+' + sno + '" id = "' + sno + '" tabindex = "-1" role = "dialog" aria - labelledby="exampleModalCenterTitle" aria - hidden="true" >'+
-                           ' <div class="modal-dialog modal-lg">' +
-                              ' <div class="modal-content">'+
-                                    '<div class="modal-header">'+
-                                       ' <h5 class="modal-title" id="exampleModalCenterTitle">Product</h5>'+
-                                       ' <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>'+
-                                  '  </div>'+
-                                    '<div class="modal-body text-center">'+
+                    //        }
+                    //        else {
+                    //            return '<img class="img-responsive" src="' + imgsrc + '" alt="tbl_StaffImage" height="50px" width="50px" style="text-align:center" data-toggle="modal" data-target="A+' + sno + '">' +
+                    //                '<div class="modal fade bd-example-modal-lg A+' + sno + '" id = "' + sno + '" tabindex = "-1" role = "dialog" aria - labelledby="exampleModalCenterTitle" aria - hidden="true" >'+
+                    //       ' <div class="modal-dialog modal-lg">' +
+                    //          ' <div class="modal-content">'+
+                    //                '<div class="modal-header">'+
+                    //                   ' <h5 class="modal-title" id="exampleModalCenterTitle">Product</h5>'+
+                    //                   ' <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>'+
+                    //              '  </div>'+
+                    //                '<div class="modal-body text-center">'+
 
-                                       ' <img lass="img-responsive" src="' + imgsrc + '" style="width:auto;height:auto;" />'+
+                    //                   ' <img lass="img-responsive" src="' + imgsrc + '" style="width:auto;height:auto;" />'+
 
-                                   ' </div>'+
-                                   ' <div class="modal-footer">'+
+                    //               ' </div>'+
+                    //               ' <div class="modal-footer">'+
 
-                                       ' <button class="btn btn-primary ml-2" type="button" data-dismiss="modal"> Close</button>'+
-                                   ' </div>'+
-                               ' </div>'+
-                            '</div>'+
-                                    ' </div> ';
+                    //                   ' <button class="btn btn-primary ml-2" type="button" data-dismiss="modal"> Close</button>'+
+                    //               ' </div>'+
+                    //           ' </div>'+
+                    //        '</div>'+
+                    //                ' </div> ';
 
-                            }
+                    //        }
 
-                        }
-                    },
+                    //    }
+                    //},
                     { 'data': 'productname' },
                     { 'data': 'category' },
                     { 'data': 'subcCategory' },
@@ -404,4 +337,4 @@
 
 
 
-    </script>*@
+    </script>
