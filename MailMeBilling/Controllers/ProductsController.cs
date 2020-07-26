@@ -29,19 +29,7 @@ namespace MailMeBilling.Controllers
         }
         //public async Task<IActionResult> Index()
         //{
-        //    ViewBag.data = HttpContext.Session.GetString("name");
-        //    ViewBag.branch = HttpContext.Session.GetString("branch");
-        //    ViewBag.roll = HttpContext.Session.GetString("roll");
-        //    string Branch = ViewBag.branch;
-        //    DateTime todaydate = DateTime.UtcNow;
-        //    DateTime dateStart = DateTime.UtcNow.AddDays(-15);
-        //    var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-        //    ViewBag.CustomerPending = pendingcustomer.Count();
-
-        //    var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-        //    ViewBag.VendorPending = pendingvendor.Count();
+       
         //    var list = await _context.product.ToListAsync();
         //    return View(list);
         //}
@@ -52,7 +40,13 @@ namespace MailMeBilling.Controllers
         public IActionResult getall()
         {
            
-            return Json(new { data = _context.product.ToList() });
+            return Json(new { data = _context.product.Select( i => new {i.productid,  i.productname ,i.Category ,i.SubcCategory,i.Salesrate, i.Hsncode,i.stock,i.Color,i.Brand }).ToList() });
+        }
+        [HttpGet]
+        public JsonResult getpic(int id)
+        {
+
+            return Json(new { data = _context.product.Where(i => i.productid == id).FirstOrDefault() });
         }
         #endregion
 

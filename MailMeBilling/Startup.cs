@@ -13,6 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Http;
+using MailMeBilling.MD;
 
 namespace MailMeBilling
 {
@@ -46,6 +47,7 @@ namespace MailMeBilling
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseMiddleware<GCMiddleware>();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
