@@ -21,15 +21,7 @@ namespace MailMeBilling.Controllers
         }
         public IActionResult Index()
         {
-            DateTime todaydate = DateTime.UtcNow;
-            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
-            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.CustomerPending = pendingcustomer.Count();
-
-            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.VendorPending = pendingvendor.Count();
+           
             ViewBag.data = HttpContext.Session.GetString("name");
             ViewBag.branch = HttpContext.Session.GetString("branch");
             ViewBag.roll = HttpContext.Session.GetString("roll");

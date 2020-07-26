@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using MailMeBilling.Models;
+using Microsoft.AspNetCore.Http;
+using MailMeBilling.Data;
 
 namespace MailMeBilling.Controllers
 {
@@ -13,6 +15,12 @@ namespace MailMeBilling.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
+        private readonly ApplicationDbContext _context;
+
+        public HomeController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -33,5 +41,7 @@ namespace MailMeBilling.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+     
+
     }
 }

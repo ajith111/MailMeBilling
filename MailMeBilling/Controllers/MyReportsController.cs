@@ -20,54 +20,24 @@ namespace MailMeBilling.Controllers
         }
         public IActionResult Salesreport()
         {
-            DateTime todaydate =  DateTime.UtcNow;
-            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
-            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.CustomerPending = pendingcustomer.Count();
-
-            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.VendorPending = pendingvendor.Count();
-            ViewBag.data = HttpContext.Session.GetString("name");
+           
+         
             ViewBag.branch = HttpContext.Session.GetString("branch");
-            ViewBag.roll = HttpContext.Session.GetString("roll");
+          
             string Branch = ViewBag.branch;
             var sr = _context.salesinvoicesummery.Where(i => i.Branch == Branch && i.status !="Return" ).ToList();
             return View(sr);
         }
         public IActionResult Purchasereport()
         {
-            DateTime todaydate =  DateTime.UtcNow;
-            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
-            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.CustomerPending = pendingcustomer.Count();
-
-            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.VendorPending = pendingvendor.Count();
-            ViewBag.data = HttpContext.Session.GetString("name");
-            ViewBag.branch = HttpContext.Session.GetString("branch");
-            ViewBag.roll = HttpContext.Session.GetString("roll");
+           
             var sr = _context.purchaseinvoicesummeries.Where(i => i.status !="Return").ToList();
             return View(sr);
         }
 
         public IActionResult Customerpayment(string id)
         {
-            DateTime todaydate =  DateTime.UtcNow;
-            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
-            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.CustomerPending = pendingcustomer.Count();
-
-            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.VendorPending = pendingvendor.Count();
-            ViewBag.data = HttpContext.Session.GetString("name");
-            ViewBag.branch = HttpContext.Session.GetString("branch");
-            ViewBag.roll = HttpContext.Session.GetString("roll");
+          
             var list = _context.customerdetails.Where(i => i.Mobilenumber == id).FirstOrDefault();
             var bill = _context.salesinvoicesummery.Where(i => i.Mobilenumber == id).ToList();
             ViewBag.billsummery = bill;
@@ -79,15 +49,7 @@ namespace MailMeBilling.Controllers
         }
         public IActionResult Updatepayments(Customerpaymenthistry cph)
         {
-            DateTime todaydate =  DateTime.UtcNow;
-            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
-            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.CustomerPending = pendingcustomer.Count();
-
-            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.VendorPending = pendingvendor.Count();
+          
             ViewBag.data = HttpContext.Session.GetString("name");
             var Name = ViewBag.data;
             cph.Paiddate =  DateTime.UtcNow;
@@ -120,18 +82,7 @@ namespace MailMeBilling.Controllers
 
         public IActionResult Vendorpayment(string id)
         {
-            DateTime todaydate =  DateTime.UtcNow;
-            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
-            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.CustomerPending = pendingcustomer.Count();
-
-            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.VendorPending = pendingvendor.Count();
-            ViewBag.data = HttpContext.Session.GetString("name");
-            ViewBag.branch = HttpContext.Session.GetString("branch");
-            ViewBag.roll = HttpContext.Session.GetString("roll");
+           
             var list = _context.vendor.Where(i => i.Mobilenumber == id).FirstOrDefault();
             var bill = _context.purchaseinvoicesummeries.Where(i => i.Mobilenumber == id).ToList();
             ViewBag.billsummery = bill;
@@ -143,15 +94,7 @@ namespace MailMeBilling.Controllers
         }
         public IActionResult Updatevendorpayments(Vendorpayment cph)
         {
-            DateTime todaydate =  DateTime.UtcNow;
-            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
-            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.CustomerPending = pendingcustomer.Count();
-
-            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.VendorPending = pendingvendor.Count();
+          
             ViewBag.data = HttpContext.Session.GetString("name");
             var Name = ViewBag.data;
             cph.Paiddate =  DateTime.UtcNow;
@@ -212,16 +155,8 @@ namespace MailMeBilling.Controllers
 
         public IActionResult print(int id)
         {
-
-            DateTime todaydate =  DateTime.UtcNow;
-            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
-            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-            ViewBag.CustomerPending = pendingcustomer.Count();
-            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-            ViewBag.VendorPending = pendingvendor.Count();
-            ViewBag.data = HttpContext.Session.GetString("name");
             ViewBag.branch = HttpContext.Session.GetString("branch");
-            ViewBag.roll = HttpContext.Session.GetString("roll");
+          
             string Branch = ViewBag.branch;
             loadtemp load = new loadtemp();
 
@@ -263,15 +198,9 @@ namespace MailMeBilling.Controllers
         public IActionResult printsr(int id)
         {
 
-            DateTime todaydate = DateTime.UtcNow;
-            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
-            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-            ViewBag.CustomerPending = pendingcustomer.Count();
-            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-            ViewBag.VendorPending = pendingvendor.Count();
-            ViewBag.data = HttpContext.Session.GetString("name");
+            
             ViewBag.branch = HttpContext.Session.GetString("branch");
-            ViewBag.roll = HttpContext.Session.GetString("roll");
+         
             string Branch = ViewBag.branch;
             loadtemp load = new loadtemp();
 
@@ -313,18 +242,7 @@ namespace MailMeBilling.Controllers
 
         public IActionResult Salesreturnreport()
         {
-            DateTime todaydate = DateTime.UtcNow;
-            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
-            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.CustomerPending = pendingcustomer.Count();
-
-            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.VendorPending = pendingvendor.Count();
-            ViewBag.data = HttpContext.Session.GetString("name");
-          
-            ViewBag.roll = HttpContext.Session.GetString("roll");
+           
             ViewBag.branch = HttpContext.Session.GetString("branch");
             string Branch = ViewBag.branch;
             var sr = _context.salesinvoicesummery.Where(i => i.status == "Return" && i.Branch == Branch).ToList();
@@ -334,18 +252,10 @@ namespace MailMeBilling.Controllers
         public IActionResult Salesreturnbill(int id)
         {
 
-            DateTime todaydate = DateTime.UtcNow;
-            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
-            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.CustomerPending = pendingcustomer.Count();
-
-            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.VendorPending = pendingvendor.Count();
-            ViewBag.data = HttpContext.Session.GetString("name");
+          
+          
             ViewBag.branch = HttpContext.Session.GetString("branch");
-            ViewBag.roll = HttpContext.Session.GetString("roll");
+          ;
             string Branch = ViewBag.branch;
             loadtemp load = new loadtemp();
 
@@ -771,18 +681,10 @@ namespace MailMeBilling.Controllers
         public IActionResult Purchasereturnbill(int id)
         {
 
-            DateTime todaydate = DateTime.UtcNow;
-            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
-            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.CustomerPending = pendingcustomer.Count();
-
-            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.VendorPending = pendingvendor.Count();
-            ViewBag.data = HttpContext.Session.GetString("name");
+           
+         
             ViewBag.branch = HttpContext.Session.GetString("branch");
-            ViewBag.roll = HttpContext.Session.GetString("roll");
+         
             string Branch = ViewBag.branch;
             loadtemp load = new loadtemp();
 
@@ -1066,12 +968,7 @@ namespace MailMeBilling.Controllers
         public IActionResult printpurchasereturn(int id)
         {
 
-            DateTime todaydate = DateTime.UtcNow;
-            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
-            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-            ViewBag.CustomerPending = pendingcustomer.Count();
-            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-            ViewBag.VendorPending = pendingvendor.Count();
+          
             ViewBag.data = HttpContext.Session.GetString("name");
             ViewBag.branch = HttpContext.Session.GetString("branch");
             ViewBag.roll = HttpContext.Session.GetString("roll");
@@ -1115,18 +1012,8 @@ namespace MailMeBilling.Controllers
 
         public IActionResult Salestatement()
         {
-            DateTime todaydate = DateTime.UtcNow;
-            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
-            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.CustomerPending = pendingcustomer.Count();
-
-            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.VendorPending = pendingvendor.Count();
-            ViewBag.data = HttpContext.Session.GetString("name");
-            ViewBag.branch = HttpContext.Session.GetString("branch");
-            ViewBag.roll = HttpContext.Session.GetString("roll");
+           
+          
             var sr = _context.customerdetails.ToList().Distinct();
             return View(sr);
         }
@@ -1134,18 +1021,8 @@ namespace MailMeBilling.Controllers
         public IActionResult viewcustomerstatement(string Mobnumber)
 
         {
-            DateTime todaydate = DateTime.UtcNow;
-            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
-            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.CustomerPending = pendingcustomer.Count();
-
-            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.VendorPending = pendingvendor.Count();
-            ViewBag.data = HttpContext.Session.GetString("name");
-            ViewBag.branch = HttpContext.Session.GetString("branch");
-            ViewBag.roll = HttpContext.Session.GetString("roll");
+            
+          
 
             cusstatement cusstatement = new cusstatement();
 
@@ -1195,36 +1072,14 @@ namespace MailMeBilling.Controllers
 
         public IActionResult Purshasestatement()
         {
-            DateTime todaydate = DateTime.UtcNow;
-            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
-            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.CustomerPending = pendingcustomer.Count();
-
-            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.VendorPending = pendingvendor.Count();
-            ViewBag.data = HttpContext.Session.GetString("name");
-            ViewBag.branch = HttpContext.Session.GetString("branch");
-            ViewBag.roll = HttpContext.Session.GetString("roll");
+           
             var sr = _context.vendor.ToList().Distinct();
             return View(sr);
         }
 
         public IActionResult viewvendorstatement(string Mobnumber)
         {
-            DateTime todaydate = DateTime.UtcNow;
-            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
-            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.CustomerPending = pendingcustomer.Count();
-
-            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.VendorPending = pendingvendor.Count();
-            ViewBag.data = HttpContext.Session.GetString("name");
-            ViewBag.branch = HttpContext.Session.GetString("branch");
-            ViewBag.roll = HttpContext.Session.GetString("roll");
+           
 
             cusstatement cusstatement = new cusstatement();
 
@@ -1265,17 +1120,9 @@ namespace MailMeBilling.Controllers
         public IActionResult Todaysalesreport()
         {
             DateTime todaydate = DateTime.UtcNow;
-            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
-            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.CustomerPending = pendingcustomer.Count();
-
-            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.VendorPending = pendingvendor.Count();
-            ViewBag.data = HttpContext.Session.GetString("name");
+          
             ViewBag.branch = HttpContext.Session.GetString("branch");
-            ViewBag.roll = HttpContext.Session.GetString("roll");
+          
             string Branch = ViewBag.branch;
 
             var todaysale = _context.salesinvoicesummery.Where(i => i.Branch == Branch && i.Billdate.Date == todaydate.Date && i.status != "Return").ToList();
@@ -1287,17 +1134,9 @@ namespace MailMeBilling.Controllers
         public IActionResult Weeksalesreport()
         {
             DateTime todaydate = DateTime.UtcNow;
-            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
-            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.CustomerPending = pendingcustomer.Count();
-
-            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.VendorPending = pendingvendor.Count();
-            ViewBag.data = HttpContext.Session.GetString("name");
+           
             ViewBag.branch = HttpContext.Session.GetString("branch");
-            ViewBag.roll = HttpContext.Session.GetString("roll");
+         
             string Branch = ViewBag.branch;
             DateTime week = DateTime.UtcNow.AddDays(-7);
             var todaysale = _context.salesinvoicesummery.Where(i => i.Branch == Branch && i.Billdate.Date >= week.Date && i.Billdate.Date <= todaydate.Date && i.status != "Return").ToList();
@@ -1309,17 +1148,9 @@ namespace MailMeBilling.Controllers
         public IActionResult Monthsalesreport()
         {
             DateTime todaydate = DateTime.UtcNow;
-            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
-            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.CustomerPending = pendingcustomer.Count();
-
-            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.VendorPending = pendingvendor.Count();
-            ViewBag.data = HttpContext.Session.GetString("name");
+          
             ViewBag.branch = HttpContext.Session.GetString("branch");
-            ViewBag.roll = HttpContext.Session.GetString("roll");
+         
             string Branch = ViewBag.branch;
             DateTime week = DateTime.UtcNow.AddDays(-30);
             var todaysale = _context.salesinvoicesummery.Where(i => i.Branch == Branch && i.Billdate.Date >= week.Date && i.Billdate.Date <= todaydate.Date && i.status != "Return").ToList();
@@ -1332,13 +1163,7 @@ namespace MailMeBilling.Controllers
         {
             DateTime todaydate = DateTime.UtcNow;
             DateTime dateStart = DateTime.UtcNow.AddDays(-365);
-            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.CustomerPending = pendingcustomer.Count();
-
-            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.VendorPending = pendingvendor.Count();
+          
             ViewBag.data = HttpContext.Session.GetString("name");
             ViewBag.branch = HttpContext.Session.GetString("branch");
             ViewBag.roll = HttpContext.Session.GetString("roll");
@@ -1352,15 +1177,8 @@ namespace MailMeBilling.Controllers
         }
         public IActionResult cCreditustomerpayment(int id ,string mob)
         {
-            DateTime todaydate = DateTime.UtcNow;
-            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
-            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.CustomerPending = pendingcustomer.Count();
-
-            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.VendorPending = pendingvendor.Count();
+            
+          
             ViewBag.data = HttpContext.Session.GetString("name");
             ViewBag.branch = HttpContext.Session.GetString("branch");
             ViewBag.roll = HttpContext.Session.GetString("roll");
@@ -1376,15 +1194,7 @@ namespace MailMeBilling.Controllers
 
         public IActionResult creditUpdatepayments(Creditpaymenthistry cph)
         {
-            DateTime todaydate = DateTime.UtcNow;
-            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
-            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.CustomerPending = pendingcustomer.Count();
-
-            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.VendorPending = pendingvendor.Count();
+            
             ViewBag.data = HttpContext.Session.GetString("name");
             ViewBag.branch = HttpContext.Session.GetString("branch");
             var Name = ViewBag.data;
@@ -1412,18 +1222,10 @@ namespace MailMeBilling.Controllers
 
         public IActionResult customsalesreport(DateTime fromdate ,DateTime todate)
         {
-            DateTime todaydate = DateTime.UtcNow;
-            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
-            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.CustomerPending = pendingcustomer.Count();
-
-            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.VendorPending = pendingvendor.Count();
-            ViewBag.data = HttpContext.Session.GetString("name");
+          
+          
             ViewBag.branch = HttpContext.Session.GetString("branch");
-            ViewBag.roll = HttpContext.Session.GetString("roll");
+           
             string Branch = ViewBag.branch;
 
             var cussale = _context.salesinvoicesummery.Where(i => i.Branch == Branch && i.Billdate.Date >= fromdate.Date && i.Billdate.Date <= todate.Date  && i.status != "Return").ToList();
@@ -1452,18 +1254,9 @@ namespace MailMeBilling.Controllers
 
         public IActionResult custompurchasereport(DateTime fromdate, DateTime todate)
         {
-            DateTime todaydate = DateTime.UtcNow;
-            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
-            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.CustomerPending = pendingcustomer.Count();
-
-            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.VendorPending = pendingvendor.Count();
-            ViewBag.data = HttpContext.Session.GetString("name");
+          
             ViewBag.branch = HttpContext.Session.GetString("branch");
-            ViewBag.roll = HttpContext.Session.GetString("roll");
+           
             string Branch = ViewBag.branch;
 
             var cussale = _context.purchaseinvoicesummeries.Where(i => i.Branch == Branch && i.Billdate.Date >= fromdate.Date && i.Billdate.Date <= todate.Date && i.status != "Return").ToList();
@@ -1492,18 +1285,10 @@ namespace MailMeBilling.Controllers
 
         public IActionResult Expense(DateTime fromdate, DateTime todate)
         {
-            DateTime todaydate = DateTime.UtcNow;
-            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
-            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.CustomerPending = pendingcustomer.Count();
-
-            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.VendorPending = pendingvendor.Count();
-            ViewBag.data = HttpContext.Session.GetString("name");
+          
+        
             ViewBag.branch = HttpContext.Session.GetString("branch");
-            ViewBag.roll = HttpContext.Session.GetString("roll");
+          
             string Branch = ViewBag.branch;
 
             var cussale = _context.expens.Where(i => i.branch == Branch && i.entrydate.Date >= fromdate.Date && i.entrydate.Date <= todate.Date).ToList();
@@ -1532,18 +1317,9 @@ namespace MailMeBilling.Controllers
 
         public IActionResult productstock()
         {
-            DateTime todaydate = DateTime.UtcNow;
-            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
-            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.CustomerPending = pendingcustomer.Count();
-
-            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.VendorPending = pendingvendor.Count();
-            ViewBag.data = HttpContext.Session.GetString("name");
+            
             ViewBag.branch = HttpContext.Session.GetString("branch");
-            ViewBag.roll = HttpContext.Session.GetString("roll");
+          
             string Branch = ViewBag.branch;
 
            

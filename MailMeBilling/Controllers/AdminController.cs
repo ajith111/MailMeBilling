@@ -35,20 +35,10 @@ namespace MailMeBilling.Controllers
         }
         public IActionResult Dashbord()
         {
-            ViewBag.data = HttpContext.Session.GetString("name");
-            ViewBag.branch = HttpContext.Session.GetString("branch");
-            ViewBag.roll = HttpContext.Session.GetString("roll");
+          
             DshbordVM dashbordVM = new DshbordVM();
             var customer = _context.customerdetails.ToList();
-            DateTime todaydate =  DateTime.UtcNow;
-            DateTime dateStart = DateTime.UtcNow.AddDays(-15);
-            var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.CustomerPending = pendingcustomer.Count();
-
-            var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
-
-            ViewBag.VendorPending = pendingvendor.Count();
+           
 
             foreach (var item in customer)
             {
@@ -88,10 +78,34 @@ namespace MailMeBilling.Controllers
                     ViewBag.msg = "login";
                     HttpContext.Session.SetString("name", login.Email);
                     HttpContext.Session.SetString("branch", login.Branch);
-                    HttpContext.Session.SetString("roll", login.Roll);
-                    ViewBag.data = HttpContext.Session.GetString("name");
-                    ViewBag.branch = HttpContext.Session.GetString("branch");
-                    ViewBag.roll = HttpContext.Session.GetString("roll");
+                    HttpContext.Session.SetString("roll", login.Roll);                 
+                         var name = HttpContext.Session.GetString("name");
+                         var branch = HttpContext.Session.GetString("branch");
+                         var roll = HttpContext.Session.GetString("roll");
+                DateTime todaydate = DateTime.UtcNow;
+                DateTime dateStart = DateTime.UtcNow.AddDays(-15);
+                var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+                var cpen = pendingcustomer.Count();
+
+                var pendingvendor = _context.purchaseinvoicesummeries.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
+
+                var vpen = pendingvendor.Count();
+
+
+                if (HttpContext.Session.GetString(SD.Sessionname)!= null)
+                {
+
+                    
+                    HttpContext.Session.SetObject(SD.Sessionname, name);
+                    HttpContext.Session.SetObject(SD.Statusroll, roll);
+                    HttpContext.Session.SetObject(SD.Statusbranch, branch);
+                    HttpContext.Session.SetObject(SD.vcount ,vpen);
+                    HttpContext.Session.SetObject(SD.ccount ,cpen);
+
+
+                }
+               
 
                 if (login.Roll == "SuperAdmin")
                 {

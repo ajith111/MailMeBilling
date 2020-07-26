@@ -12,6 +12,7 @@ using MailMeBilling.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Http;
 
 namespace MailMeBilling
 {
@@ -32,6 +33,7 @@ namespace MailMeBilling
                     Configuration.GetConnectionString("DefaultConnection")));
             
             services.AddControllersWithViews();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddRazorPages();
             services.AddSession(options =>
             {
