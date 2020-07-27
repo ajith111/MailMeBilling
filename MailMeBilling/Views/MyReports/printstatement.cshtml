@@ -19,7 +19,7 @@
                 @foreach (var item in Model.customerdetails)
                 {
                     <div class="row">
-                        <div class="col-4">
+                        <div class="col-6">
                             <div class="row">
                                 <div class="col-6">
                                     <b>Customer Name </b>
@@ -33,7 +33,7 @@
                                     <b> Mobile Number</b>
                                 </div>
                                 <div class="col-6" style="text-align:left">
-                                    : @item.Mobilenumber
+                                    <p>:@item.Mobilenumber</p> 
                                 </div>
                             </div>
 
@@ -42,7 +42,7 @@
                                     <b> Adddress</b>
                                 </div>
                                 <div class="col-6" style="text-align:left">
-                                    : @item.Address
+                                    <p> : @item.Address</p>
                                 </div>
                             </div>
                         </div>

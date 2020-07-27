@@ -42,14 +42,16 @@ namespace MailMeBilling.Controllers
            
             return Json(new { data = _context.product.Select( i => new {i.productid,  i.productname ,i.Category ,i.SubcCategory,i.Salesrate, i.Hsncode,i.stock,i.Color,i.Brand }).ToList() });
         }
+
+        #endregion
         [HttpGet]
         public JsonResult getpic(int id)
         {
+            var deatils = _context.product.Where(c => c.productid == id).SingleOrDefault();
+            return new JsonResult(deatils);
 
-            return Json(new { data = _context.product.Where(i => i.productid == id).FirstOrDefault() });
+           // return Json(new { data = _context.product.Where(i => i.productid == id).FirstOrDefault() });
         }
-        #endregion
-
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
         {

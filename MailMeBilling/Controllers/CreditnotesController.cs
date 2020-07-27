@@ -242,8 +242,17 @@ namespace MailMeBilling.Controllers
         {
             var creditnote = await _context.creditnote.FindAsync(id);
             _context.creditnote.Remove(creditnote);
+            var role = creditnote.person;
             await _context.SaveChangesAsync();
-            return View();
+            if (role == "vendor")
+            {
+                return RedirectToAction(nameof(VendorIndex));
+            }
+            else
+            {
+                return RedirectToAction(nameof(CustomerIndex));
+            }
+          
         }
 
         private bool creditnoteExists(int id)
