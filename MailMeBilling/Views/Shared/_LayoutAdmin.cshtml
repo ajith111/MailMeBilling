@@ -274,7 +274,7 @@
 
                             </ul>
                         }
-                        if (ViewBag.roll == "Admin")
+                        if (Convert.ToString(roles) == "Admin")
                         {
                             <ul class="menu float-left">
 
@@ -328,7 +328,7 @@
 
                             </ul>
                         }
-                        if (ViewBag.roll == "Employee")
+                        if (Convert.ToString(roles) == "Employee")
                         {
                             <ul class="menu float-left">
 
