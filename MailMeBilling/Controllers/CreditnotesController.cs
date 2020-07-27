@@ -111,7 +111,11 @@ namespace MailMeBilling.Controllers
                         cph1.paymenttype = creditnote.paymenttype;
                         cph1.Payment = creditnote.totalamount;
                         cph1.Recivedby = Name;
-                        cph1.Paiddate = DateTime.UtcNow;
+                        if (creditnote.cdate == null)
+                        {
+                            cph1.Paiddate = DateTime.UtcNow;
+                        }
+                        cph1.Paiddate = creditnote.cdate;
                         cph1.Balance = 0;
                         cph1.refno = creditnote.refno;
                         cph1.Branch = Branch;
@@ -145,7 +149,11 @@ namespace MailMeBilling.Controllers
                         cph1.paymenttype = creditnote.paymenttype;
                         cph1.Payment = creditnote.totalamount;
                         cph1.Recivedby = Name;
-                        cph1.Paiddate = DateTime.UtcNow;
+                        if (creditnote.cdate == null)
+                        {
+                            cph1.Paiddate = DateTime.UtcNow;
+                        }
+                        cph1.Paiddate = creditnote.cdate;
                         cph1.Balance = 0;
                         cph1.refno = creditnote.refno;
                         cph1.Branch = Branch;
@@ -156,8 +164,15 @@ namespace MailMeBilling.Controllers
                         return View();
                     }
                 }
-                
-                return RedirectToAction("Create");
+
+                if (creditnote.person == "vendor")
+                {
+                    return RedirectToAction(nameof(VendorIndex));
+                }
+                else
+                {
+                    return RedirectToAction(nameof(CustomerIndex));
+                }
             }
             return View();
         }

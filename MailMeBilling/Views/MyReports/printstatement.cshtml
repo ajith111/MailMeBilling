@@ -21,28 +21,37 @@
                     <div class="row">
                         <div class="col-6">
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-4">
                                     <b>Customer Name </b>
                                 </div>
-                                <div class="col-6" style="text-align:left">
-                                    : @item.Customername
+                                <div class="col-1" style="text-align:right">
+                                    <span style="text-align:right;">:</span>
+                                </div>
+                                <div class="col-7" style="text-align:left">
+                                    @item.Customername
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-4">
                                     <b> Mobile Number</b>
                                 </div>
-                                <div class="col-6" style="text-align:left">
-                                    <p>:@item.Mobilenumber</p> 
+                                <div class="col-1" style="text-align:right">
+                                    <span style="text-align:right;">:</span>
+                                </div>
+                                <div class="col-7" style="text-align:left">
+                                    @item.Mobilenumber
                                 </div>
                             </div>
 
                             <div class="row">
-                                <div class="col-6">
+                                <div class="col-4">
                                     <b> Adddress</b>
                                 </div>
-                                <div class="col-6" style="text-align:left">
-                                    <p> : @item.Address</p>
+                                <div class="col-1" style="text-align:right">
+                                    <span style="text-align:right;">:</span>
+                                </div>
+                                <div class="col-7" style="text-align:left">
+                                    <p> @item.Address</p>
                                 </div>
                             </div>
                         </div>
@@ -133,12 +142,12 @@
                         {
                             <tr class="text-center">
                                 <th>@count</th>
-                                <th>@dateing</th>
+                                <th>@datec</th>
                                 <th>@itemc.paymenttype</th>
                                 <th>@itemc.refno</th>
                                 <th>@itemc.billid</th>
                                 <th></th>
-                                <th colspan="2" style="text-align:left; color:blueviolet">@itemc.Payment </th>
+                                <th colspan="2" style="text-align:left; color:blueviolet">@itemc.Payment <span style="color:red">(@itemc.Balance)</span> </th>
 
 
 
