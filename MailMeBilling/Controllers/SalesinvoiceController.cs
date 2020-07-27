@@ -22,9 +22,11 @@ namespace MailMeBilling.Controllers
         public IActionResult Index()
         {
            
-            ViewBag.data = HttpContext.Session.GetString("name");
-            ViewBag.branch = HttpContext.Session.GetString("branch");
-            ViewBag.roll = HttpContext.Session.GetString("roll");
+            ViewBag.data = HttpContext.Session.GetObject(SD.Sessionname);
+            ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
+            ViewBag.roll = HttpContext.Session.GetObject(SD.Statusroll);
+
+            
             string Branch = ViewBag.branch;
             loadtemp load = new loadtemp();
            
@@ -89,11 +91,11 @@ namespace MailMeBilling.Controllers
         [HttpPost]
         public IActionResult addtmp(tempseccion tempseccion)
         {
-            ViewBag.data = HttpContext.Session.GetString("name");
+             ViewBag.data = HttpContext.Session.GetObject(SD.Sessionname);
             var Name = ViewBag.data;
             tempseccion.Billdate =  DateTime.UtcNow;
             tempseccion.Billby = Name;
-            ViewBag.branch = HttpContext.Session.GetString("branch");
+              ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
             var Branch = ViewBag.branch;
             tempseccion.Branch = Branch;
             _context.tempseccions.Add(tempseccion);
@@ -105,11 +107,11 @@ namespace MailMeBilling.Controllers
         [HttpPost]
         public IActionResult addtmpsummery(Salesinvoicesummery tempseccion)
         {
-            ViewBag.data = HttpContext.Session.GetString("name");
+             ViewBag.data = HttpContext.Session.GetObject(SD.Sessionname);
             var Name = ViewBag.data;
             tempseccion.Billdate =  DateTime.UtcNow;
             tempseccion.Billby = Name;
-            ViewBag.branch = HttpContext.Session.GetString("branch");
+              ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
             var Branch = ViewBag.branch;
             tempseccion.Branch = Branch;
 

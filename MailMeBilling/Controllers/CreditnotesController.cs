@@ -75,9 +75,9 @@ namespace MailMeBilling.Controllers
          
             if (ModelState.IsValid)
             {
-                ViewBag.data = HttpContext.Session.GetString("name");
+                 ViewBag.data = HttpContext.Session.GetObject(SD.Sessionname);
                 var Name = ViewBag.data;              
-                ViewBag.branch = HttpContext.Session.GetString("branch");
+                  ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
                 string Branch = ViewBag.branch;
                 creditnote.addby = Name;
                 creditnote.branch = Branch;

@@ -61,7 +61,7 @@ namespace MailMeBilling.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Employeeid,Name,DOB,Mobilenumber,Address,Branch,Gender,Roll,Email,Password,Comfirmpassword")] RolleDetails rolleDetails)
         {
-            ViewBag.data = HttpContext.Session.GetString("name");
+             ViewBag.data = HttpContext.Session.GetObject(SD.Sessionname);
             var Name = ViewBag.data;
             rolleDetails.Entrydate =  DateTime.UtcNow;
             rolleDetails.Entryby = Name;
@@ -109,7 +109,7 @@ namespace MailMeBilling.Controllers
                 try
                 {
 
-                ViewBag.data = HttpContext.Session.GetString("name");
+                 ViewBag.data = HttpContext.Session.GetObject(SD.Sessionname);
                 var Name = ViewBag.data;
                 rolleDetails.Entrydate =  DateTime.UtcNow;
                 rolleDetails.Entryby = Name;

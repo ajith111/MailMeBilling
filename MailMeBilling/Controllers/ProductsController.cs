@@ -122,12 +122,12 @@ namespace MailMeBilling.Controllers
            
             if (ModelState.IsValid)
             {
-                ViewBag.data = HttpContext.Session.GetString("name");
+                 ViewBag.data = HttpContext.Session.GetObject(SD.Sessionname);
                 var Name = ViewBag.data;
                 product.Entrydate =  DateTime.UtcNow;
                 product.Entryby = Name;
                 product.Barcode = "Null";
-                ViewBag.branch = HttpContext.Session.GetString("branch");
+                  ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
                 var Branch = ViewBag.branch;
                 product.Branch = Branch;
                 _context.Add(product);
@@ -140,8 +140,8 @@ namespace MailMeBilling.Controllers
         // GET: Products/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            ViewBag.data = HttpContext.Session.GetString("name");
-            ViewBag.branch = HttpContext.Session.GetString("branch");
+             ViewBag.data = HttpContext.Session.GetObject(SD.Sessionname);
+              ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
             ViewBag.roll = HttpContext.Session.GetString("roll");
             string Branch = ViewBag.branch;
             DateTime todaydate =  DateTime.UtcNow;
@@ -214,12 +214,12 @@ namespace MailMeBilling.Controllers
                 try
                 {
                    
-                    ViewBag.data = HttpContext.Session.GetString("name");
+                     ViewBag.data = HttpContext.Session.GetObject(SD.Sessionname);
                     var Name = ViewBag.data;
                     stock.Entrydate =  DateTime.UtcNow;
                     stock.Entryby = Name;
                     product.Barcode = "Null";
-                    ViewBag.branch = HttpContext.Session.GetString("branch");
+                      ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
                     var Branch = ViewBag.branch;
                     product.Branch = Branch;
                     stock.Purchaserate = product.Purchaserate;

@@ -43,7 +43,7 @@
                         <i class="i-Financial"></i>
                         <div class="content">
                             <p class="text-muted mt-2 mb-0">Sales</p><br />
-                            @{ var sales = Model.salesinvoicesummeries.Sum(i => i.nettotal);}
+                            @{ var sales = Model.salesinvoicesummeries.Where(i => i.status !="Return").Sum(i => i.nettotal);}
                             <p class="text-primary text-24 line-height-1 mb-2"> @sales </p>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
                         <i class="i-Money-2"></i>
                         <div class="content">
                             <p class="text-muted mt-2 mb-0">Expense</p><br />
-                            @{ var purchase = Model.purchaseinvoicesummery.Sum(i => i.Totalamount);}
+                            @{ var purchase = Model.purchaseinvoicesummery.Where(i => i.status != "Return").Sum(i => i.Totalamount);}
                             <p class="text-primary text-24 line-height-1 mb-2">@purchase</p>
                         </div>
                     </div>

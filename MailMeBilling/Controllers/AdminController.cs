@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 using MailMeBilling.Data;
@@ -13,9 +14,9 @@ namespace MailMeBilling.Controllers
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _context;
-        const string name = "_Name";
-        const string branch = "_Branch";
-        const string roll = "_Roll";
+        const string name ="";
+        const string branch = "";
+        const string roll = "";
         public AdminController(ApplicationDbContext context)
         {
             _context = context;
@@ -79,9 +80,12 @@ namespace MailMeBilling.Controllers
                     HttpContext.Session.SetString("name", login.Email);
                     HttpContext.Session.SetString("branch", login.Branch);
                     HttpContext.Session.SetString("roll", login.Roll);                 
-                         var name = HttpContext.Session.GetString("name");
-                         var branch = HttpContext.Session.GetString("branch");
-                         var roll = HttpContext.Session.GetString("roll");
+                         ////var name = HttpContext.Session.GetString("name");
+                         ////var branch = HttpContext.Session.GetString("branch");
+                         ////var roll = HttpContext.Session.GetString("roll");
+                var name = login.Email;
+                var branch = login.Branch;
+                var roll = login.Roll;
                 DateTime todaydate = DateTime.UtcNow;
                 DateTime dateStart = DateTime.UtcNow.AddDays(-15);
                 var pendingcustomer = _context.salesinvoicesummery.Where(p => p.status == "Pending" && p.Billdate >= dateStart && p.Billdate <= todaydate).ToList();
@@ -130,7 +134,7 @@ namespace MailMeBilling.Controllers
         {
 
             HttpContext.Session.Clear();
-            ViewBag.data = HttpContext.Session.GetString("name");
+             ViewBag.data = HttpContext.Session.GetObject(SD.Sessionname);
            
             if (ViewBag.data == null)
             {

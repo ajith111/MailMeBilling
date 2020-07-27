@@ -63,7 +63,7 @@ namespace MailMeBilling.Controllers
 
             if (ModelState.IsValid)
             {
-                ViewBag.branch = HttpContext.Session.GetString("branch");
+                ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
                 var Branch = ViewBag.branch;
                 brand.Branch = Branch;
                 _context.Add(brand);
@@ -106,7 +106,7 @@ namespace MailMeBilling.Controllers
             {
                 try
                 {
-                    ViewBag.branch = HttpContext.Session.GetString("branch");
+                    ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
                     var Branch = ViewBag.branch;
                     brand.Branch = Branch;
                     _context.Update(brand);

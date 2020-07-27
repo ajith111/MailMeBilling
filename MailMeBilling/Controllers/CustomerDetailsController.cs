@@ -62,11 +62,11 @@ namespace MailMeBilling.Controllers
         {
             if (ModelState.IsValid)
             {
-                ViewBag.data = HttpContext.Session.GetString("name");
+                 ViewBag.data = HttpContext.Session.GetObject(SD.Sessionname);
                 var Name = ViewBag.data;
                 customerDetails.Entryby = Name;
 
-                ViewBag.branch = HttpContext.Session.GetString("branch");
+                  ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
                 var Branch = ViewBag.branch;
                 customerDetails.Branch = Branch;
              
@@ -113,9 +113,9 @@ namespace MailMeBilling.Controllers
             {
                 try
                 {
-                    ViewBag.data = HttpContext.Session.GetString("name");
+                     ViewBag.data = HttpContext.Session.GetObject(SD.Sessionname);
                     var Name = ViewBag.data;
-                    ViewBag.branch = HttpContext.Session.GetString("branch");
+                      ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
                     var Branch = ViewBag.branch;
                     customerDetails.Branch = Branch;
                     customerDetails.Entrydate =  DateTime.UtcNow;

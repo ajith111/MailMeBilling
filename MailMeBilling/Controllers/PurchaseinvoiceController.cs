@@ -20,8 +20,8 @@ namespace MailMeBilling.Controllers
         public IActionResult Index()
         {
            
-            ViewBag.data = HttpContext.Session.GetString("name");
-            ViewBag.branch = HttpContext.Session.GetString("branch");
+             ViewBag.data = HttpContext.Session.GetObject(SD.Sessionname);
+              ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
             ViewBag.roll = HttpContext.Session.GetString("roll");
             string Branch = ViewBag.branch;
             loadtemp load = new loadtemp();
@@ -65,11 +65,11 @@ namespace MailMeBilling.Controllers
         [HttpPost]
         public IActionResult addtmp(Tmppurchase tempseccion)
         {
-            ViewBag.data = HttpContext.Session.GetString("name");
+             ViewBag.data = HttpContext.Session.GetObject(SD.Sessionname);
             var Name = ViewBag.data;
             tempseccion.Billdate =  DateTime.UtcNow;
             tempseccion.Billby = Name;
-            ViewBag.branch = HttpContext.Session.GetString("branch");
+              ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
             var Branch = ViewBag.branch;
             tempseccion.Branch = Branch;
             _context.tmppurchases.Add(tempseccion);
@@ -92,11 +92,11 @@ namespace MailMeBilling.Controllers
                     }
                 }
             }
-            ViewBag.data = HttpContext.Session.GetString("name");
+             ViewBag.data = HttpContext.Session.GetObject(SD.Sessionname);
             var Name = ViewBag.data;
             tempseccion.Billdate =  DateTime.UtcNow;
             tempseccion.Billby = Name;
-            ViewBag.branch = HttpContext.Session.GetString("branch");
+              ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
             var Branch = ViewBag.branch;
             tempseccion.Branch = Branch;
             var checkcustomer = _context.vendor.Where(i => i.Mobilenumber == tempseccion.Mobilenumber).FirstOrDefault();

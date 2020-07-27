@@ -72,9 +72,9 @@ namespace MailMeBilling.Controllers
                     }
                 }
             }
-            ViewBag.data = HttpContext.Session.GetString("name");
+             ViewBag.data = HttpContext.Session.GetObject(SD.Sessionname);
             string Name = ViewBag.data;
-            ViewBag.branch = HttpContext.Session.GetString("branch");         
+              ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);         
             string Branch = ViewBag.branch;
           
             if (ModelState.IsValid)
@@ -113,9 +113,9 @@ namespace MailMeBilling.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("eid,reason,amount")] Expens expens)
         {
-            ViewBag.data = HttpContext.Session.GetString("name");
+             ViewBag.data = HttpContext.Session.GetObject(SD.Sessionname);
             var Name = ViewBag.data;
-            ViewBag.branch = HttpContext.Session.GetString("branch");
+              ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
            
             string Branch = ViewBag.branch;
            
