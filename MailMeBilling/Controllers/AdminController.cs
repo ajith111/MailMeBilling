@@ -23,9 +23,13 @@ namespace MailMeBilling.Controllers
         }
 
        
-        public IActionResult Login()
+        public IActionResult Login(string Invailde)
         {
-            ViewBag.error= "";
+            if (Invailde != null)
+            {
+                ViewBag.errorlog = "Username & password";
+            }
+           
             return View();
         }
         public IActionResult GetAll()
@@ -80,9 +84,7 @@ namespace MailMeBilling.Controllers
                     HttpContext.Session.SetString("name", login.Email);
                     HttpContext.Session.SetString("branch", login.Branch);
                     HttpContext.Session.SetString("roll", login.Roll);                 
-                         ////var name = HttpContext.Session.GetString("name");
-                         ////var branch = HttpContext.Session.GetString("branch");
-                         ////var roll = HttpContext.Session.GetString("roll");
+                        
                 var name = login.Email;
                 var branch = login.Branch;
                 var roll = login.Roll;
@@ -124,8 +126,9 @@ namespace MailMeBilling.Controllers
                 }
                 else
                 {
-                    ViewBag.errorlog = "Please enter correct Username/password";
-                    return RedirectToAction("Login");
+                var msg = "Invailde";
+                ViewBag.errorlog = "Please Enter correct Username/password";
+                    return RedirectToAction("Login","Admin", new { Invailde = msg });
                 }
           
            
