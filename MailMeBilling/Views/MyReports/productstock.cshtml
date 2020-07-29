@@ -1,6 +1,6 @@
 ﻿
 
-@model IEnumerable<MailMeBilling.Models.Product>
+@*@model IEnumerable<MailMeBilling.Models.Product>*@
 @{
     ViewData["Title"] = "productstock";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
@@ -55,107 +55,79 @@
 
 
                                         <thead>
-                                            <tr class="text-center" >
-                                                  <th>S.No</th>
+                                            <tr class="text-center">
+                                                <th>S.No</th>
+
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.productimage)
+                                                  Product Name
                                                 </th>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.productname)
+                                                  Category
                                                 </th>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.Category)
+                                                   SubCategory
                                                 </th>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.SubcCategory)
+                                                   Color
                                                 </th>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.Color)
+                                                  Brand
                                                 </th>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.Brand)
+                                                  HSN Code
                                                 </th>
                                                 <th>
-                                                    @Html.DisplayNameFor(model => model.Hsncode)
+                                                  Stock
+                                                </th>
+                                                <th>
+                                                  Rate
                                                 </th>
 
-
-                                                <th >
-                                                    @Html.DisplayNameFor(model => model.stock)
+                                                <th>
+                                                    Total Amount
                                                 </th>
-                                                <th  >
-                                                    @Html.DisplayNameFor(model => model.Salesrate)
-                                                </th>
-
-
 
 
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach (var item in Model)
+                                            @foreach (var item in ViewBag.allsale)
                                             {
                                                 count++;
-                                                totalamount = item.stock * item.Salesrate;
+                                                var stock = @item.stock;
+                                                var rate = @item.Salesrate;
+                                                totalamount = stock * rate;
                                                 Alltotal = Alltotal + totalamount;
 
                                             <tr class="text-center">
                                                 <td style="width:10px">@count</td>
-                                                <td>
-                                                    @if (item.productimage != null)
-                                                    {
-                                                        string imageBase64 = Convert.ToBase64String(item.productimage);
-                                                        string imageSrc = string.Format("data:image/gif;base64,{0}", imageBase64);
-                                                        <img src="@imageSrc" style="width:50px;height:20px; " data-toggle="modal" data-target=".A-@item.productid" />
-
-                                                        <!--Modal -->
-                                                        <div class="modal fade bd-example-modal-lg A-@item.productid" id="" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                                                            <div class="modal-dialog modal-lg">
-                                                                <div class="modal-content">
-                                                                    <div class="modal-header">
-                                                                        <h5 class="modal-title" id="exampleModalCenterTitle">@item.productname</h5>
-                                                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-                                                                    </div>
-                                                                    <div class="modal-body text-center">
-
-                                                                        <img src="@imageSrc" style="width:auto;height:auto;" />
-
-                                                                    </div>
-                                                                    <div class="modal-footer">
-
-                                                                        <button class="btn btn-primary ml-2" type="button" data-dismiss="modal"> Close</button>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    }
-                                                    <!-- Modal -->
-                                                </td>
-
 
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.productname)
+                                                     @item.productname
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.Category)
+                                                    @item.Category
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.SubcCategory)
+                                                  @item.SubcCategory
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.Color)
+                                                   @item.Color
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.Brand)
+                                                    @item.Brand
                                                 </td>
                                                 <td>
-                                                    @Html.DisplayFor(modelItem => item.Hsncode)
+                                                  @item.Hsncode
                                                 </td>
                                                 <td style="text-align:right;padding-right:5px;">
-                                                    @Html.DisplayFor(modelItem => item.stock)
+                                                   @item.stock
                                                 </td>
                                                 <td style="text-align:right;padding-right:5px;">
-                                                    @Html.DisplayFor(modelItem => item.Salesrate)
+                                                  @item.Salesrate
+                                                </td>
+                                                <td style="text-align:right;padding-right:5px;">
+                                                  @totalamount
                                                 </td>
 
 
@@ -168,8 +140,11 @@
 
                                             <tr style="text-align:right; border: 1px solid black; border-bottom-color:white; border-right-color:white; border-left-color:white; ">
 
-                                                <th colspan="9" style="text-align:right;padding-right:5px"><h4><b> @ViewBag.sumofstock </b> </h4></th>
-                                                <th  style="text-align:right;padding-right:5px"><h4><b> @Alltotal </b> </h4></th>
+                                                <th colspan="6" style="text-align:right;padding-right:5px"></th>
+                                                <th style="border-right-color:white;">Total Quantity:  </th>
+                                                <th style="border-right-color:white;"><b> @ViewBag.sumofstock </b>  </th>
+                                                <th style="border-right-color:white;">Total Amount:  </th>
+                                                <th style="text-align:right;padding-right:5px"><b> @Alltotal </b></th>
 
                                             </tr>
 

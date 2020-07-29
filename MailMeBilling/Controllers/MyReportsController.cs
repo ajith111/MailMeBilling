@@ -1323,7 +1323,7 @@ namespace MailMeBilling.Controllers
             string Branch = ViewBag.branch;
 
            
-            var allsale = _context.product.ToList();
+            ViewBag.allsale = _context.product.ToList();
           
             var allamount = _context.product.Where(i => i.Branch == Branch).Sum(i => i.Salesrate).ToString();
             var allstock = _context.product.Where(i => i.Branch == Branch).Sum(i => i.stock).ToString();
@@ -1332,7 +1332,7 @@ namespace MailMeBilling.Controllers
             ViewBag.sumofstock = allstock;
 
 
-            return View(allsale);
+            return View();
             
 
         }

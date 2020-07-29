@@ -76,8 +76,6 @@
                                     <div class="card-body">
                                         <div class="card-title mb-3">Add Amount</div>
 
-
-
                                         <form id="@item.cid" method="post">
                                             <input type="hidden" name="billid" value="@item.cid" />
                                             <input type="hidden" name="total" value="@item.totalamount" />
@@ -89,6 +87,10 @@
                                                     <label for="firstName1">Total Amount</label>
 
                                                     <input class="form-control" id="pbalance" type="text" readonly value="@item.totalamount" />
+                                                </div>
+                                                <div class="col-md-6 form-group mb-3">
+                                                    <label for="lastName1">They Balance</label>
+                                                    <input class="form-control"  value="" readonly />
                                                 </div>
                                                 <div class="col-md-6 form-group mb-3">
                                                     <label for="lastName1"> Balance</label>

@@ -18,6 +18,6 @@ namespace MailMeBilling.Models
         public string Mobile { get; set; }
 
         public string Branchname { get; set; }
-      
+        public string Gstno { get; set; }
     }
 }

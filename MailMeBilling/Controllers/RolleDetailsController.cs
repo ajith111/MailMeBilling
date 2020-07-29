@@ -50,7 +50,9 @@ namespace MailMeBilling.Controllers
         // GET: RolleDetails/Create
         public IActionResult Create()
         {
-           
+            ViewBag.branch = _context.branch.ToList();
+
+
             return View();
         }
 
