@@ -49,11 +49,12 @@
                                     {
                                         @if (@item.Billid == hisitem.billid)
                                         {
-                                            <div class="ul-widget4__item ul-widget4__users">
-                                                <div class="ul-widget4__img"><img id="userDropdown" src="../../dist-assets/images/faces/1.jpg" alt="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" /></div>
-
-                                                <div class="ul-widget2__info ul-widget4__users-info"><a class="ul-widget2__title" href="#"> Balance : @hisitem.Balance (@hisitem.paymenttype) </a><span class="ul-widget2__username" href="#"><b>ReceivedBy-</b> @hisitem.Recivedby <b>Date</b> @hisitem.Paiddate</span></div><span class="ul-widget4__number t-font-boldest text-success"> @hisitem.Payment</span>
-                                            </div>
+                                    <div class="ul-widget4__item ul-widget4__users">
+                                        <div class="ul-widget4__img"><img id="userDropdown" src="../../dist-assets/images/faces/1.jpg" alt="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" /></div>
+                                       @{ string datein = Convert.ToDateTime(hisitem.Paiddate).ToString("dd/MM/yyyy");
+                                       }
+                                        <div class="ul-widget2__info ul-widget4__users-info"><a class="ul-widget2__title" href="#"> Balance : @hisitem.Balance (@hisitem.paymenttype) </a><span class="ul-widget2__username" href="#"><b>ReceivedBy-</b> @hisitem.Recivedby <b>Date</b> @datein</span></div><span class="ul-widget4__number t-font-boldest text-success"> @hisitem.Payment</span>
+                                    </div>
 
                                         }
 
@@ -64,6 +65,10 @@
                         </div>
                     </div>
                 </div>
+                @if (item.status !="Close" && item.status !="Return")
+                {
+
+                
                 <div class="col-6">
                     <div class="col-md-12">
                         <div class="card mb-4">
@@ -108,6 +113,10 @@
                                             <label for="phone">paid</label>
                                             <input class="form-control" id="total" name="Payment" onkeyup="amountres(this,@item.id)" required />
                                         </div>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <label for="phone">Date</label>
+                                            <input class="form-control" id="Paiddate" name="Paiddate" type="date"  required />
+                                        </div>
                                     </div>
                                 </form>
                                 <div class="col-md-6 form-group mb-3">
@@ -147,6 +156,7 @@
                         </div>
                     </div>
                 </div>
+                }
             </div>
 
         </div>

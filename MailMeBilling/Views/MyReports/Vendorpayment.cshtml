@@ -51,11 +51,12 @@
                                         {
                                             @if (@item.Billid == hisitem.billid)
                                             {
-                                                <div class="ul-widget4__item ul-widget4__users">
-                                                    <div class="ul-widget4__img"><img id="userDropdown" src="../../dist-assets/images/faces/1.jpg" alt="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" /></div>
-
-                                                    <div class="ul-widget2__info ul-widget4__users-info"><a class="ul-widget2__title" href="#"> Balance : @hisitem.Balance (@hisitem.paymenttype) </a><span class="ul-widget2__username" href="#"><b>ReceivedBy-</b> @hisitem.Recivedby <b>Date</b> @hisitem.Paiddate</span></div><span class="ul-widget4__number t-font-boldest text-success"> @hisitem.Payment</span>
-                                                </div>
+                                        <div class="ul-widget4__item ul-widget4__users">
+                                            <div class="ul-widget4__img"><img id="userDropdown" src="../../dist-assets/images/faces/1.jpg" alt="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" /></div>
+                                            @{ string datein = Convert.ToDateTime(hisitem.Paiddate).ToString("dd/MM/yyyy");
+                                            }
+                                                <div class="ul-widget2__info ul-widget4__users-info"><a class="ul-widget2__title" href="#"> Balance : @hisitem.Balance (@hisitem.paymenttype) </a><span class="ul-widget2__username" href="#"><b>ReceivedBy-</b> @hisitem.Recivedby <b>Date</b> @datein</span></div><span class="ul-widget4__number t-font-boldest text-success"> @hisitem.Payment</span>
+                                            </div>
 
                                             }
 
@@ -66,88 +67,95 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-6">
-                        <div class="col-md-12">
-                            <div class="card mb-4">
-                                <div class="card-body">
-                                    <div class="card-title mb-3">Add Amount</div>
-                                    <form id="@item.Billid" method="post">
-                                        <input type="hidden" name="billid" value="@item.Billid" />
-                                        <input type="hidden" name="total" value="@item.Totalamount" />
-                                        <input type="hidden" name="Address" value="@Model.Address" />
-                                        <input type="hidden" name="Customername" value="@Model.Name" />
-                                        <input type="hidden" name="Mobile" value="@Model.Mobilenumber" />
-                                        <div class="row">
-                                            <div class="col-md-6 form-group mb-3">
-                                                <label for="firstName1">Total Amount</label>
-                                                <input class="form-control" id="firstName1" type="text" readonly value="@item.Totalamount" />
+                    @if (item.status != "Close" && item.status != "Return")
+                    {
+                        <div class="col-6">
+                            <div class="col-md-12">
+                                <div class="card mb-4">
+                                    <div class="card-body">
+                                        <div class="card-title mb-3">Add Amount</div>
+                                        <form id="@item.Billid" method="post">
+                                            <input type="hidden" name="billid" value="@item.Billid" />
+                                            <input type="hidden" name="total" value="@item.Totalamount" />
+                                            <input type="hidden" name="Address" value="@Model.Address" />
+                                            <input type="hidden" name="Customername" value="@Model.Name" />
+                                            <input type="hidden" name="Mobile" value="@Model.Mobilenumber" />
+                                            <div class="row">
+                                                <div class="col-md-6 form-group mb-3">
+                                                    <label for="firstName1">Total Amount</label>
+                                                    <input class="form-control" id="firstName1" type="text" readonly value="@item.Totalamount" />
+                                                </div>
+                                                <div class="col-md-6 form-group mb-3">
+                                                    <label for="lastName1">Customer Balance</label>
+                                                    <input class="form-control" id="pbalance" type="text" readonly value="@item.Balance" />
+                                                </div>
+                                                <div class="col-md-6 form-group mb-3">
+                                                    <label for="picker1">Payment Type</label>
+                                                    <select class="form-control" name="paymenttype" id="paymenttype" required>
+                                                        <option value="">Select</option>
+                                                        <option value="Cash">Cash</option>
+                                                        <option value="Card">Card</option>
+                                                        <option value="Nettrancection">Net Transfer</option>
+                                                        <option value="EMI">EMI</option>
+                                                        <option value="UPI">UPI</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6 form-group mb-3">
+                                                    <label for="credit1">Reference</label>
+                                                    <input class="form-control" id="refno" name="refno" />
+                                                </div>
+                                                <div class="col-md-6 form-group mb-3">
+                                                    <label for="credit1">Balance</label>
+                                                    <input class="form-control" id="Balance" name="Balance" readonly />
+                                                </div>
+                                                <div class="col-md-6 form-group mb-3">
+                                                    <label for="phone">paid</label>
+                                                    <input class="form-control" id="total" name="Payment" onkeyup="amountres(this,@item.id)" required />
+                                                </div>
+                                                <div class="col-md-6 form-group mb-3">
+                                                    <label for="phone">Date</label>
+                                                    <input class="form-control" id="Paiddate" name="Paiddate" type="date" required />
+                                                </div>
                                             </div>
-                                            <div class="col-md-6 form-group mb-3">
-                                                <label for="lastName1">Customer Balance</label>
-                                                <input class="form-control" id="pbalance" type="text" readonly value="@item.Balance" />
-                                            </div>
-                                            <div class="col-md-6 form-group mb-3">
-                                                <label for="picker1">Payment Type</label>
-                                                <select class="form-control" name="paymenttype" id="paymenttype" required>
-                                                    <option value="">Select</option>
-                                                    <option value="Cash">Cash</option>
-                                                    <option value="Card">Card</option>
-                                                    <option value="Nettrancection">Net Transfer</option>
-                                                    <option value="EMI">EMI</option>
-                                                    <option value="UPI">UPI</option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-6 form-group mb-3">
-                                                <label for="credit1">Reference</label>
-                                                <input class="form-control" id="refno" name="refno" />
-                                            </div>
-                                            <div class="col-md-6 form-group mb-3">
-                                                <label for="credit1">Balance</label>
-                                                <input class="form-control" id="Balance" name="Balance" readonly />
-                                            </div>
-                                            <div class="col-md-6 form-group mb-3">
-                                                <label for="phone">paid</label>
-                                                <input class="form-control" id="total" name="Payment" onkeyup="amountres(this,@item.id)" required />
-                                            </div>
+                                        </form>
+                                        <div class="col-md-6 form-group mb-3">
+                                            <button class="btn btn-primary" onclick=Updatepyment('@item.Billid')>Pay</button>
                                         </div>
-                                    </form>
-                                    <div class="col-md-6 form-group mb-3">
-                                        <button class="btn btn-primary" onclick=Updatepyment('@item.Billid')>Pay</button>
+                                        <script>
+                                            function amountres(amt, id) {
+                                                console.log(id);
+                                                var amount = amt;
+                                                var myid = id;
+                                                var billid = $(amt).parents("form")[0];
+                                                var togst = $(billid).find("#pbalance")[0];
+                                                var res = $(billid).find("#Balance")[0];
+
+                                                var tmp = parseFloat(togst.value) - parseFloat(amount.value)
+                                                if (isNaN(tmp)) {
+                                                    res.value = 0;
+                                                }
+                                                else {
+                                                    res.value = tmp;
+                                                }
+
+                                                $("#" + myid).prop("disabled", false);
+
+                                                if (parseInt(amount.value) > parseInt(togst.value)) {
+                                                    $("#" + myid).prop("disabled", true);
+
+                                                    toastr.error("Unable to add.", "Pls Check Amount!", {
+                                                        timeOut: 6000
+                                                    });
+                                                    res.value = 0;
+                                                }
+                                            }
+                                        </script>
+
                                     </div>
-                                    <script>
-                                    function amountres(amt, id) {
-                                        console.log(id);
-                                        var amount = amt;
-                                        var myid = id;
-                                        var billid = $(amt).parents("form")[0];
-                                        var togst = $(billid).find("#pbalance")[0];
-                                        var res = $(billid).find("#Balance")[0];
-
-                                        var tmp = parseFloat(togst.value) - parseFloat(amount.value)
-                                        if (isNaN(tmp)) {
-                                            res.value = 0;
-                                        }
-                                        else {
-                                            res.value = tmp;
-                                        }
-
-                                        $("#" + myid).prop("disabled", false);
-
-                                        if (parseInt(amount.value) > parseInt(togst.value)) {
-                                            $("#" + myid).prop("disabled", true);
-
-                                            toastr.error("Unable to add.", "Pls Check Amount!", {
-                                                timeOut: 6000
-                                            });
-                                            res.value = 0;
-                                        }
-                                    }
-                                    </script>
-
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    }
                 </div>
 
             </div>

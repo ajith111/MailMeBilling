@@ -52,7 +52,7 @@ namespace MailMeBilling.Controllers
           
              ViewBag.data = HttpContext.Session.GetObject(SD.Sessionname);
             var Name = ViewBag.data;
-            cph.Paiddate =  DateTime.UtcNow;
+           // cph.Paiddate =  DateTime.UtcNow;
             cph.Recivedby = Name;
               ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
             var Branch = ViewBag.branch;
@@ -97,7 +97,7 @@ namespace MailMeBilling.Controllers
           
              ViewBag.data = HttpContext.Session.GetObject(SD.Sessionname);
             var Name = ViewBag.data;
-            cph.Paiddate =  DateTime.UtcNow;
+            //cph.Paiddate =  DateTime.UtcNow;
             cph.Recivedby = Name;
               ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
             var Branch = ViewBag.branch;
