@@ -1,10 +1,8 @@
 ﻿
-
-
 @model MailMeBilling.Models.CustomerDetails
 
 @{
-    ViewData["Title"] = "Credit Customer Payment";
+    ViewData["Title"] = "Credit  Payment";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
@@ -54,11 +52,11 @@
                                             @if (@item.cid == hisitem.billid)
                                             {
 
-                                        <div class="ul-widget4__item ul-widget4__users">
-                                            <div class="ul-widget4__img"><img id="userDropdown" src="../../dist-assets/images/faces/1.jpg" alt="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" /></div>
-                                        
-                                            <div class="ul-widget2__info ul-widget4__users-info"><a class="ul-widget2__title" href="#"> Credit : @hisitem.Payment (@hisitem.paymenttype) </a><span class="ul-widget2__username" href="#"><b>ReceivedBy-</b> @hisitem.Recivedby <b>Date</b> @datein</span></div><span class="ul-widget4__number t-font-boldest text-success"> @hisitem.total </span>
-                                        </div>
+                                                <div class="ul-widget4__item ul-widget4__users">
+                                                    <div class="ul-widget4__img"><img id="userDropdown" src="../../dist-assets/images/faces/1.jpg" alt="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" /></div>
+
+                                                    <div class="ul-widget2__info ul-widget4__users-info"><a class="ul-widget2__title" href="#"> Credit : @hisitem.Payment (@hisitem.paymenttype) </a><span class="ul-widget2__username" href="#"><b>ReceivedBy-</b> @hisitem.Recivedby <b>Date</b> @datein</span></div><span class="ul-widget4__number t-font-boldest text-danger"> @hisitem.Balance </span>
+                                                </div>
 
                                             }
 
@@ -87,15 +85,15 @@
                                                 <div class="col-md-6 form-group mb-3">
                                                     <label for="firstName1">Total Amount</label>
 
-                                                    <input class="form-control" id="pbalance" type="text" readonly value="@item.totalamount" />
+                                                    <input class="form-control" id="pbalance" type="text" readonly value="@ViewBag.lastbalance.balance" />
                                                 </div>
                                                 <div class="col-md-6 form-group mb-3">
                                                     <label for="lastName1">They Balance</label>
-                                                  
 
-                                                        <input class="form-control" value="@ViewBag.lastbalance.Balance" readonly />
-                                                    
-                                                    </div>
+
+                                                    <input class="form-control" value="@item.totalamount" readonly />
+
+                                                </div>
                                                 <div class="col-md-6 form-group mb-3">
                                                     <label for="lastName1"> Balance</label>
                                                     <input class="form-control" id="Balance" name="Balance" readonly />
@@ -117,13 +115,13 @@
                                                 </div>
                                                 <div class="col-md-6 form-group mb-3">
                                                     <label for="phone">paid</label>
-                                                    <input class="form-control" id="total" name="Payment" onkeyup="amountres(this,@item.cid)" required />
+                                                    <input class="form-control" id="total" name="Payment" onkeyup="amountres(this,@item.cid)" autocomplete="off" required />
 
                                                 </div>
-                                               
+
                                                 <div class="col-md-6 form-group mb-3">
                                                     <label for="credit1">Resived Date</label>
-                                                    <input class="form-control" id="Paiddate" name="Paiddate" type="date" required/>
+                                                    <input class="form-control" id="Paiddate" name="Paiddate" type="date" required />
                                                 </div>
                                             </div>
                                         </form>
@@ -132,7 +130,7 @@
                                         </div>
                                         <script>
                                             function amountres(amt, id) {
-                                                console.log(id);
+                                               
                                                 var amount = amt;
                                                 var myid = id;
                                                 var billid = $(amt).parents("form")[0];
@@ -165,7 +163,7 @@
                             </div>
                         </div>
                     }
-                    </div>
+                </div>
 
             </div>
         </div>
@@ -186,7 +184,7 @@
             $.ajax({
                 type: "POST",
                 enctype: 'multipart/form-data',
-                url:"/MyReports/creditUpdatepayments",
+                url:"/Emi/UpdateCreditnotepayment",
                 data: data,
                 processData: false,
                 contentType: false,
@@ -212,3 +210,4 @@
 
 
 </script>
+

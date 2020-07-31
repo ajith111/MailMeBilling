@@ -120,6 +120,7 @@ namespace MailMeBilling.Controllers
                         cph1.refno = creditnote.refno;
                         cph1.Branch = Branch;
                         cph1.total = creditnote.totalamount;
+                        cph1.Balance = creditnote.totalamount;
                         cph1.billid = cno;
                         _context.creditpaymenthistries.Add(cph1);
 
@@ -148,6 +149,7 @@ namespace MailMeBilling.Controllers
                         cph1.Address = creditnote.address;
                         cph1.paymenttype = creditnote.paymenttype;
                         cph1.Payment = creditnote.totalamount;
+                        cph1.Balance = creditnote.totalamount;
                         cph1.Recivedby = Name;
                         if (creditnote.cdate == null)
                         {

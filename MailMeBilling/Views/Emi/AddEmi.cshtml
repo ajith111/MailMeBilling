@@ -1,0 +1,176 @@
+﻿
+
+@model MailMeBilling.Models.Eminote
+
+@{
+    ViewData["Title"] = "Add Credit";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+
+<h4>Add Credit Note</h4>
+<hr />
+
+
+<form asp-action="Create">
+    <div class="row">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="mobilenumber" class="control-label"></label>
+                <input asp-for="mobilenumber" id="cnumber" class="form-control" onchange="checkcustomer()" value="" required />
+                <span asp-validation-for="mobilenumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="name" class="control-label"></label>
+                <input asp-for="name" id="name" class="form-control" required />
+                <span asp-validation-for="name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="address" class="control-label"></label>
+
+                <textarea asp-for="address" id="address" class="form-control" required>
+
+                    </textarea>
+                <span asp-validation-for="address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="paymenttype" class="control-label"></label>
+
+                <select asp-for="paymenttype" class="form-control" required>
+                    <option value="">Select Payment Type</option>
+                    <option value="Card">Card</option>
+                    <option value="Cash">Cash</option>
+                    <option value="Netpay">Net Pay</option>
+                    <option value="Upi">UPI</option>
+                    <option value="Credit">Credit</option>
+                </select>
+                <span asp-validation-for="paymenttype" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="refno" class="control-label"></label>
+                <input asp-for="refno" id="ref" class="form-control" />
+                <span asp-validation-for="refno" class="text-danger"></span>
+            </div>
+
+        </div>
+        <div class="col-md-6">
+
+            <div class="form-group">
+                <label asp-for="person" class="control-label"></label>
+
+                <select asp-for="person" class="form-control" required>
+                    <option value="">Select</option>
+                    <option value="customer">Customer</option>
+                    <option value="vendor">Vendor</option>
+                </select>
+                <span asp-validation-for="person" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="particular" class="control-label"></label>
+                <input asp-for="particular" class="form-control" required />
+                <span asp-validation-for="particular" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="totalamount" class="control-label"></label>
+                <input asp-for="totalamount" id="totalamount" class="form-control" required />
+                <span asp-validation-for="totalamount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="paid" class="control-label"></label>
+                <input asp-for="paid" class="form-control" onkeyup="balancecal(this)" autocomplete="off" required />
+                <span asp-validation-for="paid" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="balance" class="control-label"></label>
+                <input asp-for="balance" id="balance" class="form-control" required readonly />
+                <span asp-validation-for="balance" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="cdate" class="control-label"></label>
+                <input asp-for="cdate" class="form-control" required />
+                <span asp-validation-for="cdate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" id="Save" class="btn btn-primary" />
+            </div>
+        </div>
+
+    </div>
+</form>
+
+
+
+
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script>
+
+
+    function balancecal(amt) {
+        var amount = amt;
+        var togst = document.getElementById("totalamount");
+        var res = document.getElementById("balance");
+
+        var tmp = parseFloat(togst.value) - parseFloat(amount.value)
+        console.log(tmp);
+        if (isNaN(tmp)) {
+            res.value = 0;
+        }
+        else {
+            res.value = tmp;
+        }
+
+    }
+     function checkcustomer() {
+
+         var num = $('#cnumber').val();
+        $.ajax({
+            url: '@Url.Action("fillcusdetails")',
+            type: "GET",
+            dataType: "JSON",
+            data: { mob: num },
+            success: function (data) {
+
+                if (data != null) {
+                    $("#Save").prop("disabled", false);
+                    var Cat = document.getElementById("name");
+                    var sub = document.getElementById("address");
+                    $(Cat).empty();
+                    Cat.value = data['customername'];
+                    if (Cat.value == "undefined")
+                    {
+                        Cat.value = data['name'];
+                    } else
+                    {
+                        Cat.value = data['customername'];
+
+                    }
+
+                    sub.value = data['address'];
+
+
+                    toastr.success("This Customer Already Registered", "Our  Client", {
+                        closeButton: !0
+                    });
+                }
+                else {
+                    toastr.success("This Client is new", "New  Client", {
+                        closeButton: !0
+                    });
+
+                }
+
+
+
+
+
+            }
+
+        });
+
+    }
+</script>

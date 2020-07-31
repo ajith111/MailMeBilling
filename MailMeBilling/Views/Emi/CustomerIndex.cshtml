@@ -1,7 +1,10 @@
-﻿@model IEnumerable<MailMeBilling.Models.creditnote>
+﻿
+
+
+@model IEnumerable<MailMeBilling.Models.Eminote>
 
 @{
-    ViewData["Title"] = "Customer Pay list";
+    ViewData["Title"] = "Customer Credit list";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
     int con = 0;
 }
@@ -12,12 +15,12 @@
     <div class="card-body">
         <div class="row">
             <div class="col-10">
-                <h4 class="card-title mb-3"><b> Pay Note</b></h4>
-                <p>Customer Pay Note List</p>
+                <h4 class="card-title mb-3"><b> Credit Note</b></h4>
+                <p>Customer Credit Note List</p>
             </div>
             <div class="col-2">
                 <p class="text-right">
-                    <a asp-action="Create" class="btn btn-primary">Add Note</a>
+                    <a asp-action="AddEmi" class="btn btn-primary">Add Note</a>
                 </p>
             </div>
         </div>
@@ -98,7 +101,7 @@
                                 @Html.DisplayFor(modelItem => item.address)
                             </td>
                             <td>
-                                <a class=" nav-icon mr-2 i-Pen-2"  asp-action="cCreditustomerpayment" asp-controller="MyReports" asp-route-id="@item.cid" asp-route-mob="@item.mobilenumber"></a>
+                                <a class=" nav-icon mr-2 i-Pen-2" asp-action="Creditnotepayment" asp-controller="Emi" asp-route-id="@item.cid" asp-route-mob="@item.mobilenumber"></a>
                                 <a class="nav-icon mr-2 i-Information" asp-action="Details" asp-route-id="@item.cid"></a>
                                 <a class="nav-icon mr-2 i-Close" asp-action="Delete" asp-route-id="@item.cid"></a>
                             </td>

@@ -50,5 +50,11 @@ namespace MailMeBilling.Data
         public DbSet<MailMeBilling.Models.creditnote> creditnote { get; set; }
         public DbSet<MailMeBilling.Models.Expens> expens { get; set; }
         public DbSet<Creditpaymenthistry> creditpaymenthistries { get; set; }
+        public DbSet<Eminote> eminotes { get; set; }
+        public DbSet<Emipaymenthistry> emipaymenthistries { get; set; }
+        public DbSet<CreditCustomerDetails> creditcustomers { get; set; }
+
+        public DbSet<CreditVendor> creditvendors { get; set; }
+            
     }
 }

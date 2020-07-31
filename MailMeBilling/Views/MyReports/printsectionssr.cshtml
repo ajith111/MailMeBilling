@@ -117,14 +117,15 @@
                     {
                         count++;
                         amttotal += item.Amount;
-                        <tr class="text-center">
-                            <th>@count</th>
-                            <th class="text-left">ProductName & Color: @item.Productname ,Category: @item.Category, SubCategory: @item.Subcategory, Brand: @item.Brand</th>
-                            <th>@item.Hsncode</th>
-                            <th>@item.Quantity</th>
-                            <th class="text-right" style="padding-right: 30px;text-align: right;">@item.Rate</th>
-                            <th class="text-right" style="padding-right: 30px; text-align: right;"> ₹  @item.Amount</th>
-                        </tr>
+                    <tr class="text-center">
+                        <th>@count</th>
+                        <th class="text-left">ProductName : @item.Productname </th>
+                        @*<th class="text-left">ProductName & Color: @item.Productname ,Category: @item.Category, SubCategory: @item.Subcategory, Brand: @item.Brand</th>*@
+                        <th>@item.Hsncode</th>
+                        <th>@item.Quantity</th>
+                        <th class="text-right" style="padding-right: 30px;text-align: right;">@item.Rate</th>
+                        <th class="text-right" style="padding-right: 30px; text-align: right;"> ₹  @item.Amount</th>
+                    </tr>
                     }
                     @{decimal gstt = Convert.ToDecimal(@sums.Gst) / 2;
                         var calgstt = sums.Cgst + sums.Sgst + sums.Igst;

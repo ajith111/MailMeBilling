@@ -514,62 +514,69 @@ namespace MailMeBilling.Controllers
         //[HttpDelete]
         public IActionResult salesreturn(int id)
         {
-              ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
-            string Branch = ViewBag.branch;
-             ViewBag.data = HttpContext.Session.GetObject(SD.Sessionname);
-            var Name = ViewBag.data;
-            var bill = _context.salesinvoicesummery.Where(i => i.Billid == id && i.Branch == Branch).FirstOrDefault();
-            bill.status = "Return";
-            _context.salesinvoicesummery.Update(bill);         
-
-
-            var tmp = _context.salesinvoices.Where(i => i.Billno == id && i.Branch == Branch).ToList();
-           
-            foreach (var item in tmp)
+            var checking = _context.salesinvoicesummery.Where(i => i.Billid == id && i.status == "Return").FirstOrDefault();
+            if (checking == null)
             {
-                var qty = item.Productname;
-                var prgb = _context.product.Where(p => p.productname == qty).SingleOrDefault();
-                var pquantity = prgb.stock + item.Quantity;
-                prgb.stock = pquantity;
-                _context.product.Update(prgb);
+                ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
+                string Branch = ViewBag.branch;
+                ViewBag.data = HttpContext.Session.GetObject(SD.Sessionname);
+                var Name = ViewBag.data;
+                var bill = _context.salesinvoicesummery.Where(i => i.Billid == id && i.Branch == Branch).FirstOrDefault();
+                bill.status = "Return";
+                _context.salesinvoicesummery.Update(bill);
 
+
+                var tmp = _context.salesinvoices.Where(i => i.Billno == id && i.Branch == Branch).ToList();
+
+                foreach (var item in tmp)
+                {
+                    var qty = item.Productname;
+                    var prgb = _context.product.Where(p => p.productname == qty).SingleOrDefault();
+                    var pquantity = prgb.stock + item.Quantity;
+                    prgb.stock = pquantity;
+                    _context.product.Update(prgb);
+
+
+                }
+
+                var mob = bill.Mobilenumber;
+                creditnote cn = new creditnote();
+                cn.cdate = DateTime.UtcNow;
+                cn.branch = Branch;
+                cn.totalamount = bill.Paid;
+                cn.person = "customer";
+                cn.mobilenumber = bill.Mobilenumber;
+                cn.name = bill.Customername;
+                cn.address = bill.Address;
+                cn.addby = Name;
+                cn.paymenttype = bill.Paymenttype;
+                cn.refno = bill.Refcode;
+                cn.particular = "Sales Return Amount for B.No " + id;
+                _context.creditnote.Add(cn);
+                _context.SaveChanges();
+                var billno = cn.cid;
+
+                Creditpaymenthistry cph = new Creditpaymenthistry();
+                cph.Mobile = bill.Mobilenumber;
+                cph.Customername = bill.Customername;
+                cph.Address = bill.Address;
+                cph.paymenttype = bill.Paymenttype;
+                cph.Payment = bill.Paid;
+                cph.Recivedby = Name;
+                cph.Paiddate = DateTime.UtcNow;
+                cph.Balance = bill.Paid;
+                cph.refno = bill.Refcode;
+                cph.Branch = Branch;
+                cph.total = bill.Paid;
+                cph.billid = billno;
+                _context.creditpaymenthistries.Add(cph);
+                _context.SaveChanges();
+                return RedirectToAction("Index", "Salesinvoice");
 
             }
+           
 
-            var mob = bill.Mobilenumber;
-            creditnote cn = new creditnote();
-            cn.cdate = DateTime.UtcNow;
-            cn.branch = Branch;
-            cn.totalamount = bill.Paid;
-            cn.person = "customer";
-            cn.mobilenumber = bill.Mobilenumber;
-            cn.name = bill.Customername;
-            cn.address = bill.Address;
-            cn.addby = Name;
-            cn.paymenttype = bill.Paymenttype;
-            cn.refno = bill.Refcode;
-            cn.particular = "Sales Return Amount for B.No " + id;
-            _context.creditnote.Add(cn);
-            _context.SaveChanges();
-            var billno = cn.cid;
-
-            Creditpaymenthistry cph = new Creditpaymenthistry();
-            cph.Mobile = bill.Mobilenumber;
-            cph.Customername = bill.Customername;
-            cph.Address = bill.Address;
-            cph.paymenttype = bill.Paymenttype;
-            cph.Payment = bill.Paid;
-            cph.Recivedby = Name;
-            cph.Paiddate = DateTime.UtcNow;
-            cph.Balance = bill.Balance;
-            cph.refno = bill.Refcode;
-            cph.Branch = Branch;
-            cph.total = bill.Totalamount;
-            cph.billid = billno;
-            _context.creditpaymenthistries.Add(cph);
-            _context.SaveChanges();
-
-            return RedirectToAction("Index","Salesinvoice");
+            return RedirectToAction("Salesreport","MyReports");
         
         }
         public IActionResult purchasereturn(int id)
@@ -610,6 +617,7 @@ namespace MailMeBilling.Controllers
             cph.refno = bill.Refcode;
             cph.Branch = Branch;
             cph.total = bill.Totalamount;
+            
             cph.billid = billno;
             _context.creditpaymenthistries.Add(cph);
           
@@ -1187,7 +1195,7 @@ namespace MailMeBilling.Controllers
             ViewBag.billsummery = bill;
             var histry = _context.creditpaymenthistries.Where(i => i.billid == id).ToList();
             ViewBag.histry = histry;
-
+             ViewBag.lastbalance = _context.creditpaymenthistries.Where(i => i.billid == id).FirstOrDefault();
 
             return View(list);
         }
@@ -1199,7 +1207,11 @@ namespace MailMeBilling.Controllers
               ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
             var Name = ViewBag.data;
             var Branch = ViewBag.branch;
-            cph.Paiddate = DateTime.UtcNow;
+            if (cph.Paiddate == null)
+            {
+                cph.Paiddate = DateTime.UtcNow;
+
+            }
             cph.Recivedby = Name;         
             
             cph.Branch = Branch;
@@ -1336,6 +1348,53 @@ namespace MailMeBilling.Controllers
             
 
         }
+
+        public IActionResult customcreditreport(DateTime fromdate, DateTime todate)
+        {
+
+
+            ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
+
+            string Branch = ViewBag.branch;
+          
+            ViewBag.customer = _context.creditnote.Where(i => i.person == "customer").ToList();
+            var cussale = _context.creditpaymenthistries.Where(i => i.Branch == Branch && i.Paiddate.Date >= fromdate.Date && i.Paiddate.Date <= todate.Date ).ToList();
+            var allsale = _context.creditpaymenthistries.Where(i => i.Branch == Branch).ToList();
+          
+
+           
+            var sumofamount = _context.creditpaymenthistries.Where(i => i.Branch == Branch && i.Paiddate.Date >= fromdate.Date && i.Paiddate.Date <= todate.Date).Sum(i => i.total).ToString();
+            var allamount = _context.creditpaymenthistries.Where(i =>  i.Branch == Branch).Sum(i => i.total).ToString();
+
+            var q = (from pd in _context.creditpaymenthistries
+                     join od in _context.creditnote on pd.billid equals od.cid                   
+                     orderby od.cid
+                     select new
+                     {
+                         od.totalamount,
+                        
+                     }).Sum(i => i.totalamount).ToString();
+            if (sumofamount != "0")
+            {
+                ViewBag.sumofcustomerbuyamount = sumofamount;
+            }
+            else
+            {
+                ViewBag.sumofcustomerbuyamount = allamount;
+            }
+
+            if (cussale.Count != 0)
+            {
+                return View(cussale);
+            }
+            else
+            {
+                return View(allsale);
+            }
+
+        }
+
+       
 
 
 
