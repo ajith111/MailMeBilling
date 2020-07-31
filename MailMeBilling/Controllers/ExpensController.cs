@@ -80,7 +80,7 @@ namespace MailMeBilling.Controllers
             if (ModelState.IsValid)
             {
                 expens.branch = Branch;
-                expens.entrydate = DateTime.UtcNow;
+              
                 expens.entryby = Name;
                 _context.Add(expens);
                 await _context.SaveChangesAsync();

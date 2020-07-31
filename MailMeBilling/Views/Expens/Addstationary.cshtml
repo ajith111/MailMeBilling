@@ -46,7 +46,11 @@
                 <input asp-for="amount" class="form-control" required />
                 <span asp-validation-for="amount" class="text-danger"></span>
             </div>
-
+            <div class="form-group">
+                <label asp-for="entrydate" class="control-label"></label>
+                <input asp-for="entrydate" class="form-control" type="date" required />
+                <span asp-validation-for="entrydate" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
