@@ -101,9 +101,10 @@ namespace MailMeBilling.Controllers
                         cd.Branch = Branch;
                         cd.Entrydate = DateTime.UtcNow;
                         cd.Entryby = Name;
-                        _context.customerdetails.Add(cd);                      
+                        _context.customerdetails.Add(cd);
+                        _context.SaveChanges();
 
-
+                    }
                         Creditpaymenthistry cph1 = new Creditpaymenthistry();
                         cph1.Mobile = creditnote.mobilenumber;
                         cph1.Customername = creditnote.name;
@@ -126,7 +127,7 @@ namespace MailMeBilling.Controllers
 
                      
                         _context.SaveChanges();
-                    }
+                    
 
                 }
 
@@ -143,6 +144,8 @@ namespace MailMeBilling.Controllers
                         cd.Entrydate = DateTime.UtcNow;
                         cd.Entryby = Name;
                         _context.vendor.Add(cd);
+                        _context.SaveChanges();
+                    }
                         Creditpaymenthistry cph1 = new Creditpaymenthistry();
                         cph1.Mobile = creditnote.mobilenumber;
                         cph1.Customername = creditnote.name;
@@ -163,8 +166,8 @@ namespace MailMeBilling.Controllers
                         cph1.billid = cno;
                         _context.creditpaymenthistries.Add(cph1);
                         _context.SaveChanges();
-                        return View();
-                    }
+                      
+                    
                 }
 
                 if (creditnote.person == "vendor")

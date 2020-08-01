@@ -1185,17 +1185,17 @@ namespace MailMeBilling.Controllers
         }
         public IActionResult cCreditustomerpayment(int id ,string mob)
         {
-            
-          
-             ViewBag.data = HttpContext.Session.GetObject(SD.Sessionname);
-              ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
+
+
+            ViewBag.data = HttpContext.Session.GetObject(SD.Sessionname);
+            ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
             ViewBag.roll = HttpContext.Session.GetString("roll");
             var list = _context.customerdetails.Where(i => i.Mobilenumber == mob).FirstOrDefault();
             var bill = _context.creditnote.Where(i => i.cid == id).ToList();
             ViewBag.billsummery = bill;
             var histry = _context.creditpaymenthistries.Where(i => i.billid == id).ToList();
             ViewBag.histry = histry;
-             ViewBag.lastbalance = _context.creditpaymenthistries.Where(i => i.billid == id).FirstOrDefault();
+            ViewBag.lastbalance = _context.creditpaymenthistries.OrderByDescending(i => i.id).Where(i => i.billid == id).FirstOrDefault();
 
             return View(list);
         }
