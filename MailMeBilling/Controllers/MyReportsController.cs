@@ -544,6 +544,8 @@ namespace MailMeBilling.Controllers
                 cn.cdate = DateTime.UtcNow;
                 cn.branch = Branch;
                 cn.totalamount = bill.Paid;
+                cn.Paid = bill.Paid;
+                cn.Balance = 0;
                 cn.person = "customer";
                 cn.mobilenumber = bill.Mobilenumber;
                 cn.name = bill.Customername;
@@ -561,10 +563,10 @@ namespace MailMeBilling.Controllers
                 cph.Customername = bill.Customername;
                 cph.Address = bill.Address;
                 cph.paymenttype = bill.Paymenttype;
-                cph.Payment = bill.Paid;
+                cph.Payment = 0;
                 cph.Recivedby = Name;
                 cph.Paiddate = DateTime.UtcNow;
-                cph.Balance = bill.Paid;
+                cph.Balance = 0;
                 cph.refno = bill.Refcode;
                 cph.Branch = Branch;
                 cph.total = bill.Paid;
@@ -593,6 +595,8 @@ namespace MailMeBilling.Controllers
             cn.cdate = DateTime.UtcNow;
             cn.branch = Branch;
             cn.totalamount = bill.Totalamount - bill.Balance;
+            cn.Paid = bill.Totalamount - bill.Balance;
+            cn.Balance = 0;
             cn.person = "vendor";
             cn.mobilenumber = bill.Mobilenumber;
             cn.name = bill.Vendorrname;
@@ -1195,7 +1199,7 @@ namespace MailMeBilling.Controllers
             ViewBag.billsummery = bill;
             var histry = _context.creditpaymenthistries.Where(i => i.billid == id).ToList();
             ViewBag.histry = histry;
-            ViewBag.lastbalance = _context.creditpaymenthistries.OrderByDescending(i => i.id).Where(i => i.billid == id).FirstOrDefault();
+            ViewBag.lastbalance = _context.creditnote.Where(i => i.cid == id).FirstOrDefault();
 
             return View(list);
         }
@@ -1212,23 +1216,16 @@ namespace MailMeBilling.Controllers
                 cph.Paiddate = DateTime.UtcNow;
 
             }
-            cph.Recivedby = Name;         
-            
+            cph.Recivedby = Name;             
             cph.Branch = Branch;
-
-
-            var billamount = _context.creditnote.Where(i => i.cid == cph.billid).FirstOrDefault();
-            decimal paid = cph.Payment;
-            decimal cal = cph.Balance;          
-            cph.total = cal;
             var billhis = _context.creditpaymenthistries.Add(cph);
-            billamount.totalamount = cal;
+            var billamount = _context.creditnote.Where(i => i.cid == cph.billid).FirstOrDefault();
+            decimal paid = billamount.Paid + cph.Payment;
+            decimal cal = cph.Balance;
+            billamount.Paid = paid;         
+            billamount.Balance = cal;
             _context.creditnote.Update(billamount);
-
             _context.SaveChanges();
-
-
-
             return Json(new { success = true, message = "Save successfull." });
         }
 

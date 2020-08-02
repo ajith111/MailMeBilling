@@ -54,7 +54,7 @@
                                             <div class="ul-widget4__item ul-widget4__users">
                                                 <div class="ul-widget4__img"><img id="userDropdown" src="../../dist-assets/images/faces/1.jpg" alt="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" /></div>
 
-                                                <div class="ul-widget2__info ul-widget4__users-info"><a class="ul-widget2__title" href="#"> Credit : @hisitem.Payment (@hisitem.paymenttype) </a><span class="ul-widget2__username" href="#"><b>ReceivedBy-</b> @hisitem.Recivedby <b>Date</b> @datein</span></div><span class="ul-widget4__number t-font-boldest text-success"> @hisitem.total </span>
+                                                <div class="ul-widget2__info ul-widget4__users-info"><a class="ul-widget2__title" href="#"> Credit : @hisitem.Payment (@hisitem.paymenttype) </a><span class="ul-widget2__username" href="#"><b>ReceivedBy-</b> @hisitem.Recivedby <b>Date</b> @datein</span></div><span class="ul-widget4__number t-font-boldest text-danger"> @hisitem.Balance </span>
                                             </div>
 
                                                 }
@@ -84,13 +84,13 @@
                                                     <div class="col-md-6 form-group mb-3">
                                                         <label for="firstName1">Total Amount</label>
 
-                                                        <input class="form-control" id="pbalance" type="text" readonly value="@item.totalamount" />
+                                                        <input class="form-control"  type="text" readonly value="@item.totalamount" />
                                                     </div>
                                                     <div class="col-md-6 form-group mb-3">
                                                         <label for="lastName1">They Balance</label>
                                                         @if (ViewBag.lastbalance != null)
                                                         {
-                                                            <input class="form-control" value="@ViewBag.lastbalance.Balance" readonly />
+                                                            <input class="form-control" id="pbalance" value="@ViewBag.lastbalance.Balance" readonly />
                                                         }
                                                         else
                                                         {

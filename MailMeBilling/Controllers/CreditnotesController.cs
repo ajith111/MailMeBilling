@@ -69,7 +69,7 @@ namespace MailMeBilling.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("cid,cdate,person,particular,totalamount,name,mobilenumber,address,paymenttype,refno")] creditnote creditnote)
+        public async Task<IActionResult> Create([Bind("cid,cdate,person,particular,totalamount,name,mobilenumber,Paid,Balance,address,paymenttype,refno")] creditnote creditnote)
         {
            
          
@@ -110,18 +110,18 @@ namespace MailMeBilling.Controllers
                         cph1.Customername = creditnote.name;
                         cph1.Address = creditnote.address;
                         cph1.paymenttype = creditnote.paymenttype;
-                        cph1.Payment = creditnote.totalamount;
+                        cph1.Payment = creditnote.Paid;
                         cph1.Recivedby = Name;
                         if (creditnote.cdate == null)
                         {
                             cph1.Paiddate = DateTime.UtcNow;
                         }
                         cph1.Paiddate = creditnote.cdate;
-                        cph1.Balance = 0;
+                     
                         cph1.refno = creditnote.refno;
                         cph1.Branch = Branch;
                         cph1.total = creditnote.totalamount;
-                        cph1.Balance = creditnote.totalamount;
+                        cph1.Balance = creditnote.Balance;
                         cph1.billid = cno;
                         _context.creditpaymenthistries.Add(cph1);
 
@@ -151,15 +151,15 @@ namespace MailMeBilling.Controllers
                         cph1.Customername = creditnote.name;
                         cph1.Address = creditnote.address;
                         cph1.paymenttype = creditnote.paymenttype;
-                        cph1.Payment = creditnote.totalamount;
-                        cph1.Balance = creditnote.totalamount;
+                        cph1.Payment = creditnote.Paid;
+                        cph1.Balance = creditnote.Balance;
                         cph1.Recivedby = Name;
                         if (creditnote.cdate == null)
                         {
                             cph1.Paiddate = DateTime.UtcNow;
                         }
                         cph1.Paiddate = creditnote.cdate;
-                        cph1.Balance = 0;
+                     
                         cph1.refno = creditnote.refno;
                         cph1.Branch = Branch;
                         cph1.total = creditnote.totalamount;

@@ -85,7 +85,11 @@
                     count++;
                     totalcredit += item.Payment;
                     totalbalance += item.Balance;
-                    totaldebit += item.total;
+                    if (totaldebit != item.total  )
+                    {
+                        totaldebit += item.total;
+                    }
+
 
                     string datein = Convert.ToDateTime(item.Paiddate).ToString("dd/MM/yyyy");
 
@@ -110,10 +114,10 @@
                 {
                     count++;
 
-                    totalcredit += item.totalamount;
+                    totalcredit += item.Paid;
 
-                    //totalbalance += item.Balance;
-                    //totaldebit += item.total;
+                    totalbalance += item.Balance;
+                    totaldebit += item.totalamount;
 
                     string dateing = Convert.ToDateTime(item.cdate).ToString("dd/MM/yyyy");
 
@@ -127,8 +131,9 @@
                         <th>@item.paymenttype</th>
                         <th>@item.refno</th>
                         <th>@item.cid</th>
-                        <th></th>
-                        <th colspan="2" style="text-align:left;">@item.totalamount (@item.particular)</th>
+                        <th style="text-align:right;">@item.totalamount</th>
+                        <th  style="text-align:left;"></th>
+                        <th  style="color: red;text-align: right;padding-right: 50px">@item.Balance</th>
 
 
 
@@ -146,8 +151,10 @@
                                 <th>@itemc.paymenttype</th>
                                 <th>@itemc.refno</th>
                                 <th>@itemc.billid</th>
+                                <th style="color:red; text-align:right">@itemc.Balance</th>
+                               
+                                <th style="text-align:right; color:blueviolet">@itemc.Payment  </th>
                                 <th></th>
-                                <th colspan="2" style="text-align:left; color:blueviolet">@itemc.Payment <span style="color:red">(@itemc.Balance)</span> </th>
 
 
 
@@ -165,28 +172,49 @@
 
                     <tr style="text-align:right; border: 1px solid black; border-bottom-color:white; border-right-color:white; border-left-color:white; ">
                         @{ var todebi = totalcredit + totalbalance;
-                            var sumamt = Convert.ToDecimal(ViewBag.sumofcustomerbuyamount);
+                            var sumamt =  Convert.ToDecimal(totaldebit);
                             var tc = Convert.ToDecimal(totalcredit) - Convert.ToDecimal(ViewBag.sumofreturntotal);
-                            var balance = (Convert.ToDecimal(sumamt) - Convert.ToDecimal(tc));
+                            decimal balance = 0;
+
+                            if (sumamt > tc)
+                            {
+                                balance = (Convert.ToDecimal(sumamt) - Convert.ToDecimal(tc));
+                              
+                            }
+                            else
+                            {
+                                balance = (Convert.ToDecimal(tc) - Convert.ToDecimal(sumamt));
+                               
+                            }
+
 
 
                         }
-                        <th colspan="6"><h4><b> @ViewBag.sumofcustomerbuyamount </b> </h4></th>
+                        <th colspan="6"><h4><b> @sumamt </b> </h4></th>
                         <th><h4><b> @tc </b></h4></th>
                         <th style="text-align:right;padding-right:50px"><h4> <b> </b></h4></th>
                     </tr>
                     <tr style="text-align:right; border: 1px solid black; border-bottom-color:black; border-right-color:white; border-left-color:white; ">
 
                         <th colspan="6" style="text-align:center"><h4><b>Closing Balance </b> </h4></th>
-                        <th><h4 style="color:red"><b> @balance </b></h4></th>
+                     
+                        @if (sumamt > balance)
+                        {
+                            <th><h4 style="color:red"><b> @balance </b></h4></th>
+                        }
+                        else
+                        {
+                            <th><h4 style="color:green"><b> @balance </b></h4></th>
+                        }
+
                         <th style="text-align:right;padding-right:50px"><h4> <b> </b></h4></th>
                     </tr>
 
                     <tr style="text-align: right;border: 1px solid black;border-bottom-color: black;border-right-color: white;border-left-color: white; border-top-color: black;
 ">
 
-                        <th colspan="6"><h4><b> @ViewBag.sumofcustomerbuyamount </b> </h4></th>
-                        <th><h4><b> @ViewBag.sumofcustomerbuyamount</b></h4></th>
+                        <th colspan="6"><h4><b> @sumamt </b> </h4></th>
+                        <th><h4><b> @sumamt</b></h4></th>
                         <th style="text-align:right;padding-right:50px"><h4> <b> </b></h4></th>
                     </tr>
                 </tfoot>
@@ -197,17 +225,7 @@
         </div>
 
 
-        @*<div class="row">
-                <div class="col-6 text-left">
-                    <h5><b>E & E ALL Disputes Are Subject To Salem Jurisdiction</b> </h5>  <br />
-                    <h5><b>Goods Once Sold Cannot Be Taken Back</b> </h5>
-                </div>
-                <div class="col-6 text-right">
-                    <h3><b>ABDULLAH FURNITURES</b></h3><br />
-                    <br />
-                    <h5 style="padding-right:20px"><b>Authorized Signature</b></h5>
-                </div>
-            </div>*@
+       
     </div>
 
 </div>

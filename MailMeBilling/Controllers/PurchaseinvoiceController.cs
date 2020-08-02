@@ -79,7 +79,7 @@ namespace MailMeBilling.Controllers
 
         }
         [HttpPost]
-        public async Task<IActionResult> addtmpsummery(Purchaseinvoicesummery tempseccion , List<IFormFile> upload)
+        public async Task<IActionResult> addtmpsummery(Purchaseinvoicesummery tempseccion, List<IFormFile> upload)
         {
             foreach (var item in upload)
             {
@@ -92,94 +92,104 @@ namespace MailMeBilling.Controllers
                     }
                 }
             }
-             ViewBag.data = HttpContext.Session.GetObject(SD.Sessionname);
-            var Name = ViewBag.data;
-            tempseccion.Billdate =  DateTime.UtcNow;
-            tempseccion.Billby = Name;
-              ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
-            var Branch = ViewBag.branch;
-            tempseccion.Branch = Branch;
-            var checkcustomer = _context.vendor.Where(i => i.Mobilenumber == tempseccion.Mobilenumber).FirstOrDefault();
-            if (checkcustomer == null)
+            if (tempseccion.upload != null)
             {
-                Vendor cd = new Vendor();
-                cd.Mobilenumber = tempseccion.Mobilenumber;
-                cd.Name = tempseccion.Vendorrname;
-                cd.Address = tempseccion.Address;
-                cd.Branch = Branch;
-                cd.Entrydate =  DateTime.UtcNow;
-                cd.Entryby = Name;
-                _context.vendor.Add(cd);
-               
-            }
-            if (tempseccion.Balance != 0)
-            {
-                tempseccion.status = "Pending";
-            }
-            else
-            {
-                tempseccion.status = "Close";
-            }
-            List<Purchaseinvoice> salesinvoice = new List<Purchaseinvoice>();
 
-            var tmp = _context.tmppurchases.Where(i => i.Billno == tempseccion.Billid).ToList();
-            foreach (var item in tmp)
-            {
-                var ss = new Purchaseinvoice();
+                var checkbillno = _context.purchaseinvoicesummeries.Where(i => i.Billid == tempseccion.Billid).FirstOrDefault();
+                if (checkbillno == null)
+                {
+                    ViewBag.data = HttpContext.Session.GetObject(SD.Sessionname);
+                    var Name = ViewBag.data;
+                    tempseccion.Billdate = DateTime.UtcNow;
+                    tempseccion.Billby = Name;
+                    ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
+                    var Branch = ViewBag.branch;
+                    tempseccion.Branch = Branch;
+                    var checkcustomer = _context.vendor.Where(i => i.Mobilenumber == tempseccion.Mobilenumber).FirstOrDefault();
+                    if (checkcustomer == null)
+                    {
+                        Vendor cd = new Vendor();
+                        cd.Mobilenumber = tempseccion.Mobilenumber;
+                        cd.Name = tempseccion.Vendorrname;
+                        cd.Address = tempseccion.Address;
+                        cd.Branch = Branch;
+                        cd.Entrydate = DateTime.UtcNow;
+                        cd.Entryby = Name;
+                        _context.vendor.Add(cd);
 
-                ss.Productname = item.Productname;
-                ss.Category = item.Category;
-                ss.Subcategory = item.Subcategory;
-                ss.Color = item.Color;
-                ss.Brand = item.Brand;
-                ss.Rate = item.Rate;
-                ss.Quantity = item.Quantity;
-                ss.Hsncode = item.Hsncode;
-                ss.Amount = item.Amount;
-                ss.Billno = item.Billno;
-                ss.Billdate = item.Billdate;
-                ss.Billby = item.Billby;
-                ss.Branch = Branch;
+                    }
+                    if (tempseccion.Balance != 0)
+                    {
+                        tempseccion.status = "Pending";
+                    }
+                    else
+                    {
+                        tempseccion.status = "Close";
+                    }
+                    List<Purchaseinvoice> salesinvoice = new List<Purchaseinvoice>();
 
-                salesinvoice.Add(ss);
+                    var tmp = _context.tmppurchases.Where(i => i.Billno == tempseccion.Billid).ToList();
+                    foreach (var item in tmp)
+                    {
+                        var ss = new Purchaseinvoice();
+
+                        ss.Productname = item.Productname;
+                        ss.Category = item.Category;
+                        ss.Subcategory = item.Subcategory;
+                        ss.Color = item.Color;
+                        ss.Brand = item.Brand;
+                        ss.Rate = item.Rate;
+                        ss.Quantity = item.Quantity;
+                        ss.Hsncode = item.Hsncode;
+                        ss.Amount = item.Amount;
+                        ss.Billno = item.Billno;
+                        ss.Billdate = item.Billdate;
+                        ss.Billby = item.Billby;
+                        ss.Branch = Branch;
+
+                        salesinvoice.Add(ss);
+                    }
+                    foreach (var item in tmp)
+                    {
+                        var qty = item.Productname;
+                        var prgb = _context.product.Where(p => p.productname == qty).SingleOrDefault();
+                        var pquantity = prgb.stock + item.Quantity;
+                        prgb.stock = pquantity;
+                        _context.product.Update(prgb);
+
+
+                    }
+                    _context.purchaseinvoices.AddRange(salesinvoice);
+                    _context.purchaseinvoicesummeries.Add(tempseccion);
+
+
+                    var billno = tempseccion.Billid;
+                    Vendorpayment cph = new Vendorpayment();
+                    cph.Mobile = tempseccion.Mobilenumber;
+                    cph.name = tempseccion.Vendorrname;
+                    cph.Address = tempseccion.Address;
+                    cph.paymenttype = tempseccion.Paymenttype;
+                    cph.Payment = tempseccion.paid;
+                    cph.Recivedby = Name;
+                    cph.Paiddate = DateTime.UtcNow;
+                    cph.Balance = tempseccion.Balance;
+                    cph.refno = tempseccion.Refcode;
+                    cph.Branch = Branch;
+                    cph.total = tempseccion.Totalamount;
+                    cph.billid = billno;
+                    _context.vendorpayments.Add(cph);
+
+
+                    var cleartmp = _context.tmppurchases.Where(i => i.Billno == tempseccion.Billid).ToList();
+                    _context.tmppurchases.RemoveRange(cleartmp);
+                    _context.SaveChanges();
+                    // return Json(new { success = true, message = "Save successful." });
+                    return RedirectToAction("Index");
+                }
+
             }
-            foreach (var item in tmp)
-            {
-                var qty = item.Productname;
-                var prgb = _context.product.Where(p => p.productname == qty).SingleOrDefault();
-                var pquantity = prgb.stock + item.Quantity;
-                prgb.stock = pquantity;
-                _context.product.Update(prgb);
-
-
-            }
-            _context.purchaseinvoices.AddRange(salesinvoice);
-            _context.purchaseinvoicesummeries.Add(tempseccion);
           
-
-            var billno = tempseccion.Billid;
-            Vendorpayment cph = new Vendorpayment();
-            cph.Mobile = tempseccion.Mobilenumber;
-            cph.name = tempseccion.Vendorrname;
-            cph.Address = tempseccion.Address;
-            cph.paymenttype = tempseccion.Paymenttype;
-            cph.Payment = tempseccion.paid;
-            cph.Recivedby = Name;
-            cph.Paiddate =  DateTime.UtcNow;
-            cph.Balance = tempseccion.Balance;
-            cph.refno = tempseccion.Refcode;
-            cph.Branch = Branch;
-            cph.total = tempseccion.Totalamount;
-            cph.billid = billno;
-            _context.vendorpayments.Add(cph);
-
-          
-            var cleartmp = _context.tmppurchases.Where(i => i.Billno == tempseccion.Billid).ToList();
-            _context.tmppurchases.RemoveRange(cleartmp);
-            _context.SaveChanges();
-
-
-            // return Json(new { success = true, message = "Save successful." });
+            //return Json(new { success = true, message = "Save successful." });
             return RedirectToAction("Index");
         }
         public IActionResult deletetmp(int id)

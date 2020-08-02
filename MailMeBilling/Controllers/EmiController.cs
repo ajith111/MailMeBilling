@@ -428,22 +428,22 @@ namespace MailMeBilling.Controllers
         {
             Comcredit cusstatement = new Comcredit();        
 
-            var sumofamount = _context.eminotes.Where(i => i.person == "customer").Sum(i => i.totalamount).ToString();
+            var sumofamount = _context.creditnote.Where(i => i.person == "customer").Sum(i => i.totalamount).ToString();
             ViewBag.sumofcustomerbuyamount = sumofamount;
 
-            var sumofreturn = _context.eminotes.Where(i => i.person == "customer").Sum(i => i.balance).ToString();
+            var sumofreturn = _context.creditnote.Where(i => i.person == "customer").Sum(i => i.Balance).ToString();
             ViewBag.sumofreturn = sumofreturn;
 
-            var sumofreturntotal = _context.eminotes.Where(i => i.person == "customer").Sum(i => i.paid).ToString();
+            var sumofreturntotal = _context.creditnote.Where(i => i.person == "customer").Sum(i => i.Paid).ToString();
             ViewBag.sumofreturntotal = sumofreturntotal;
 
             
 
-            var creditnote = _context.eminotes.Where(i => i.person == "customer").ToList();
+            var creditnote = _context.creditnote.Where(i => i.person == "customer").ToList();
             foreach (var item in creditnote)
             {
                
-                cusstatement.eminotes.Add(item);
+                cusstatement.creditnotes.Add(item);
             }
             return View(cusstatement);
         }
@@ -453,22 +453,22 @@ namespace MailMeBilling.Controllers
         {
             Comcredit cusstatement = new Comcredit();
 
-            var sumofamount = _context.eminotes.Where(i => i.person == "vendor").Sum(i => i.totalamount).ToString();
+            var sumofamount = _context.creditnote.Where(i => i.person == "vendor").Sum(i => i.totalamount).ToString();
             ViewBag.sumofcustomerbuyamount = sumofamount;
 
-            var sumofreturn = _context.eminotes.Where(i => i.person == "vendor").Sum(i => i.balance).ToString();
+            var sumofreturn = _context.creditnote.Where(i => i.person == "vendor").Sum(i => i.Balance).ToString();
             ViewBag.sumofreturn = sumofreturn;
 
-            var sumofreturntotal = _context.eminotes.Where(i => i.person == "vendor").Sum(i => i.paid).ToString();
+            var sumofreturntotal = _context.creditnote.Where(i => i.person == "vendor").Sum(i => i.Paid).ToString();
             ViewBag.sumofreturntotal = sumofreturntotal;
 
 
 
-            var creditnote = _context.eminotes.Where(i => i.person == "vendor").ToList();
+            var creditnote = _context.creditnote.Where(i => i.person == "vendor").ToList();
             foreach (var item in creditnote)
             {
 
-                cusstatement.eminotes.Add(item);
+                cusstatement.creditnotes.Add(item);
             }
             return View(cusstatement);
         }

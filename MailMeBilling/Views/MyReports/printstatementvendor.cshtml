@@ -1,7 +1,8 @@
 ﻿@{ int count = 0;
     decimal totalcredit = 0;
     decimal totaldebit = 0;
-    decimal totalbalance = 0;}
+    decimal totalbalance = 0;
+    decimal ctotaldebit = 0;}
 
 
     <link href="~/css/PrintStyle.css" rel="stylesheet" />
@@ -68,7 +69,10 @@
 
 
                     totalbalance += item.Balance;
-                    totaldebit += item.total;
+                    if (totaldebit != item.total)
+                    {
+                        totaldebit += item.total;
+                    }
                     string datein = Convert.ToDateTime(item.Paiddate).ToString("dd/MM/yyyy");
 
                     <tr class="text-center">
@@ -90,22 +94,10 @@
                     count++;
                     if (item.totalamount != 0)
                     {
-
-                        totalcredit += item.totalamount;
+                        totaldebit += item.totalamount;
                     }
-                    //else
-                    //{
-                    // totalcredit += item.totalamount;
-                    //}
-
-                    //totalbalance += item.Balance;
-                    //totaldebit += item.total;
-
+                    totalcredit += item.Paid;
                     string dateing = Convert.ToDateTime(item.cdate).ToString("dd/MM/yyyy");
-
-
-
-
 
                     <tr class="text-center">
                         <th>@count</th>
@@ -113,10 +105,9 @@
                         <th>@item.paymenttype</th>
                         <th>@item.refno</th>
                         <th>@item.cid</th>
-                        <th></th>
-                        <th colspan="2" style="text-align:left;">@item.totalamount (@item.particular)</th>
-
-
+                        <th style="text-align:right;" >@item.totalamount</th>
+                        <th style="text-align:right;">@item.Paid</th>
+                        <th  style="text-align: right;padding-right: 50px;color:red;">@item.Balance </th>
 
                     </tr>
                     @foreach (var itemc in Model.creditpaymenthistries)
@@ -126,18 +117,19 @@
 
                         @if (item.cid == itemc.billid)
                         {
-                            <tr class="text-center">
-                                <th>@count</th>
-                                <th>@dateing</th>
-                                <th>@itemc.paymenttype</th>
-                                <th>@itemc.refno</th>
-                                <th>@itemc.billid</th>
-                                <th></th>
-                                <th colspan="2" style="text-align:left; color:blueviolet">@itemc.total </th>
+            <tr class="text-center">
+                <th>@count</th>
+                <th>@dateing</th>
+                <th>@itemc.paymenttype</th>
+                <th>@itemc.refno</th>
+                <th>@itemc.billid</th>
+                <th style="text-align:right;">@itemc.total</th>
+                <th style="text-align:right;color:blueviolet">@itemc.Payment</th>
+                <th colspan="2" style="text-align: right;padding-right: 50px">@itemc.Balance </th>
 
 
 
-                            </tr>
+            </tr>
                         }
 
 
@@ -153,11 +145,11 @@
 
 
                         @{ var todebi = totalcredit + totalbalance;
-                            var sumamt = Convert.ToDecimal(ViewBag.sumofcustomerbuyamount);
+                            var sumamt = Convert.ToDecimal(ViewBag.sumofcustomerbuyamount) + totaldebit;
                             var tc = Convert.ToDecimal(totalcredit);
-                            var balance = Convert.ToDecimal(sumamt) - Convert.ToDecimal(tc);
+                            var balance = totaldebit - Convert.ToDecimal(tc);
                         }
-                        <th colspan="6"><h4><b> @ViewBag.sumofcustomerbuyamount </b> </h4></th>
+                        <th colspan="6"><h4><b> @totaldebit </b> </h4></th>
                         <th><h4><b> @tc </b></h4></th>
                         <th style="text-align:right;padding-right:50px"><h4> <b> </b></h4></th>
                     </tr>
@@ -171,8 +163,8 @@
                     <tr style="text-align: right;border: 1px solid black;border-bottom-color: black;border-right-color: white;border-left-color: white; border-top-color: black;
 ">
 
-                        <th colspan="6"><h4><b> @ViewBag.sumofcustomerbuyamount </b> </h4></th>
-                        <th><h4><b> @ViewBag.sumofcustomerbuyamount</b></h4></th>
+                        <th colspan="6"><h4><b> @totaldebit </b> </h4></th>
+                        <th><h4><b> @totaldebit</b></h4></th>
                         <th style="text-align:right;padding-right:50px"><h4> <b> </b></h4></th>
                     </tr>
                 </tfoot>

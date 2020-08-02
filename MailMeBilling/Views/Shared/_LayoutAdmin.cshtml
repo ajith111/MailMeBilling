@@ -238,13 +238,15 @@
                                                     <li>
                                                         <div>
                                                             <div>
-                                                                <label class="toggle" for="drop-2">Pay Note</label><a href="#"><i class="nav-icon mr-2 i-File-Clipboard-File--Text"></i> Pay Note</a>
+                                                                <label class="toggle" for="drop-2">Credit Note</label><a href="#"><i class="nav-icon mr-2 i-File-Clipboard-File--Text"></i> Credit Note</a>
 
                                                                 <input id="drop-2" type="checkbox" />
                                                                 <ul>
-                                                                    <li><a asp-controller="creditnotes" asp-action="Create"><i class="nav-icon mr-2 i-Receipt-4"></i><span class="item-name">Add Pay </span></a></li>
+                                                                    <li><a asp-controller="creditnotes" asp-action="Create"><i class="nav-icon mr-2 i-Receipt-4"></i><span class="item-name">Credit Pay </span></a></li>
                                                                     <li><a asp-controller="creditnotes" asp-action="CustomerIndex"><i class="nav-icon mr-2 i-Receipt-4"></i><span class="item-name">Customer </span></a></li>
                                                                     <li><a asp-controller="creditnotes" asp-action="VendorIndex"><i class="nav-icon mr-2 i-Receipt-4"></i><span class="item-name">Vendor </span></a></li>
+                                                                    <li><a asp-controller="Emi" asp-action="overallviewcus"><i class="nav-icon mr-2 i-Receipt-4"></i><span class="item-name">OverAll C-Statement </span></a></li>
+                                                                    <li><a asp-controller="Emi" asp-action="overallviewvr"><i class="nav-icon mr-2 i-Receipt-4"></i><span class="item-name">OverAll V-Statement </span></a></li>
 
 
 
@@ -255,17 +257,16 @@
                                                     <li>
                                                         <div>
                                                             <div>
-                                                                <label class="toggle" for="drop-2">Credit Note</label><a href="#"><i class="nav-icon mr-2 i-File-Clipboard-File--Text"></i> Credit Note</a>
+                                                                <label class="toggle" for="drop-2">A/C Note</label><a href="#"><i class="nav-icon mr-2 i-File-Clipboard-File--Text"></i> A/C Note</a>
 
                                                                 <input id="drop-2" type="checkbox" />
                                                                 <ul>
-                                                                    <li><a asp-controller="Emi" asp-action="AddEmi"><i class="nav-icon mr-2 i-Receipt-4"></i><span class="item-name">Add Credit  </span></a></li>
+                                                                    <li><a asp-controller="Emi" asp-action="AddEmi"><i class="nav-icon mr-2 i-Receipt-4"></i><span class="item-name">Add A/c  </span></a></li>
                                                                     <li><a asp-controller="Emi" asp-action="CustomerIndex"><i class="nav-icon mr-2 i-Receipt-4"></i><span class="item-name">Customer </span></a></li>
                                                                     <li><a asp-controller="Emi" asp-action="VendorIndex"><i class="nav-icon mr-2 i-Receipt-4"></i><span class="item-name">Vendor </span></a></li>
                                                                     <li><a asp-controller="Emi" asp-action="Creditcustomerstatement"><i class="nav-icon mr-2 i-Receipt-4"></i><span class="item-name">Customer Statement </span></a></li>
                                                                     <li><a asp-controller="Emi" asp-action="Creditvendorstatement"><i class="nav-icon mr-2 i-Receipt-4"></i><span class="item-name">Vendor Statement </span></a></li>
-                                                                    <li><a asp-controller="Emi" asp-action="overallviewcus"><i class="nav-icon mr-2 i-Receipt-4"></i><span class="item-name">OverAll C-Statement </span></a></li>
-                                                                    <li><a asp-controller="Emi" asp-action="overallviewvr"><i class="nav-icon mr-2 i-Receipt-4"></i><span class="item-name">OverAll V-Statement </span></a></li>
+                                                                   
 
 
                                                                 </ul>

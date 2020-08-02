@@ -62,10 +62,10 @@
                                                 <th style="width: 20%;text-align: right; padding-right:50px">BALANCE</th>
                                             </tr>
                                         </thead>
-                                        @foreach (var item in Model.eminotes)
+                                        @foreach (var item in Model.creditnotes)
                                         {
                                             count++;
-                                            totalcredit += item.paid;
+                                            totalcredit += item.Paid;
                                             string datein = Convert.ToDateTime(item.cdate).ToString("dd/MM/yyyy");
                                             <tr class="text-center">
                                                 <th>@count</th>
@@ -75,8 +75,8 @@
 
 
                                                 <th style="text-align:right;">@item.totalamount</th>
-                                                <th style="text-align:right;">@item.paid</th>
-                                                <th style="text-align:right;padding-right:50px">@item.balance</th>
+                                                <th style="text-align:right;">@item.Paid</th>
+                                                <th style="text-align:right;padding-right:50px">@item.Balance</th>
                                             </tr>
 
 

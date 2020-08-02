@@ -12,6 +12,9 @@ namespace MailMeBilling.Models
         public List<Eminote> eminotes { get; set; } = new List<Eminote>();
         public List<Emipaymenthistry> emipaymenthistries { get; set; } = new List<Emipaymenthistry>();
 
-       
+        public List<creditnote> creditnotes { get; set; } = new List<creditnote>();
+
+        public List<Creditpaymenthistry> creditpaymenthistries { get; set; } = new List<Creditpaymenthistry>();
+
     }
 }

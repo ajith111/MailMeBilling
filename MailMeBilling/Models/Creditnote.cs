@@ -25,6 +25,10 @@ namespace MailMeBilling.Models
         public string refno { get; set; }
         [Display(Name = "Amount")]
         public decimal totalamount { get; set; }
+        [Display(Name = "Paid")]
+        public decimal Paid { get; set; }
+        [Display(Name = "Balance")]
+        public decimal Balance { get; set; }
         [Display(Name = "Name")]
         public string name { get; set; }
         [Display(Name = "Mobile")]
