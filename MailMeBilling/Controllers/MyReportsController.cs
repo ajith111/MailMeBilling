@@ -539,39 +539,39 @@ namespace MailMeBilling.Controllers
 
                 }
 
-                var mob = bill.Mobilenumber;
-                creditnote cn = new creditnote();
-                cn.cdate = DateTime.UtcNow;
-                cn.branch = Branch;
-                cn.totalamount = bill.Paid;
-                cn.Paid = bill.Paid;
-                cn.Balance = 0;
-                cn.person = "customer";
-                cn.mobilenumber = bill.Mobilenumber;
-                cn.name = bill.Customername;
-                cn.address = bill.Address;
-                cn.addby = Name;
-                cn.paymenttype = bill.Paymenttype;
-                cn.refno = bill.Refcode;
-                cn.particular = "Sales Return Amount for B.No " + id;
-                _context.creditnote.Add(cn);
-                _context.SaveChanges();
-                var billno = cn.cid;
+                //var mob = bill.Mobilenumber;
+                //creditnote cn = new creditnote();
+                //cn.cdate = DateTime.UtcNow;
+                //cn.branch = Branch;
+                //cn.totalamount = bill.Paid;
+                //cn.Paid = bill.Paid;
+                //cn.Balance = 0;
+                //cn.person = "customer";
+                //cn.mobilenumber = bill.Mobilenumber;
+                //cn.name = bill.Customername;
+                //cn.address = bill.Address;
+                //cn.addby = Name;
+                //cn.paymenttype = bill.Paymenttype;
+                //cn.refno = bill.Refcode;
+                //cn.particular = "Sales Return Amount for B.No " + id;
+                //_context.creditnote.Add(cn);
+                //_context.SaveChanges();
+                //var billno = cn.cid;
 
-                Creditpaymenthistry cph = new Creditpaymenthistry();
-                cph.Mobile = bill.Mobilenumber;
-                cph.Customername = bill.Customername;
-                cph.Address = bill.Address;
-                cph.paymenttype = bill.Paymenttype;
-                cph.Payment = 0;
-                cph.Recivedby = Name;
-                cph.Paiddate = DateTime.UtcNow;
-                cph.Balance = 0;
-                cph.refno = bill.Refcode;
-                cph.Branch = Branch;
-                cph.total = bill.Paid;
-                cph.billid = billno;
-                _context.creditpaymenthistries.Add(cph);
+                //Creditpaymenthistry cph = new Creditpaymenthistry();
+                //cph.Mobile = bill.Mobilenumber;
+                //cph.Customername = bill.Customername;
+                //cph.Address = bill.Address;
+                //cph.paymenttype = bill.Paymenttype;
+                //cph.Payment = bill.Paid;
+                //cph.Recivedby = Name;
+                //cph.Paiddate = DateTime.UtcNow;
+                //cph.Balance = 0;
+                //cph.refno = bill.Refcode;
+                //cph.Branch = Branch;
+                //cph.total = bill.Paid;                
+                //cph.billid = billno;
+                //_context.creditpaymenthistries.Add(cph);
                 _context.SaveChanges();
                 return RedirectToAction("Index", "Salesinvoice");
 
@@ -591,49 +591,49 @@ namespace MailMeBilling.Controllers
             bill.status = "Return";
             _context.purchaseinvoicesummeries.Update(bill);
         
-            creditnote cn = new creditnote();
-            cn.cdate = DateTime.UtcNow;
-            cn.branch = Branch;
-            cn.totalamount = bill.Totalamount - bill.Balance;
-            cn.Paid = bill.Totalamount - bill.Balance;
-            cn.Balance = 0;
-            cn.person = "vendor";
-            cn.mobilenumber = bill.Mobilenumber;
-            cn.name = bill.Vendorrname;
-            cn.address = bill.Address;
-            cn.addby = Name;
-            cn.paymenttype = bill.Paymenttype;
-            cn.refno = bill.Refcode;
-            cn.particular = "Purchase Return Amount for B.No " + id;
-            _context.creditnote.Add(cn);
-            _context.SaveChanges();
-            var billno = cn.cid;
+            //creditnote cn = new creditnote();
+            //cn.cdate = DateTime.UtcNow;
+            //cn.branch = Branch;
+            //cn.totalamount = bill.Totalamount - bill.Balance;
+            //cn.Paid = bill.Totalamount - bill.Balance;
+            //cn.Balance = 0;
+            //cn.person = "vendor";
+            //cn.mobilenumber = bill.Mobilenumber;
+            //cn.name = bill.Vendorrname;
+            //cn.address = bill.Address;
+            //cn.addby = Name;
+            //cn.paymenttype = bill.Paymenttype;
+            //cn.refno = bill.Refcode;
+            //cn.particular = "Purchase Return Amount for B.No " + id;
+            //_context.creditnote.Add(cn);
+            //_context.SaveChanges();
+            //var billno = cn.cid;
 
-            Creditpaymenthistry cph = new Creditpaymenthistry();
-            cph.Mobile = bill.Mobilenumber;
-            cph.Customername = bill.Vendorrname;
-            cph.Address = bill.Address;
-            cph.paymenttype = bill.Paymenttype;
-            cph.Payment = bill.Balance;
-            cph.Recivedby = Name;
-            cph.Paiddate = DateTime.UtcNow;
-            cph.Balance = bill.Balance;
-            cph.refno = bill.Refcode;
-            cph.Branch = Branch;
-            cph.total = bill.Totalamount;
+            //Creditpaymenthistry cph = new Creditpaymenthistry();
+            //cph.Mobile = bill.Mobilenumber;
+            //cph.Customername = bill.Vendorrname;
+            //cph.Address = bill.Address;
+            //cph.paymenttype = bill.Paymenttype;
+            //cph.Payment = bill.Balance;
+            //cph.Recivedby = Name;
+            //cph.Paiddate = DateTime.UtcNow;
+            //cph.Balance = bill.Balance;
+            //cph.refno = bill.Refcode;
+            //cph.Branch = Branch;
+            //cph.total = bill.Totalamount;
             
-            cph.billid = billno;
-            _context.creditpaymenthistries.Add(cph);
+            //cph.billid = billno;
+            //_context.creditpaymenthistries.Add(cph);
           
-            var tmp = _context.salesinvoices.Where(i => i.Billno == id && i.Branch == Branch).ToList();
-            foreach (var item in tmp)
-            {
-                var qty = item.Productname;
-                var prgb = _context.product.Where(p => p.productname == qty).SingleOrDefault();
-                var pquantity = prgb.stock - item.Quantity;
-                prgb.stock = pquantity;
-                _context.product.Update(prgb);
-            }          
+            //var tmp = _context.salesinvoices.Where(i => i.Billno == id && i.Branch == Branch).ToList();
+            //foreach (var item in tmp)
+            //{
+            //    var qty = item.Productname;
+            //    var prgb = _context.product.Where(p => p.productname == qty).SingleOrDefault();
+            //    var pquantity = prgb.stock - item.Quantity;
+            //    prgb.stock = pquantity;
+            //    _context.product.Update(prgb);
+            //}          
            
             _context.SaveChanges();
 
@@ -1392,7 +1392,51 @@ namespace MailMeBilling.Controllers
         }
 
        
+        public IActionResult overallsales()
+        {
+            OverallVM ov = new OverallVM();
 
+            var allcustomer = _context.customerdetails.ToList().Distinct();
+            foreach (var item in allcustomer)
+            {
+                ov.customerdetails.Add(item);
+            }
+
+            var salessum = _context.salesinvoicesummery.Where(i => i.status != "Return").ToList();
+            foreach (var item in salessum)
+            {
+                ov.salesinvoicesummeries.Add(item);
+            }
+            var creit = _context.creditnote.Where(i => i.person == "customer").ToList();
+            foreach (var item in creit)
+            {
+                ov.creditnotes.Add(item);
+            }
+            return View(ov);
+        }
+
+        public IActionResult overallpurchase()
+        {
+            OverallVM ov = new OverallVM();
+
+            var allcustomer = _context.vendor.ToList().Distinct();
+            foreach (var item in allcustomer)
+            {
+                ov.vendors.Add(item);
+            }
+
+            var salessum = _context.purchaseinvoicesummeries.Where(i => i.status != "Return").ToList();
+            foreach (var item in salessum)
+            {
+                ov.purchaseinvoicesummeries.Add(item);
+            }
+            var creit = _context.creditnote.Where(i => i.person == "vendor").ToList();
+            foreach (var item in creit)
+            {
+                ov.creditnotes.Add(item);
+            }
+            return View(ov);
+        }
 
 
     }

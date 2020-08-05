@@ -40,7 +40,7 @@ namespace MailMeBilling.Models
         public decimal Salesrate { get; set; }
         [Display(Name = "Stock")]
         public long stock { get; set; }
-      
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime Entrydate { get; set; }
         public string Entryby { get; set; }
         public string Branch { get; set; }

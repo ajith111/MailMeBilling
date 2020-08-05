@@ -20,9 +20,10 @@ namespace MailMeBilling.Models
         public string Paymenttype { get; set; }
         public string Refcode { get; set; }
         public decimal Paid { get; set; } //pending
-        public int discount { get; set; }
+        public decimal discount { get; set; }
         public decimal Balance { get; set; }
         public decimal nettotal { get; set; }
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime Billdate { get; set; }
         public string Billby { get; set; }
         public string status { get; set; }

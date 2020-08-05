@@ -239,7 +239,7 @@
                                                         var cal = 0;
                                                         var togst = document.getElementById("gstandamount");
                                                         var net = document.getElementById("nettotal");
-                                                        cal = parseInt(net.value) - parseInt(discount);
+                                                        cal = parseFloat(net.value) - parseFloat(discount);
 
                                                         console.log(togst.value);
                                                         console.log(discount);
@@ -258,16 +258,17 @@
                                                 <div class="border">
                                                     <h5 class="font-weight-bold d-flex align-items-center">
                                                         Payment Type:<span>
-                                                            <select name="Paymenttype" required>
-                                                                <option value="">Select</option>
-                                                                <option value="Cash">Cash</option>
-                                                                <option value="Card">Card</option>
-                                                                <option value="Credit">Credit</option>
-                                                                <option value="Nettrancection">Net Transfer</option>
-                                                                <option value="EMI">EMI</option>
-                                                                <option value="UPI">UPI</option>
+                                                                         <select name="Paymenttype" required>
+                                                                             <option value="">Select</option>
+                                                                             <option value="Cash">Cash</option>
+                                                                             <option value="Card">Card</option>
+                                                                             <option value="Credit">Credit</option>
+                                                                             <option value="Nettrancection">Net Transfer</option>
+                                                                             <option value="EMI">EMI</option>
+                                                                             <option value="UPI">UPI</option>
+                                                                             <option value="CreditNoteBalance">Credit Balance</option>
 
-                                                            </select>
+                                                                         </select>
                                                         </span>
                                                     </h5><br />
                                                     <h5 class="font-weight-bold d-flex align-items-center">
