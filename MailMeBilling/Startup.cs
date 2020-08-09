@@ -64,6 +64,7 @@ namespace MailMeBilling
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSession();
+            app.UseCookiePolicy();
             app.UseRouting();
 
             app.UseAuthentication();
