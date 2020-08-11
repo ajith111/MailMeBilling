@@ -286,12 +286,22 @@ namespace MailMeBilling.Controllers
           
             var deatils = _context.customerdetails.Where(c => c.Mobilenumber == mob).SingleOrDefault();
             var vdetils = _context.vendor.Where(c => c.Mobilenumber == mob).SingleOrDefault();
+            var cc = _context.creditcustomers.Where(c => c.Mobilenumber == mob).SingleOrDefault();
 
             if (vdetils != null)
             {
                 return new JsonResult(vdetils);
             }
-            return new JsonResult(deatils);
+           else if (cc != null)
+            {
+                return new JsonResult(cc);
+            }
+            else
+            {
+                return new JsonResult(deatils);
+
+            }
+           
 
         }
         public IActionResult Creditnotepayment(int id, string mob)
@@ -345,7 +355,6 @@ namespace MailMeBilling.Controllers
             return Json(new { success = true, message = "Save successfull." });
         }
         public IActionResult viewcustomerstatement(string Mobnumber)
-
         {     Comcredit cusstatement = new Comcredit();
 
             var customerdetil = _context.creditcustomers.Where(i => i.Mobilenumber == Mobnumber).FirstOrDefault();

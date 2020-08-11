@@ -2,7 +2,8 @@
     decimal totalcredit = 0;
     decimal totaldebit = 0;
     decimal totalbalance = 0;
-    decimal ctotaldebit = 0;}
+    decimal vbillno = 0;
+    decimal vcno = 0;}
 
 
     <link href="~/css/PrintStyle.css" rel="stylesheet" />
@@ -81,11 +82,23 @@
                         <th>@item.paymenttype</th>
                         <th>@item.refno</th>
                         <th>@item.billid</th>
-                        <th style="text-align:right;">@item.total</th>
-                        <th style="text-align:right;">@item.Payment</th>
+                        <th style="text-align:right;">
+                            @if (item.total != Convert.ToDecimal(0) && item.billid != vbillno)
+                            {
+                                @item.total
+                            }
+
+                        </th>
+                        <th style="text-align:right;">
+                            @if (item.total != Convert.ToDecimal(0))
+                            {
+                                @item.Payment
+                            }
+                            </th>
 
                         <th style="text-align:right;padding-right:50px">@item.Balance</th>
                     </tr>
+                    vbillno = item.billid;
 
                 }
 
@@ -99,17 +112,20 @@
                     totalcredit += item.Paid;
                     string dateing = Convert.ToDateTime(item.cdate).ToString("dd/MM/yyyy");
 
-                    <tr class="text-center">
+                    @*<tr class="text-center">
                         <th>@count</th>
                         <th>@dateing</th>
                         <th>@item.paymenttype</th>
                         <th>@item.refno</th>
                         <th>@item.cid</th>
-                        <th style="text-align:right;" >@item.totalamount</th>
+                        <th style="text-align:right;" >
+                          
+                        @item.totalamount
+                        </th>
                         <th style="text-align:right;">@item.Paid</th>
                         <th  style="text-align: right;padding-right: 50px;color:red;">@item.Balance </th>
 
-                    </tr>
+                    </tr>*@
                     @foreach (var itemc in Model.creditpaymenthistries)
                     {
                         count++;
@@ -123,13 +139,26 @@
                 <th>@itemc.paymenttype</th>
                 <th>@itemc.refno</th>
                 <th>@itemc.billid</th>
-                <th style="text-align:right;">@itemc.total</th>
-                <th style="text-align:right;color:blueviolet">@itemc.Payment</th>
+                <th style="text-align:right;">
+                    @if (itemc.total != Convert.ToDecimal(0) && itemc.billid != vcno)
+                    {
+                        @itemc.total
+                    }
+
+                </th>
+                <th style="text-align:right;">
+                    @if (itemc.Payment != Convert.ToDecimal(0))
+                    {
+                        @itemc.Payment
+                    }
+
+                </th>
                 <th colspan="2" style="text-align: right;padding-right: 50px">@itemc.Balance </th>
 
 
 
             </tr>
+                            vcno = itemc.billid;
                         }
 
 

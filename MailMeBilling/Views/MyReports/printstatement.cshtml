@@ -1,7 +1,10 @@
 ﻿@{ int count = 0;
     decimal totalcredit = 0;
     decimal totaldebit = 0;
-    decimal totalbalance = 0;}
+    decimal totalbalance = 0;
+    decimal checkbillno = 0;
+    decimal checkcno = 0;
+    }
 
 
 
@@ -85,59 +88,43 @@
                     count++;
                     totalcredit += item.Payment;
                     totalbalance += item.Balance;
-                    if (totaldebit != item.total  )
-                    {
-                        totaldebit += item.total;
-                    }
-
-
+                   
                     string datein = Convert.ToDateTime(item.Paiddate).ToString("dd/MM/yyyy");
-
-
-
-
-
                     <tr class="text-center">
                         <th>@count</th>
                         <th>@datein</th>
                         <th>@item.paymenttype</th>
                         <th>@item.refno</th>
                         <th>@item.billid</th>
-                        <th style="text-align:right;">@item.total</th>
-                        <th style="text-align:right;">@item.Payment</th>
+                        <th style="text-align:right;">
+                            @if (item.total != Convert.ToDecimal(0) && item.billid != checkbillno)
+                            {
+                                @item.total
+                                totaldebit += item.total;
+                            }
+
+
+                        </th>
+                        <th style="text-align:right;">
+                            @if (item.Payment != Convert.ToDecimal(0))
+                            {
+                                @item.Payment
+                            }
+                            </th>
 
                         <th style="text-align:right;padding-right:50px">@item.Balance</th>
                     </tr>
-
+                    checkbillno = item.billid;
                 }
                 @foreach (var item in Model.creditnotes)
                 {
                     count++;
-
                     totalcredit += item.Paid;
-
                     totalbalance += item.Balance;
-                    totaldebit += item.totalamount;
-
+                   
                     string dateing = Convert.ToDateTime(item.cdate).ToString("dd/MM/yyyy");
-
-
-
-
-
-                    <tr class="text-center">
-                        <th>@count</th>
-                        <th>@dateing</th>
-                        <th>@item.paymenttype</th>
-                        <th>@item.refno</th>
-                        <th>@item.cid</th>
-                        <th style="text-align:right;">@item.totalamount</th>
-                        <th  style="text-align:left;"></th>
-                        <th  style="color: red;text-align: right;padding-right: 50px">@item.Balance</th>
-
-
-
-                    </tr>
+                  
+                  
                     @foreach (var itemc in Model.creditpaymenthistries)
                     {
                         count++;
@@ -151,14 +138,26 @@
                                 <th>@itemc.paymenttype</th>
                                 <th>@itemc.refno</th>
                                 <th>@itemc.billid</th>
-                                <th style="color:red; text-align:right">@itemc.Balance</th>
+                                <th style=" text-align:right">
+                                    @if (itemc.total != Convert.ToDecimal(0) && itemc.billid != checkcno)
+                                    {
+                                        @itemc.total
+                                        totaldebit += itemc.total;
+                                    }
+                                    </th>
                                
-                                <th style="text-align:right; color:blueviolet">@itemc.Payment  </th>
-                                <th></th>
+                                <th style="text-align:right; ">
+                                    @if (itemc.Payment != Convert.ToDecimal(0))
+                                    {
+                                        @itemc.Payment
+                                    }
+                                    </th>
+                                <th style="text-align: right; padding-right: 50px">  @itemc.Balance</th>
 
 
 
                             </tr>
+                            checkcno = itemc.billid;
                         }
 
 

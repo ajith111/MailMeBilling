@@ -26,16 +26,44 @@ namespace MailMeBilling.Controllers
            
             return View(await _context.creditnote.ToListAsync());
         }
-        public async Task<IActionResult> CustomerIndex()
+        public IActionResult CustomerIndex()
         {
-            
-            return View(await _context.creditnote.Where(i => i.person == "customer").ToListAsync());
+            Allcredit allcredit = new Allcredit();
+
+            var creditnote =  _context.creditnote.Where(i => i.person == "customer").ToList();
+
+            foreach (var item in creditnote)
+            {
+                allcredit.creditnotes.Add(item);
+
+            }
+            var salesum = _context.salesinvoicesummery.ToList();
+            foreach (var item in salesum)
+            {
+                allcredit.salesinvoicesummeries.Add(item);
+            }
+            return View(allcredit);
         }
 
-        public async Task<IActionResult> VendorIndex()
+        public IActionResult VendorIndex()
         {
-          
-            return View(await _context.creditnote.Where(i => i.person == "vendor").ToListAsync());
+
+            Allcredit allcredit = new Allcredit();
+
+            var creditnote = _context.creditnote.Where(i => i.person == "vendor").ToList();
+
+            foreach (var item in creditnote)
+            {
+                allcredit.creditnotes.Add(item);
+
+            }
+            var salesum = _context.purchaseinvoicesummeries.ToList();
+            foreach (var item in salesum)
+            {
+                allcredit.purchaseinvoicesummeries.Add(item);
+            }
+            return View(allcredit);
+           
         }
 
         // GET: creditnotes/Details/5
