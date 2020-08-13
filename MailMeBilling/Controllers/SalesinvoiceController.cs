@@ -71,6 +71,7 @@ namespace MailMeBilling.Controllers
                             // var istdate = TimeZoneInfo.ConvertTimeFromUtc(item.Billdate, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
                             TimeZoneInfo timeZone = TZConvert.GetTimeZoneInfo("India Standard Time");                           
                             var isdate = TimeZoneInfo.ConvertTime(item.Billdate, timeZone);
+                         
                             ViewBag.billdate = isdate;
                             load.salesinvoicesummeries.Add(item);
                         }
