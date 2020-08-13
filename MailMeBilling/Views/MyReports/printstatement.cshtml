@@ -85,13 +85,13 @@
                 </thead>
                 @foreach (var item in Model.customerpaymenthistries)
                 {
-                    count++;
+                   count++;
                     totalcredit += item.Payment;
                     totalbalance += item.Balance;
                    
                     string datein = Convert.ToDateTime(item.Paiddate).ToString("dd/MM/yyyy");
                     <tr class="text-center">
-                        <th>@count</th>
+                        <th>@count </th>
                         <th>@datein</th>
                         <th>@item.paymenttype</th>
                         <th>@item.refno</th>
@@ -118,7 +118,7 @@
                 }
                 @foreach (var item in Model.creditnotes)
                 {
-                    count++;
+                   // count++;
                     totalcredit += item.Paid;
                     totalbalance += item.Balance;
                    
@@ -133,7 +133,7 @@
                         @if (item.cid == itemc.billid)
                         {
                             <tr class="text-center">
-                                <th>@count</th>
+                                <th>@count </th>
                                 <th>@datec</th>
                                 <th>@itemc.paymenttype</th>
                                 <th>@itemc.refno</th>
