@@ -14,6 +14,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Http;
 using MailMeBilling.MD;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 namespace MailMeBilling
 {
@@ -61,6 +63,13 @@ namespace MailMeBilling
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+            var supportedCultures = new[] { new CultureInfo("hi-IN") };
+            app.UseRequestLocalization(new RequestLocalizationOptions
+            {
+                DefaultRequestCulture = new RequestCulture("hi-IN"),
+                SupportedCultures = supportedCultures,
+                SupportedUICultures = supportedCultures
+            });
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSession();

@@ -23,7 +23,7 @@ namespace MailMeBilling.Models
         public decimal discount { get; set; }
         public decimal Balance { get; set; }
         public decimal nettotal { get; set; }
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/mm/yyyy}")]
         public DateTime Billdate { get; set; }
         public string Billby { get; set; }
         public string status { get; set; }

@@ -81,7 +81,7 @@
                         <th>@datein</th>
                         <th>@item.paymenttype</th>
                         <th>@item.refno</th>
-                        <th>@item.billid</th>
+                        <th>(P) @item.billid</th>
                         <th style="text-align:right;">
                             @if (item.total != Convert.ToDecimal(0) && item.billid != vbillno)
                             {
@@ -128,17 +128,18 @@
                     </tr>*@
                     @foreach (var itemc in Model.creditpaymenthistries)
                     {
-                        count++;
+                       
                         string datec = Convert.ToDateTime(itemc.Paiddate).ToString("dd/MM/yyyy");
 
                         @if (item.cid == itemc.billid)
                         {
+                            count++;
             <tr class="text-center">
                 <th>@count</th>
                 <th>@dateing</th>
                 <th>@itemc.paymenttype</th>
                 <th>@itemc.refno</th>
-                <th>@itemc.billid</th>
+                <th>(C) @itemc.billid</th>
                 <th style="text-align:right;">
                     @if (itemc.total != Convert.ToDecimal(0) && itemc.billid != vcno)
                     {

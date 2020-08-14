@@ -83,19 +83,10 @@
                 </thead>
                 @foreach (var item in Model.eminotes)
                 {
-                    count++;
+                    //count++;
                     totalcredit += item.paid;
                     string datein = Convert.ToDateTime(item.cdate).ToString("dd/MM/yyyy");
-                    @*<tr class="text-center">
-                        <th>@count</th>
-                        <th>@datein</th>
-                        <th>@item.paymenttype</th>
-                        <th>@item.refno</th>
-                        <th>@item.cid</th>
-                        <th style="text-align:right;">@item.totalamount</th>
-                        <th style="text-align:right;">@item.paid</th>
-                        <th style="text-align:right;padding-right:50px">@item.balance</th>
-                    </tr>*@
+                
                     @foreach (var items in Model.emipaymenthistries)
                     {
                         if (item.cid == items.billid)
