@@ -63,10 +63,10 @@ namespace MailMeBilling
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            var supportedCultures = new[] { new CultureInfo("hi-IN") };
+            var supportedCultures = new[] { new CultureInfo("ta-IN") };
             app.UseRequestLocalization(new RequestLocalizationOptions
             {
-                DefaultRequestCulture = new RequestCulture("hi-IN"),
+                DefaultRequestCulture = new RequestCulture("ta-IN"),
                 SupportedCultures = supportedCultures,
                 SupportedUICultures = supportedCultures
             });
