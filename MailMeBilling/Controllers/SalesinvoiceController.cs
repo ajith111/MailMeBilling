@@ -29,9 +29,10 @@ namespace MailMeBilling.Controllers
             
             string Branch = ViewBag.branch;
             loadtemp load = new loadtemp();
-           
 
-            var billno = _context.salesinvoicesummery.OrderByDescending(i => i.Billid).FirstOrDefault(); //bill No
+            ViewBag.Branch = _context.branch.Where(i => i.Branchname == Branch).FirstOrDefault();
+
+            var billno = _context.salesinvoicesummery.OrderByDescending(i => i.Billid).Where(i => i.Branch == Branch).FirstOrDefault(); //bill No
             if (billno != null)
             {
                 ViewBag.Billno = billno.Billid + 1;
@@ -62,7 +63,7 @@ namespace MailMeBilling.Controllers
                     {
                         load.salesinvoices.Add(item);
                     }
-                    var tmpsummery = _context.salesinvoicesummery.Where(i => i.Billid == bi).ToList();
+                    var tmpsummery = _context.salesinvoicesummery.Where(i => i.Billid == bi &&  i.Branch == Branch).ToList();
                     if (tmpsummery != null)
                     {
 

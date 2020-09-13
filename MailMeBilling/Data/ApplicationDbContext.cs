@@ -55,6 +55,8 @@ namespace MailMeBilling.Data
         public DbSet<CreditCustomerDetails> creditcustomers { get; set; }
 
         public DbSet<CreditVendor> creditvendors { get; set; }
-            
+
+        //public DbSet<Branch> branches { get; set; }
+
     }
 }

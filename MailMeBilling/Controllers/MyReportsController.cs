@@ -30,8 +30,11 @@ namespace MailMeBilling.Controllers
         }
         public IActionResult Purchasereport()
         {
-           
-            var sr = _context.purchaseinvoicesummeries.Where(i => i.status !="Return").ToList();
+            ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
+
+            string Branch = ViewBag.branch;
+
+            var sr = _context.purchaseinvoicesummeries.Where(i => i.status !="Return" && i.Branch == Branch).ToList();
             return View(sr);
         }
 
@@ -142,8 +145,10 @@ namespace MailMeBilling.Controllers
         [HttpGet]
         public FileResult Viewbill(int id)
         {
+            ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
+            var Branch = ViewBag.branch;
 
-            var file = _context.purchaseinvoicesummeries.Where(i => i.Billid == id).FirstOrDefault();
+            var file = _context.purchaseinvoicesummeries.Where(i => i.Billid == id ).FirstOrDefault();
 
 
 
@@ -159,7 +164,7 @@ namespace MailMeBilling.Controllers
           
             string Branch = ViewBag.branch;
             loadtemp load = new loadtemp();
-
+            ViewBag.Branch = _context.branch.Where(i => i.Branchname == Branch).FirstOrDefault();
             var billno = _context.salesinvoicesummery.Where(i => i.Billid == id).FirstOrDefault(); //bill No         
 
             
@@ -173,7 +178,7 @@ namespace MailMeBilling.Controllers
 
                         load.salesinvoices.Add(item);
                     }
-                    var tmpsummery = _context.salesinvoicesummery.Where(i => i.Billid == id).ToList();
+                    var tmpsummery = _context.salesinvoicesummery.Where(i => i.Billid == id && i.Branch == Branch).ToList();
                    
 
                         foreach (var item in tmpsummery)
@@ -204,7 +209,8 @@ namespace MailMeBilling.Controllers
             string Branch = ViewBag.branch;
             loadtemp load = new loadtemp();
 
-            var billno = _context.salesinvoicesummery.Where(i => i.Billid == id).FirstOrDefault(); //bill No         
+            ViewBag.Branch = _context.branch.Where(i => i.Branchname == Branch).FirstOrDefault();
+            var billno = _context.salesinvoicesummery.Where(i => i.Billid == id && i.Branch == Branch).FirstOrDefault(); //bill No         
 
 
             if (billno != null)
@@ -217,7 +223,7 @@ namespace MailMeBilling.Controllers
 
                     load.salesinvoices.Add(item);
                 }
-                var tmpsummery = _context.salesinvoicesummery.Where(i => i.Billid == id).ToList();
+                var tmpsummery = _context.salesinvoicesummery.Where(i => i.Billid == id && i.Branch == Branch).ToList();
 
 
                 foreach (var item in tmpsummery)
@@ -1396,13 +1402,18 @@ namespace MailMeBilling.Controllers
         {
             OverallVM ov = new OverallVM();
 
-            var allcustomer = _context.customerdetails.ToList().Distinct();
+            ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
+
+            string Branch = ViewBag.branch;
+
+
+            var allcustomer = _context.customerdetails.Where( i => i.Branch == Branch).ToList().Distinct();
             foreach (var item in allcustomer)
             {
                 ov.customerdetails.Add(item);
             }
 
-            var salessum = _context.salesinvoicesummery.Where(i => i.status != "Return").ToList();
+            var salessum = _context.salesinvoicesummery.Where(i => i.status != "Return" && i.Branch == Branch).ToList();
             foreach (var item in salessum)
             {
                 ov.salesinvoicesummeries.Add(item);
@@ -1418,14 +1429,17 @@ namespace MailMeBilling.Controllers
         public IActionResult overallpurchase()
         {
             OverallVM ov = new OverallVM();
+            ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
 
-            var allcustomer = _context.vendor.ToList().Distinct();
+            string Branch = ViewBag.branch;
+
+            var allcustomer = _context.vendor.ToList().Where( i => i.Branch == Branch).Distinct();
             foreach (var item in allcustomer)
             {
                 ov.vendors.Add(item);
             }
 
-            var salessum = _context.purchaseinvoicesummeries.Where(i => i.status != "Return").ToList();
+            var salessum = _context.purchaseinvoicesummeries.Where(i => i.status != "Return" && i.Branch == Branch).ToList();
             foreach (var item in salessum)
             {
                 ov.purchaseinvoicesummeries.Add(item);

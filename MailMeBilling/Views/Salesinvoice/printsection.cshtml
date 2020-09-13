@@ -37,14 +37,14 @@
                 @foreach (var sums in Model.salesinvoicesummeries)
                 {
                     <div class="col-6 text-left" style="border: 1px solid black;">
-                        <h1><b>ABDULLAH FURNITURES </b></h1>
-                        <h5><b>WHOLESALE DEALER : STEEL FURNITURE & WOODEN FURNITURE, HOME APPLIANCE</b></h5>
-                        <h5><b>17 A Vanjinathan Aiyar Street (Near New Bus Stand), Salem – 636004 </b></h5>
-                        <p> <b>E-Mail: newabdullahfurniture@gmail.com </b> <b>Mobile:9894921453,9445933235</b></p>
+                        <h1><b> @ViewBag.Branch.Shopname   </b></h1>
+                        <h5><b> @ViewBag.Branch.Aboutshop</b></h5>
+                        <h5><b> @ViewBag.Branch.BranchAddress </b></h5>
+                        <p> <b>E-Mail: @ViewBag.Branch.Email </b> <b>Mobile:@ViewBag.Branch.Mobile</b></p>
 
                         @if (sums.Gst != 0)
                         {
-                            <p><b>GSTIN NO : 33ANHPR2539P2ZF </b></p>
+                            <p><b>GSTIN NO : @ViewBag.Branch.Gstno </b></p>
                         }
 
                     </div>

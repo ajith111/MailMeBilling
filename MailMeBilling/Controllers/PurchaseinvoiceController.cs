@@ -27,7 +27,7 @@ namespace MailMeBilling.Controllers
             loadtemp load = new loadtemp();
 
 
-            var billno = _context.purchaseinvoicesummeries.OrderByDescending(i => i.Billid).FirstOrDefault();
+            var billno = _context.purchaseinvoicesummeries.OrderByDescending(i => i.Billid).Where(i => i.Branch == Branch).FirstOrDefault();
             if (billno != null)
             {
                 ViewBag.Billno = billno.Billid + 1;
@@ -94,16 +94,17 @@ namespace MailMeBilling.Controllers
             }
             if (tempseccion.upload != null)
             {
-
-                var checkbillno = _context.purchaseinvoicesummeries.Where(i => i.Billid == tempseccion.Billid).FirstOrDefault();
+                ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
+                string Branch = ViewBag.branch;
+              
+                var checkbillno = _context.purchaseinvoicesummeries.Where(i => i.Billid == tempseccion.Billid  && i.Branch == Branch ).FirstOrDefault();
                 if (checkbillno == null)
                 {
                     ViewBag.data = HttpContext.Session.GetObject(SD.Sessionname);
                     var Name = ViewBag.data;
                     tempseccion.Billdate = DateTime.UtcNow;
                     tempseccion.Billby = Name;
-                    ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
-                    var Branch = ViewBag.branch;
+                   
                     tempseccion.Branch = Branch;
                     var checkcustomer = _context.vendor.Where(i => i.Mobilenumber == tempseccion.Mobilenumber).FirstOrDefault();
                     if (checkcustomer == null)
