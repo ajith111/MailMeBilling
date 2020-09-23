@@ -286,5 +286,13 @@ namespace MailMeBilling.Controllers
             return new JsonResult(deatils);
 
         }
+
+
+
+        public IActionResult Stocktracation()
+        {
+
+            return View();
+        }
     }
 }

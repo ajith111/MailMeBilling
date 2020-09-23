@@ -3,7 +3,7 @@
     ViewData["Title"] = "Sales Report Bill";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 
-  
+
 
 }
     <style>
@@ -34,6 +34,43 @@
                         <div class="d-sm-flex mb-5" data-view="print" id="printb">
                             <span class="m-auto"></span>
                             <button class="btn btn-primary mb-sm-0 mb-3 print-invoice">Print Invoice</button>
+                            <br/>
+                            <!-- Button trigger modal -->
+                           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                               Change Bill Date
+                            </button>
+                           
+                            <!-- Modal -->
+                            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel">Update Bill Date</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form method="post" asp-controller="MyReports" asp-action="Updatebill">
+                                            <div class="modal-body">
+
+                                                <div class="form-group">
+                                                    <label for="recipient-name" class="col-form-label">Date:</label>
+                                                    @foreach (var sums in Model.salesinvoicesummeries)
+                                                    {
+                                                        <input type="hidden" value="@sums.Billid" name="Billid" />
+                                                        <input type="datetime-local" class="form-control" name="BillDate" id="recipient-name" required>
+                                                    }
+                                                </div>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <partial name="printsections" />

@@ -32,6 +32,9 @@ namespace MailMeBilling.Controllers
            
             return View();
         }
+
+
+       
         public IActionResult GetAll()
         {
             var sale = _context.salesinvoicesummery.ToList();
@@ -50,6 +53,16 @@ namespace MailMeBilling.Controllers
 
                 dashbordVM.customerDetails.Add(item);
             }
+
+
+            var expence = _context.expens.ToList();
+
+            foreach (var item in expence)
+            {
+                dashbordVM.Expens.Add(item);
+            }
+
+
             var vendor = _context.vendor.ToList();
             foreach (var item in vendor)
             {

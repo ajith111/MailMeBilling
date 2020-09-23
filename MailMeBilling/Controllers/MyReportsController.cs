@@ -18,6 +18,35 @@ namespace MailMeBilling.Controllers
         {
             _context = context;
         }
+
+
+        public IActionResult Updatebill(SDateupdateVM sdate)
+        {
+            var billid = sdate.Billid;
+
+            var bill = _context.salesinvoicesummery.Where(i => i.Billid == sdate.Billid).FirstOrDefault();
+            bill.Billdate = sdate.BillDate;
+            _context.salesinvoicesummery.Update(bill);
+
+            var billhis = _context.customerpaymenthistry.Where(i => i.billid == sdate.Billid).FirstOrDefault();
+            billhis.Paiddate = sdate.BillDate;
+            _context.customerpaymenthistry.Update(billhis);
+
+
+
+
+            _context.SaveChanges();
+
+           
+            return Redirect("/MyReports/Print/" + billid);
+
+        }
+
+
+
+
+
+
         public IActionResult Salesreport()
         {
            

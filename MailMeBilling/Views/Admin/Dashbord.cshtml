@@ -5,7 +5,7 @@
 }
 <div class="main-content">
     <div class="breadcrumb">
-        <h1 class="mr-2">Dashboard</h1>
+        <h1 class="mr-2">Salem Branch</h1>
 
     </div>
     <div class="separator-breadcrumb border-top"></div>
@@ -29,7 +29,7 @@
                 <div class="card-body text-center">
                     <i class="i-Checkout-Basket"></i>
                     <div class="content">
-                        @{ var bill = Model.salesinvoicesummeries.Count();}
+                        @{ var bill = Model.salesinvoicesummeries.Where(i => i.Branch == "Salem").Count();}
                         <p class="text-muted mt-2 mb-0">Bill Count</p><br />
                         <p class="text-primary text-24 line-height-1 mb-2">@bill</p>
                     </div>
@@ -59,7 +59,8 @@
                     <i class="i-Money-2"></i>
                     <div class="content">
                         <p class="text-muted mt-2 mb-0">Expense</p><br />
-                        @{ var purchase = Model.purchaseinvoicesummery.Where(i => i.status != "Return").Sum(i => i.Totalamount);}
+                        @{ var purchase = Model.Expens.Where(i => i.branch == "Salem").Sum(i => i.amount);
+                        }
                         <p class="text-primary text-24 line-height-1 mb-2">@purchase</p>
                     </div>
                 </div>
@@ -74,7 +75,20 @@
     <div class="separator-breadcrumb border-top"></div>
     <div class="row">
         <!-- ICON BG-->
-        
+
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
+                <div class="card-body text-center">
+                    <i class="i-Checkout-Basket"></i>
+                    <div class="content">
+                        @{ var billm = Model.salesinvoicesummeries.Where(i => i.Branch == "Meyyanur").Count();}
+                        <p class="text-muted mt-2 mb-0">Bill Count</p><br />
+                        <p class="text-primary text-24 line-height-1 mb-2">@billm</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <div class="col-lg-3 col-md-6 col-sm-6">
             <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
@@ -98,7 +112,7 @@
                     <i class="i-Money-2"></i>
                     <div class="content">
                         <p class="text-muted mt-2 mb-0">Expense</p><br />
-                        @{ var purchaseb = Model.purchaseinvoicesummery.Where(i => i.status != "Return"  && i.Branch == "Meyyanur").Sum(i => i.Totalamount);}
+                        @{ var purchaseb = Model.Expens.Where(i => i.branch == "Meyyanur").Sum(i => i.amount);}
                         <p class="text-primary text-24 line-height-1 mb-2">@purchaseb</p>
                     </div>
                 </div>
@@ -107,4 +121,41 @@
     </div>
 
 
+
+    <div class="separator-breadcrumb border-top"></div>
+    <div class="row">
+        <!-- ICON BG-->
+
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
+                <div class="card-body text-center">
+                    <i class="i-Financial"></i>
+                    <div class="content">
+                        @{ var todaysalem = Model.salesinvoicesummeries.Where(i => i.Branch == "Salem" && i.Billdate.Date == DateTime.Now.Date).Sum(i => i.nettotal);}
+                        <p class="text-muted text-24 line-height-1 mb-2">Salem Today Sales</p><br />
+                        <p class="text-primary text-24 line-height-1 mb-2">@todaysalem</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-lg-6 col-md-6 col-sm-6">
+            <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
+                <div class="card-body text-center">
+                    <i class="i-Financial"></i>
+                    <div class="content">
+                        <p class="text-muted text-24 line-height-1 mb-2">Meyyanur Today Sales</p><br />
+                        @{ var Todaysalemy = Model.salesinvoicesummeries.Where(i =>  i.Branch == "Meyyanur").Sum(i => i.nettotal);}
+                        <p class="text-primary text-24 line-height-1 mb-2"> @salesb </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+         
+    </div>
 </div>
