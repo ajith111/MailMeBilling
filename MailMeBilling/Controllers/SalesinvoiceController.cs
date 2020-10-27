@@ -220,8 +220,9 @@ namespace MailMeBilling.Controllers
         [HttpGet]
         public JsonResult fillcol(string name)
         {
-           
-            var deatils = _context.product.Where(c => c.productname == name).SingleOrDefault();
+            ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
+            string Branch = ViewBag.branch;
+            var deatils = _context.product.Where(c => c.productname == name && c.Branch == Branch ).SingleOrDefault();
             return new JsonResult(deatils);
 
         }

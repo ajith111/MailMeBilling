@@ -1367,7 +1367,7 @@ namespace MailMeBilling.Controllers
             string Branch = ViewBag.branch;
 
            
-            ViewBag.allsale = _context.product.ToList();
+            ViewBag.allsale = _context.product.Where(i => i.Branch == Branch).ToList();
           
             var allamount = _context.product.Where(i => i.Branch == Branch).Sum(i => i.Salesrate).ToString();
             var allstock = _context.product.Where(i => i.Branch == Branch).Sum(i => i.stock).ToString();
