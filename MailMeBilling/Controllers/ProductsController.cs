@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Xunit;
 using System.IO;
 using Newtonsoft.Json;
+using TimeZoneConverter;
 
 namespace MailMeBilling.Controllers
 {
@@ -39,8 +40,10 @@ namespace MailMeBilling.Controllers
         [HttpGet]
         public IActionResult getall()
         {
-           
-            return Json(new { data = _context.product.Select( i => new {i.productid,  i.productname ,i.Category ,i.SubcCategory,i.Salesrate, i.Hsncode,i.stock,i.Color,i.Brand }).ToList() });
+            ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
+          
+            string Branch = ViewBag.branch;
+            return Json(new { data = _context.product.Select( i => new {i.productid,  i.productname ,i.Category ,i.SubcCategory,i.Salesrate, i.Hsncode,i.stock,i.Color,i.Brand, i.Branch }).Where(i => i.Branch == Branch).ToList() });
         }
 
         #endregion
@@ -184,14 +187,18 @@ namespace MailMeBilling.Controllers
             return View(product);
         }
 
-       
+
         [HttpPost]
-       
-        public async Task<IActionResult> Edit(int id,  Product product, List<IFormFile> productimg)
+
+        public async Task<IActionResult> Edit(int id, Product product, List<IFormFile> productimg)
         {
-         
-            var stock = await _context.product.FindAsync(id);
-           
+            ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
+            string Branch = ViewBag.branch;
+            var stock = await _context.product.Where(i => i.Branch == Branch && i.productid == id).FirstOrDefaultAsync();
+            if (stock != null)
+            {
+
+            
             var addstock = stock.stock + product.stock;
             if (productimg.Count != 0)
             {
@@ -213,14 +220,13 @@ namespace MailMeBilling.Controllers
             {
                 try
                 {
-                   
-                     ViewBag.data = HttpContext.Session.GetObject(SD.Sessionname);
+
+                    ViewBag.data = HttpContext.Session.GetObject(SD.Sessionname);
                     var Name = ViewBag.data;
-                    stock.Entrydate =  DateTime.UtcNow;
+                    stock.Entrydate = DateTime.UtcNow;
                     stock.Entryby = Name;
                     product.Barcode = "Null";
-                      ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
-                    var Branch = ViewBag.branch;
+
                     product.Branch = Branch;
                     stock.Purchaserate = product.Purchaserate;
                     stock.Salesrate = product.Salesrate;
@@ -242,6 +248,7 @@ namespace MailMeBilling.Controllers
                 // return RedirectToAction(nameof(Index));
                 return View(stock);
             }
+        }
             return View(stock);
         }
 
@@ -292,7 +299,97 @@ namespace MailMeBilling.Controllers
         public IActionResult Stocktracation()
         {
 
-            return View();
+            ViewBag.data = HttpContext.Session.GetObject(SD.Sessionname);
+            ViewBag.branch = HttpContext.Session.GetObject(SD.Statusbranch);
+            ViewBag.roll = HttpContext.Session.GetObject(SD.Statusroll);
+
+
+            string Branch = ViewBag.branch;
+            loadtemp load = new loadtemp();
+
+            ViewBag.Branch = _context.branch.Where(i => i.Branchname == Branch).FirstOrDefault();
+
+            var billno = _context.salesinvoicesummery.OrderByDescending(i => i.Billid).Where(i => i.Branch == Branch).FirstOrDefault(); //bill No
+            if (billno != null)
+            {
+                ViewBag.Billno = billno.Billid + 1;
+            }
+            else
+            {
+                ViewBag.Billno = 1;
+            }
+            int bill = ViewBag.Billno;
+
+            //for print
+            if (bill != 0)
+            {
+                int bi = bill - 1;
+                var tmp = _context.tempseccions.Where(i => i.Branch == Branch).ToList();
+                var tmpsale = _context.salesinvoices.Where(i => i.Branch == Branch && i.Billno == bi).ToList();
+                if (tmp.Count != 0)
+                {
+                    foreach (var item in tmp)
+                    {
+                        load.tempseccions.Add(item);
+                    }
+
+                }
+                else
+                {
+                    foreach (var item in tmpsale)
+                    {
+                        load.salesinvoices.Add(item);
+                    }
+                    var tmpsummery = _context.salesinvoicesummery.Where(i => i.Billid == bi && i.Branch == Branch).ToList();
+                    if (tmpsummery != null)
+                    {
+
+                        foreach (var item in tmpsummery)
+                        {
+                            // var istdate = TimeZoneInfo.ConvertTimeFromUtc(item.Billdate, TimeZoneInfo.FindSystemTimeZoneById("India Standard Time"));
+                            TimeZoneInfo timeZone = TZConvert.GetTimeZoneInfo("India Standard Time");
+                            var isdate = TimeZoneInfo.ConvertTime(item.Billdate, timeZone);
+
+                            ViewBag.billdate = isdate;
+                            load.salesinvoicesummeries.Add(item);
+                        }
+                    }
+
+                }
+
+
+
+
+
+
+            }
+            return View(load);
         }
+
+        [HttpPost]
+        public JsonResult Getproductname(string Prefix)
+        {
+            var result = (from N in _context.product
+                          where N.productname.Contains(Prefix)
+                          select new { N.productname });
+            return Json(result);
+        }
+        [HttpGet]
+        public JsonResult fillcol(string name)
+        {
+
+            var deatils = _context.product.Where(c => c.productname == name).SingleOrDefault();
+            return new JsonResult(deatils);
+
+        }
+        [HttpGet]
+        public JsonResult fillcusdetails(string mob)
+        {
+
+            var deatils = _context.customerdetails.Where(c => c.Mobilenumber == mob).SingleOrDefault();
+            return new JsonResult(deatils);
+
+        }
+
     }
 }

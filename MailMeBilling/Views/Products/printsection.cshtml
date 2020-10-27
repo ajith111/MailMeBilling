@@ -1,0 +1,324 @@
+﻿@{ int count = 0;
+    decimal amttotal = 0;}
+
+
+<!--print test-->
+<style>
+    .testing {
+        text-align:center
+    }
+</style>
+
+    <div id="print-area" style="font-family:Calibri;font-size:large;">
+        <div class="row">
+            @foreach (var sums in Model.salesinvoicesummeries)
+            {
+                <div class="col-7 text-right">
+                    @if (sums.Gst != 0)
+                    {
+                        <h1><b>TAX INVOICE</b></h1>
+                    }
+                    else
+                    {
+                        <h1><b>ESTIMATE</b></h1>
+                    }
+
+                </div>
+            }
+            <div class="col-5 text-right">
+                <p><b>Original / Dublicate / Triplicate / Extra</b></p>
+            </div>
+
+        </div>
+       
+            <div class="row" style=" background-image: url( /dist-assets/images/photo-wide-6.jpg);background-size: contain; padding-top: 0px; padding-bottom: 0px; ">
+
+
+                @foreach (var sums in Model.salesinvoicesummeries)
+                {
+                    <div class="col-6 text-left" style="border: 1px solid black;">
+                        <h1><b> @ViewBag.Branch.Shopname   </b></h1>
+                        <h5><b> @ViewBag.Branch.Aboutshop</b></h5>
+                        <h5><b> @ViewBag.Branch.BranchAddress </b></h5>
+                        <p> <b>E-Mail: @ViewBag.Branch.Email </b> <b>Mobile:@ViewBag.Branch.Mobile</b></p>
+
+                        @if (sums.Gst != 0)
+                        {
+                            <p><b>GSTIN NO : @ViewBag.Branch.Gstno </b></p>
+                        }
+
+                    </div>
+                    <div class="col-6 text-left" style="border: 1px solid black;">
+                        <div class="row">
+                            <div class="col-3" style="text-align:left">
+                                <label><b>INVOICE NO</b></label>
+                            </div>
+                            <div class="col-1" style="text-align:right">
+                                <span style="text-align:right;">:</span>
+                            </div>
+                            <div class="col-8" style="text-align:left">
+                                <label> @sums.Billid</label><br />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3" style="text-align:left">
+                                <label><b>DATE & TIME </b></label>
+                            </div>
+                            <div class="col-1" style="text-align:right">
+                                <span style="text-align:right;">:</span>
+                            </div>
+                            <div class="col-8" style="text-align:left">
+                                <label> @ViewBag.billdate</label>
+                            </div>
+                        </div>
+
+
+                        <h4><b><u>CUSTOMER DETAILS</u> </b></h4>
+                        <div class="row">
+                            <div class="col-3" style="text-align:left">
+                                <label><b>NAME       </b></label><br />
+                            </div>
+                            <div class="col-1" style="text-align:right">
+                                <span style="text-align:right;">:</span>
+                            </div>
+                            <div class="col-8" style="text-align:left">
+                                <label> @sums.Customername</label><br />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3" style="text-align:left">
+                                <label><b>MOBILE     </b></label><br />
+                            </div>
+                            <div class="col-1" style="text-align:right">
+                                <span style="text-align:right;">:</span>
+                            </div>
+                            <div class="col-8" style="text-align:left">
+                                <p> @sums.Mobilenumber</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3" style="text-align:left">
+                                <label><b>ADDRESS    </b></label> <br />
+                            </div>
+                            <div class="col-1" style="text-align:right">
+                                <span style="text-align:right;">:</span>
+                            </div>
+                                <div class="col-8" style="text-align:left">
+                                    <p> @sums.Address</p><br />
+                                </div>
+                            </div>
+
+
+
+                        </div>
+
+                    <div class="col-12 text-left" style="border: 1px solid black;">
+                        <label><b>TERMS OF DELIVERY: </b></label><br />
+
+                    </div>
+
+
+                    <table style="width:100%">
+                        <thead>
+                            <tr class="text-center">
+                                <th style="padding-left: 0px; padding-right: 0px;  width: 1%;">S.No</th>
+                                <th>PARTICULAR</th>
+                                <th>HSN CODE</th>
+                                <th>QTY</th>
+                                <th>RATE</th>
+                                <th style="width:15%">AMOUNT</th>
+                            </tr>
+                        </thead>
+
+                        @foreach (var item in Model.salesinvoices)
+                        {
+                            count++;
+                            amttotal += item.Amount;
+                            <tr class="text-center">
+                                <th style="width: 5px;">@count</th>
+                                <th class="text-left"> @item.Productname </th>
+                               
+                                <th>@item.Hsncode</th>
+                                <th>@item.Quantity</th>
+                                <th class="" style="padding-right:30px;text-align:right;">@item.Rate</th>
+                                <th class="text-right" style="padding-right: 30px;text-align: right;"> ₹  @item.Amount</th>
+                            </tr>
+                        }
+                        @{decimal gstt = Convert.ToDecimal(@sums.Gst) / 2;
+                            var calgstt = sums.Cgst + sums.Sgst + sums.Igst;
+                        }
+
+                        <tr class="text-center">
+                            <th></th>
+                            <th class="text-left"></th>
+                            <th></th>
+                            <th> Total (@sums.Totalqty)</th>
+                            <th></th>
+                            <th class="text-right" style=" padding-right: 30px;  text-align: right;"> ₹  @amttotal</th>
+                        </tr>
+                        @if (sums.Gst != 0)
+                        {
+                            <tr class="text-center">
+
+
+                                @if (sums.ntow != null)
+                                {
+                                    <th colspan="4" style="border-bottom-color:white;text-align:left;padding-left:15px;"> RUPEES:@sums.ntow </th>
+                                }
+                                else
+                                {
+                                    <th colspan="4" style="border-bottom-color:white;text-align:left;padding-left:15px;"> RUPEES: <span id="ntoww"></span> </th>
+
+                                }
+
+                                <th>CGST (@gstt)%</th>
+                                <th class="text-right" style="padding-right: 30px; text-align:right;"> ₹  @sums.Cgst</th>
+                            </tr>
+                            <tr class="text-center">
+                                <th colspan="4"></th>
+                                <th>SGST (@gstt)%</th>
+                                <th class="text-right" style="padding-right:30px"> ₹  @sums.Sgst</th>
+                            </tr>
+                            <tr class="text-center">
+                                <th colspan="4"></th>
+                                <th>IGST (0)%</th>
+                                <th class="text-right" style="padding-right: 30px;text-align: right;"> ₹  @sums.Igst</th>
+                            </tr>
+                            <tr class="text-center">
+                                <th colspan="4"></th>
+                                <th>GST AMOUNT</th>
+                                <th class="text-right" style=" padding-right: 30px;text-align: right;"> ₹  @calgstt</th>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr class="text-center">
+
+                                @if (sums.ntow != null)
+                                {
+                                    <th colspan="6" style="border-bottom-color:black;text-align:left;padding-left:15px;"> RUPEES:@sums.ntow  </th>
+                                }
+                                else
+                                {
+                                    <th colspan="6" style="border-bottom-color:black;text-align:left;padding-left:15px;"> RUPEES: <span id="ntow"></span> </th>
+
+                                }
+                            </tr>
+
+                        }
+                        <tr class="text-center">
+                            <th colspan="4" style="text-align:left;border-right-color:white;"></th>
+
+                            <th>PAID </th>
+                            <th class="text-right" style="padding-right:30px;text-align:right; color:forestgreen"> ₹  @sums.Paid</th>
+                        </tr>
+                        <tr class="text-center">
+                            <th colspan="4" style="text-align:left;border-right-color:white;"></th>
+
+                            <th>DISCOUNT </th>
+                            <th class="text-right" style="padding-right:30px;text-align:right;color:red "> ₹  @sums.discount</th>
+                        </tr>
+                        <tr class="text-center">
+                            <th colspan="4" style="text-align:left;border-right-color:white;"></th>
+
+                            <th>BALANCE </th>
+                            <th class="text-right" style="padding-right:30px;text-align:right;color:red "> ₹  @sums.Balance</th>
+                        </tr>
+                        <tr class="text-center">
+                            <th colspan="1" style="text-align:left;border-right-color:white;"></th>
+                            <th style="text-align:left;border-right-color: white;"><span style="text-align:left">VEHICLE NO :</span> <span style="text-align: center; padding-left: 300px;">CHECKED BY:</span></th>
+                            <th colspan="2" style="text-align:left"></th>
+                            <th>NET AMOUNT</th>
+                            <th class="text-right" style="padding-right:30px;text-align:right; color:blueviolet"> ₹  @sums.nettotal</th>
+                        </tr>
+
+                    </table>
+                    <input type="hidden" id="tamt" value=" @sums.nettotal" />
+                    <script>
+                        $(
+                            function () {
+                                var sum = document.getElementById("tamt");
+                                var tmp = inWords(parseInt(sum.value));
+
+                                var nw = document.getElementById("ntoww");
+                                var nto = document.getElementById("ntow");
+                                $(nto).empty();
+                                $(nw).empty();
+                                if (nto == null) {
+                                    nw.innerHTML = tmp;
+
+                                }
+                                if (nw == null) {
+                                    nto.innerHTML = tmp;
+
+
+                                }
+                            }
+
+                        );
+
+
+                        var a = ['', 'One ', 'Two ', 'Three ', 'Four ', 'Five ', 'Six ', 'Seven ', 'Eight ', 'Nine ', 'Ten ', 'Eleven ', 'Twelve ', 'Thirteen ', 'Fourteen ', 'Fifteen ', 'Sixteen ', 'Seventeen ', 'Eighteen ', 'Nineteen '];
+                        var b = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+
+                        function inWords(num) {
+                            if ((num = num.toString()).length > 9) return 'overflow';
+                            n = ('000000000' + num).substr(-9).match(/^(\d{2})(\d{2})(\d{2})(\d{1})(\d{2})$/);
+                            if (!n) return; var str = '';
+                            str += (n[1] != 0) ? (a[Number(n[1])] || b[n[1][0]] + ' ' + a[n[1][1]]) + 'Crore ' : '';
+                            str += (n[2] != 0) ? (a[Number(n[2])] || b[n[2][0]] + ' ' + a[n[2][1]]) + 'Lakh ' : '';
+                            str += (n[3] != 0) ? (a[Number(n[3])] || b[n[3][0]] + ' ' + a[n[3][1]]) + 'Thousand ' : '';
+                            str += (n[4] != 0) ? (a[Number(n[4])] || b[n[4][0]] + ' ' + a[n[4][1]]) + 'Hundred ' : '';
+                            str += (n[5] != 0) ? ((str != '') ? 'And ' : '') + (a[Number(n[5])] || b[n[5][0]] + ' ' + a[n[5][1]]) + 'Only ' : '';
+                            return str;
+                        }
+                    </script>
+
+                }
+
+            </div>
+            @if (Model.tempseccions.Count != 0)
+            {
+                <table style="width:100%">
+
+                    <tr class="text-center">
+                        <th width="20">S.NO</th>
+                        <th width="20">PARTICULAR</th>
+                        <th width="20">HSN CODE</th>
+                        <th width="20">QTY</th>
+                        <th width="20">RATE</th>
+                        <th width="20">AMOUNT</th>
+                    </tr>
+
+                    @foreach (var item in Model.tempseccions)
+                    {
+                        count++;
+                        <tr style="width:auto" class="text-center">
+                            <th>@count</th>
+                            <th class="text-left">ProductName: @item.Productname,Category: @item.Category, SubCategory: @item.Subcategory ,Brand: @item.Brand</th>
+                            <th>@item.Hsncode</th>
+                            <th>@item.Quantity</th>
+                            <th class="text-right" style="padding-right:30px">@item.Rate</th>
+                            <th class="text-right" style="padding-right:30px"> ₹  @item.Amount</th>
+                        </tr>
+                    }
+                </table>
+            }
+            <br />
+            <br />
+
+            <div class="row">
+                <div class="col-6 text-left">
+                    <h5><b>E & E ALL Disputes Are Subject To Salem Jurisdiction</b> </h5>  <br />
+                    <h5><b>Goods Once Sold Cannot Be Taken Back</b> </h5>
+                </div>
+                <div class="col-6 text-right">
+                    <h3><b>ABDULLAH FURNITURES</b></h3><br />
+                    <br />
+                    <h5 style="padding-right:20px"><b>Authorized Signature</b></h5>
+                </div>
+            </div>
+       
+    </div>
+
+   
