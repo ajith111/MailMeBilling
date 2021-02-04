@@ -1,6 +1,6 @@
 ﻿@model MailMeBilling.Models.DshbordVM
 @{
-    ViewData["Title"] = "Dashboard";
+    ViewData["Title"] = "DASHBOARD";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 <div class="main-content">
@@ -42,9 +42,10 @@
                 <div class="card-body text-center">
                     <i class="i-Financial"></i>
                     <div class="content">
-                        <p class="text-muted mt-2 mb-0">Sales</p><br />
-                        @{ var sales = Model.salesinvoicesummeries.Where(i => i.status != "Return").Sum(i => i.nettotal);}
-                        <p class="text-primary text-24 line-height-1 mb-2"> @sales </p>
+                        <p class="text-muted mt-2 mb-0">Today Sales</p><br />
+                        @{var todaysalems = Model.salesinvoicesummeries.Where(i => i.Branch == "Salem" && i.status != "Return" && i.Billdate.Date == DateTime.Now.Date).Sum(i => i.nettotal);
+                            var sales = Model.salesinvoicesummeries.Where(i => i.status != "Return").Sum(i => i.nettotal);}
+                        <p class="text-primary text-24 line-height-1 mb-2"> @todaysalems </p>
                     </div>
                 </div>
             </div>
@@ -68,15 +69,15 @@
         </div>
     </div>
 
-    <div class="breadcrumb">
+    <!--<div class="breadcrumb">
         <h1 class="mr-2">Meyyanur Branch</h1>
 
     </div>
     <div class="separator-breadcrumb border-top"></div>
-    <div class="row">
+    <div class="row">-->
         <!-- ICON BG-->
 
-        <div class="col-lg-3 col-md-6 col-sm-6">
+        <!--<div class="col-lg-3 col-md-6 col-sm-6">
             <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
                 <div class="card-body text-center">
                     <i class="i-Checkout-Basket"></i>
@@ -118,7 +119,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>-->
 
 
 
@@ -126,7 +127,7 @@
     <div class="row">
         <!-- ICON BG-->
 
-        <div class="col-lg-6 col-md-6 col-sm-6">
+        @*<div class="col-lg-6 col-md-6 col-sm-6">
             <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
                 <div class="card-body text-center">
                     <i class="i-Financial"></i>
@@ -137,10 +138,10 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>*@
 
 
-        <div class="col-lg-6 col-md-6 col-sm-6">
+        @*<div class="col-lg-6 col-md-6 col-sm-6">
             <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
                 <div class="card-body text-center">
                     <i class="i-Financial"></i>
@@ -151,7 +152,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>*@
 
 
 

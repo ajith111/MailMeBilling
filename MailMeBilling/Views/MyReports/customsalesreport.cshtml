@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<MailMeBilling.Models.Salesinvoicesummery>
 @{
-    ViewData["Title"] = " Sales Report";
+    ViewData["Title"] = "SALES REPORT";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
     int count = 0;
     decimal totalcredit = 0;
@@ -38,14 +38,14 @@
 
                 </form>
 
-                <div class="d-sm-flex mb-5" data-view="print" style="padding-right:30px">
+                <div class="d-sm-flex mb-5" data-view="print" style="padding-right:30px;padding-bottom:150px;">
                     <span class="m-auto"></span>
                     <button class="btn btn-primary mb-sm-0 mb-3 print-invoice" >Print Statement</button>
                 </div>
 
 
 
-                <div id="print-area" class="page" style="font-family:'Courier New';font-size:medium;padding-top:0px;">
+                <div id="print-area" class="page" style="font-family:'Courier New';font-size:medium;padding-top:0px; margin-top:-100px;">
                     <div class="row">
                        
                         <div class="col-12 text-center">
